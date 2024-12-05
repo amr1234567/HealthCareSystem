@@ -1,0 +1,146 @@
+DiabetesSurveyData:
+  Diabetes_binary:
+    description_en: "Indicates whether the person has diabetes."
+    description_ar: "يشير إلى ما إذا كان الشخص مصابًا بالسكري."
+    values:
+      0: "No - لا"
+      1: "Yes - نعم"
+
+  HighBP:
+    description_en: "Have you ever been told by a health professional that you have high blood pressure?"
+    description_ar: "هل تم إخبار الشخص من قبل طبيب أو مختص صحي بأنه يعاني من ارتفاع ضغط الدم."
+    values:
+      0: "No - لا"
+      1: "Yes - نعم"
+
+  HighChol:
+    description_en: "Have you ever been told by a health professional that your cholesterol level is high?"
+    description_ar: "هل تم إخبار الشخص من قبل مختص صحي أن مستوى الكوليسترول لديه مرتفع."
+    values:
+      0: "No - لا"
+      1: "Yes - نعم"
+
+  CholCheck:
+    description_en: "Have you had your cholesterol checked within the past five years?"
+    description_ar: "هل تم إجراء فحص للكوليسترول في آخر خمس سنوات."
+    values:
+      0: "No - لا"
+      1: "Yes - نعم"
+
+  BMI:
+    description_en: "Body Mass Index (BMI), a numeric value indicating body weight relative to height."
+    description_ar: "مؤشر كتلة الجسم (BMI)، وهو قيمة رقمية لحساب السمنة."
+    type: "float"
+
+  Smoker:
+    description_en: "Have you smoked at least 100 cigarettes in your entire life?"
+    description_ar: "هل قام الشخص بتدخين 100 سيجارة على الأقل في حياته."
+    values:
+      0: "No - لا"
+      1: "Yes - نعم"
+
+  Stroke:
+    description_en: "Have you ever been told that you had a stroke?"
+    description_ar: "هل سبق أن قيل للشخص أنه أصيب بسكتة دماغية."
+    values:
+      0: "No - لا"
+      1: "Yes - نعم"
+
+  HeartDiseaseorAttack:
+    description_en: "Have you ever been told you have coronary heart disease or a heart attack?"
+    description_ar: "هل سبق أن أُخبر الشخص بأنه يعاني من مرض قلبي أو نوبة قلبية."
+    values:
+      0: "No - لا"
+      1: "Yes - نعم"
+
+  PhysActivity:
+    description_en: "Have you engaged in physical activity or exercise other than your regular job in the past 30 days?"
+    description_ar: "هل قام الشخص بممارسة نشاط بدني خلال آخر 30 يومًا (بخلاف عمله اليومي)."
+    values:
+      0: "No - لا"
+      1: "Yes - نعم"
+
+  Fruits:
+    description_en: "Do you consume fruit at least once a day?"
+    description_ar: "هل يستهلك الشخص الفاكهة مرة واحدة أو أكثر يوميًا."
+    values:
+      0: "No - لا"
+      1: "Yes - نعم"
+
+  Veggies:
+    description_en: "Do you consume vegetables at least once a day?"
+    description_ar: "هل يستهلك الشخص الخضروات مرة واحدة أو أكثر يوميًا."
+    values:
+      0: "No - لا"
+      1: "Yes - نعم"
+
+  HvyAlcoholConsump:
+    description_en: "Are you a heavy alcohol consumer (as defined by weekly consumption thresholds)?"
+    description_ar: "هل يُعتبر الشخص من مدمني الكحول."
+    values:
+      0: "No - لا"
+      1: "Yes - نعم"
+
+  AnyHealthcare:
+    description_en: "Do you have any form of healthcare coverage?"
+    description_ar: "هل يمتلك الشخص تغطية صحية مثل التأمين الصحي أو برامج حكومية."
+    values:
+      0: "No - لا"
+      1: "Yes - نعم"
+
+  NoDocbcCost:
+    description_en: "Was there a time in the past year when you couldn't see a doctor due to cost?"
+    description_ar: "هل كان هناك وقت خلال السنة الماضية لم يستطع فيه الشخص رؤية طبيب بسبب التكلفة."
+    values:
+      0: "No - لا"
+      1: "Yes - نعم"
+
+  GenHlth:
+    description_en: "Rate your general health on a scale of 1 (excellent) to 5 (poor)."
+    description_ar: "تقييم الشخص لصحة العامة (1 تعني 'ممتازة'، و5 تعني 'سيئة')."
+    type: "integer"
+    range: [1, 5]
+
+  MentHlth:
+    description_en: "Number of days in the past 30 days when mental health was not good."
+    description_ar: "عدد الأيام خلال الشهر الماضي التي لم تكن فيها الصحة النفسية جيدة."
+    type: "integer"
+    range: [0, 30]
+
+  PhysHlth:
+    description_en: "Number of days in the past 30 days when physical health was not good."
+    description_ar: "عدد الأيام خلال الشهر الماضي التي لم تكن فيها الصحة الجسدية جيدة."
+    type: "integer"
+    range: [0, 30]
+
+  DiffWalk:
+    description_en: "Do you have serious difficulty walking or climbing stairs?"
+    description_ar: "هل يعاني الشخص من صعوبة في المشي أو صعود السلالم."
+    values:
+      0: "No - لا"
+      1: "Yes - نعم"
+
+  Sex:
+    description_en: "Indicates the respondent's sex."
+    description_ar: "يشير إلى جنس الشخص."
+    values:
+      0: "Female - أنثى"
+      1: "Male - ذكر"
+
+  Age:
+    description_en: "Age category, divided into 14 levels."
+    description_ar: "فئة العمر (14 مستوى مختلف)."
+    type: "integer"
+    range: [1, 14]
+
+  Education:
+    description_en: "Highest level of education completed."
+    description_ar: "أعلى مستوى تعليمي أكمله الشخص."
+    type: "integer"
+    range: [1, 6]
+
+  Income:
+    description_en: "Annual household income category."
+    description_ar: "فئة الدخل السنوي للأسر من جميع المصادر."
+    type: "integer"
+    range: [1, 8]

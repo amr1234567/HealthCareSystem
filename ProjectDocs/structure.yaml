@@ -1,0 +1,388 @@
+entities:
+  # Disease and medicine system
+  Disease:
+    id: int  # معرف المرض (رقم فريد)
+    name: string  # اسم المرض
+    description: text  # وصف تفصيلي للمرض
+    severity: enum  # شدة المرض (مثل: بسيط، متوسط، شديد)
+    contagious: boolean  # هل المرض معدٍ؟
+    discovery_date: date  # تاريخ اكتشاف المرض
+    affected_population: int  # عدد الأشخاص المتأثرين بالمرض
+    disease_code: string  # رمز المرض (تصنيف طبي مثل ICD-10)
+    cure_rate: float  # معدل الشفاء كنسبة مئوية (مثال: 75.5%)
+    fatality_rate: float  # معدل الوفيات كنسبة مئوية
+    treatment_duration: string  # متوسط مدة العلاج (مثل: "3 أسابيع")
+    is_chronic: boolean  # هل المرض مزمن؟
+    has_vaccine: boolean  # هل يوجد لقاح للمرض؟
+    common_age_group: string  # الفئة العمرية الأكثر عرضة (مثل: الأطفال، البالغين، كبار السن)
+    common_gender: string  # الجنس الأكثر عرضة (ذكر/أنثى/كلاهما)
+    risk_factors: text  # عوامل الخطر (مثل: التدخين، السمنة، الوراثة)
+    geographic_spread: string  # المناطق الجغرافية المتأثرة (مثل: "آسيا، أفريقيا")
+    last_outbreak_date: date  # تاريخ آخر تفشٍ للمرض
+    research_status: enum  # حالة البحث (مثل: "تحت الدراسة"، "علاج متوفر")
+    prevention_measures: text  # إجراءات الوقاية (مثل: "غسل اليدين، التطعيم")
+    related_diseases: string  # أمراض مرتبطة (قد تزيد أو تتأثر به)
+    notes: text  # ملاحظات إضافية
+
+  Medicine:
+    id: int  # معرف الدواء (رقم فريد)
+    name: string  # اسم الدواء
+    description: text  # وصف الدواء
+    type: enum  # نوع الدواء (مثل: قرص، حقنة، شراب)
+    manufacturer: string  # الشركة المصنعة
+    active_ingredient: string  # المادة الفعالة
+    dosage: string  # الجرعة (مثال: "500 مجم مرتين يومياً")
+    expiration_date: date  # تاريخ انتهاء الصلاحية
+    approval_date: date  # تاريخ الموافقة على الدواء
+    storage_conditions: text  # شروط التخزين (مثل: "يحفظ في درجة حرارة أقل من 25°C")
+    prescription_required: boolean  # هل الدواء يتطلب وصفة طبية؟
+    cost: float  # تكلفة الدواء
+    usage_instructions: text  # تعليمات الاستخدام (مثال: "يفضل تناوله بعد الأكل")
+
+  SideEffect: # for midicine 
+    id: int  # معرف العرض الجانبي (رقم فريد)
+    name: string  # اسم العرض الجانبي
+    description: text  # وصف العرض الجانبي
+    age_range: string  # الفئة العمرية لظهور العرض (مثل: "12-20")
+    severity: enum  # شدة العرض (مثل: خفيف، متوسط، شديد)
+    commonality: enum  # مدى تكرار العرض (مثل: نادر، عرضي، متكرر)
+    duration: string  # مدة العرض (مثل: "4-6 ساعات")
+    reversibility: boolean  # هل العرض الجانبي قابل للعكس (يزول عند إيقاف الدواء)؟
+    affected_system: string  # الجهاز المتأثر (مثل: الجهاز العصبي، الجهاز الهضمي)
+    notes: text  # ملاحظات إضافية
+
+  EffectiveSubstance:
+    id: int  # معرف المادة الفعالة (رقم فريد)
+    name: string  # اسم المادة الفعالة
+    chemical_formula: string  # الصيغة الكيميائية
+    description: text  # وصف المادة الفعالة
+    discovery_date: date  # تاريخ اكتشاف المادة
+    approved_by: string  # الجهات المعتمدة (مثل FDA, WHO)
+    stability_conditions: text  # شروط الثبات (مثل: "يحفظ بعيدًا عن الضوء والرطوبة")
+    side_effects: text  # الآثار الجانبية الشائعة للمادة
+    primary_usage: string  # الاستخدام الأساسي (مثل: "مضاد التهاب")
+    alternative_names: string  # أسماء بديلة أو تجارية للمادة
+
+  Symptom:
+    id: int  # معرف العرض (رقم فريد لكل عرض)
+    name: string  # اسم العرض
+    age: text  # الفترة العمرية التي يظهر فيها العرض (مثل: "12-20")
+    description: text  # وصف تفصيلي للعرض
+    severity: enum  # شدة العرض (مثل: mild, moderate, severe)
+    duration: string  # مدة استمرار العرض (مثل: "قصير الأجل" أو "طويل الأجل")
+    type: enum  # نوع العرض (مثل: جسدي، نفسي، سلوكي)
+    associated_conditions: text  # الحالات المرتبطة بالعرض (مثل: أمراض معينة)
+    onset_pattern: string  # نمط بداية العرض (مثل: تدريجي، مفاجئ)
+    is_chronic: boolean  # هل العرض مزمن أم لا
+    treatment_required: boolean  # هل يتطلب العلاج أم لا
+
+  # hospital system
+
+  Hospital:
+    id: int  # معرف المستشفى (رقم فريد لكل مستشفى)
+    name: string  # اسم المستشفى
+    location: string  # موقع المستشفى 
+    capacity: int  # السعة القصوى للمستشفى (عدد المرضى الذي يمكن استيعابهم)
+    contact_number: string  # رقم الاتصال بالمستشفى
+    email: string  # البريد الإلكتروني للتواصل مع المستشفى
+    established_date: date  # تاريخ تأسيس المستشفى
+    admin_id: int  # معرف المسؤول عن المستشفى (يرتبط بجدول المستخدمين)
+    facilities: string  # المرافق المتوفرة في المستشفى (مثل: وحدة العناية المركزة، الطوارئ، الصيدلية)
+    specialties: string  # التخصصات الطبية المتوفرة في المستشفى (مثل: القلب، الأعصاب)
+    working_hours: string  # ساعات العمل (مثال: من الإثنين إلى الجمعة من 8 صباحاً إلى 8 مساءً)
+    emergency_services: boolean  # هل تتوفر خدمات الطوارئ؟ (نعم/لا)
+    bed_availability: int  # عدد الأسرة المتاحة حالياً
+    number_of_doctors: int  # عدد الأطباء العاملين في المستشفى
+    number_of_nurses: int  # عدد الممرضين العاملين في المستشفى
+    departments_count: int  # عدد الأقسام الطبية في المستشفى
+    latitude: float  # خط العرض للموقع الجغرافي
+    longitude: float  # خط الطول للموقع الجغرافي
+    website_url: string  # رابط موقع المستشفى الإلكتروني
+    license_number: string  # رقم الترخيص الرسمي للمستشفى
+    tax_identification_number: string  # رقم التعريف الضريبي للمستشفى
+    rating: float  # تقييم المستشفى (متوسط التقييم من المستخدمين، مثل 4.5/5)
+    review_count: int  # عدد التقييمات أو المراجعات
+    feedback_url: string  # رابط تقديم الملاحظات أو الآراء حول المستشفى
+    is_automated: boolean  # هل المستشفى يستخدم أنظمة آلية لإدارة العمليات؟ (نعم/لا)
+    has_online_consultation: boolean  # هل المستشفى يوفر استشارات طبية عبر الإنترنت؟ (نعم/لا)
+
+  Pharmacy:
+    id: int  # معرف الصيدلية (رقم فريد لكل صيدلية)
+    hospital_id: int  # معرف المستشفى (مرجع إلى المستشفى المرتبطة بالصيدلية)
+    location: string  # الموقع داخل المستشفى أو المنطقة (مثل: "الطابق الأرضي، المبنى A")
+    working_hours: string  # ساعات العمل (مثل: "24/7" أو "من 8 صباحًا إلى 10 مساءً")
+    emergency_availability: boolean  # هل الصيدلية متاحة خلال الطوارئ (نعم أو لا)
+    contact_number: string  # رقم الهاتف للتواصل مع الصيدلية
+    services_provided: text  # الخدمات التي تقدمها الصيدلية (مثل: صرف الأدوية، استشارات طبية)
+    pharmacist_in_charge: string  # اسم الصيدلي المسؤول
+    availability_of_specialized_medicines: boolean  # هل توفر أدوية متخصصة (نعم أو لا)
+
+  RadiologyCenter:
+    id: int  # معرف المركز (رقم فريد لكل مركز أشعة)
+    hospital_id: int  # معرف المستشفى (مرجع إلى المستشفى المرتبطة بالمركز)
+    location: string  # موقع المركز داخل المستشفى أو المنطقة (مثل: "الطابق الثاني، المبنى B")
+    equipment_list: string  # قائمة المعدات المتوفرة في المركز (مثل: "MRI، جهاز أشعة مقطعية")
+    operational_hours: string  # ساعات العمل (مثل: "من 9 صباحًا إلى 5 مساءً")
+    appointment_duration: int  # مدة كل موعد (بالدقائق)
+
+  LabCenter:
+    id: int  # معرف المركز (رقم فريد لكل مركز تحاليل)
+    hospital_id: int  # معرف المستشفى (مرجع إلى المستشفى المرتبطة بالمركز)
+    location: string  # موقع المركز داخل المستشفى أو المنطقة (مثل: "الطابق الأرضي، المبنى C")
+    tests_available: string  # قائمة الفحوصات المتوفرة في المركز (مثل: "اختبار دم، اختبار بول، خزعة")
+    operational_hours: string  # ساعات العمل (مثل: "من 8 صباحًا إلى 4 مساءً")
+    appointment_duration: int  # مدة كل موعد (بالدقائق)
+
+  Clinic:
+    id: int  # معرف العيادة (رقم فريد لكل عيادة)
+    hospital_id: int  # معرف المستشفى (مرجع إلى المستشفى المرتبطة بالعيادة)
+    specialization: string  # التخصص الطبي (مثل: "القلب، العظام")
+    location: string  # موقع العيادة داخل المستشفى أو المنطقة (مثل: "الطابق الأول، المبنى A")
+    operational_hours: string  # ساعات العمل (مثل: "من 8 صباحًا إلى 4 مساءً")
+    appointment_duration: int  # مدة كل موعد (بالدقائق)
+
+  EmergencyDepartment:
+    id: int
+    hospital_id: int  # Reference to Hospital
+    location: string
+    capacity: int  # Maximum patients handled at a time
+    ambulance_availability: boolean
+
+  Reception:
+    id: int  # Unique identifier for the reception
+    hospital_id: int  # Foreign key referencing the Hospital table
+    location: string  # Location of the reception within the hospital (e.g., "Ground Floor, Main Building")
+    working_hours: string  # Working hours for the reception (e.g., "8 AM - 5 PM")
+    contact_email: string  # Email for appointment or general inquiries (e.g., "reception@hospital.com")
+    created_at: date  # Date when the reception area was added to the system
+    updated_at: date  # Date when the reception area was last updated
+
+  # identity system
+
+  LabManager:
+    id: int  # معرف المدير
+    name: string  # اسم المدير
+    role: string  # دور المدير (مثل: "مدير مركز التحاليل")
+    contact_number: string  # رقم هاتف المدير
+    email: string  # البريد الإلكتروني للمدير
+    hire_date: date  # تاريخ تعيين المدير
+    experience_years: int  # عدد سنوات الخبرة
+    certifications: string  # الشهادات المعتمدة
+    lab_center_id: int  # معرف مركز التحاليل (مرجع إلى جدول LabCenter)
+
+  RadiologyManager:
+    id: int  # معرف المدير
+    name: string  # اسم المدير
+    role: string  # دور المدير (مثل: "مدير مركز الأشعة")
+    contact_number: string  # رقم هاتف المدير
+    email: string  # البريد الإلكتروني للمدير
+    hire_date: date  # تاريخ تعيين المدير
+    experience_years: int  # عدد سنوات الخبرة
+    certification: string  # الشهادات المعتمدة
+    radiology_center_id: int  # معرف مركز الأشعة (مرجع إلى جدول RadiologyCenter)
+
+  ClinicManager:
+    id: int  # معرف المدير
+    name: string  # اسم المدير
+    role: string  # دور المدير (مثل: "مدير عيادة")
+    contact_number: string  # رقم هاتف المدير
+    email: string  # البريد الإلكتروني للمدير
+    hire_date: date  # تاريخ تعيين المدير
+    experience_years: int  # عدد سنوات الخبرة
+    specialization: string  # التخصص الطبي (مثل: "القلب" أو "العظام")
+    clinic_id: int  # معرف العيادة (مرجع إلى جدول Clinic)
+
+  Patient:
+    id: int  # Unique identifier for the patient
+    first_name: string  # First name of the patient
+    last_name: string  # Last name of the patient
+    date_of_birth: date  # Date of birth of the patient
+    sex: int  # Gender (0: Female, 1: Male)
+    age_category: int  # Age category (1 to 14 range)
+    education_level: int  # Education level (1 to 6 range)
+    income_category: int  # Income category (1 to 8 range)
+    diabetes_binary: int  # 0: No, 1: Yes
+    high_bp: int  # 0: No, 1: Yes
+    high_chol: int  # 0: No, 1: Yes
+    chol_check: int  # 0: No, 1: Yes
+    bmi: float  # Body Mass Index
+    smoker: int  # 0: No, 1: Yes
+    stroke: int  # 0: No, 1: Yes
+    heart_disease_or_attack: int  # 0: No, 1: Yes
+    phys_activity: int  # 0: No, 1: Yes
+    fruits: int  # 0: No, 1: Yes
+    veggies: int  # 0: No, 1: Yes
+    hvy_alcohol_consump: int  # 0: No, 1: Yes
+    any_healthcare: int  # 0: No, 1: Yes
+    no_docbc_cost: int  # 0: No, 1: Yes
+    gen_hlth: int  # General health rating (1 to 5 range)
+    ment_hlth: int  # Number of days mental health was not good in the past 30 days
+    phys_hlth: int  # Number of days physical health was not good in the past 30 days
+    diff_walk: int  # 0: No, 1: Yes
+    last_visit_date: date  # The date of the patient's last visit to the doctor
+    contact_number: string  # Contact number of the patient
+    email: string  # Email address of the patient
+    address: string  # Address of the patient
+
+  Receptionist:
+    id: int  # Unique identifier for the receptionist
+    reception_id: int  # Foreign key referencing the Reception table
+    user_id: int  # Foreign key referencing the User table (this user is the receptionist)
+    full_name: string  # Full name of the receptionist
+    contact_number: string  # Receptionist's contact number
+    email: string  # Receptionist's email address
+    shift: string  # Shift the receptionist works (e.g., "Morning", "Afternoon", "Night")
+    role: string  # Role of the receptionist (e.g., "Senior Receptionist", "Junior Receptionist")
+    created_at: date  # Date the receptionist was assigned to the reception
+    updated_at: date  # Date the receptionist's details were last updated
+
+  Hospital_Admin:
+    id: int  # Unique identifier for the hospital admin (manager)
+    hospital_id: int  # Foreign key referencing the Hospital table
+    user_id: int  # Foreign key referencing the User table (this user is the hospital manager)
+    full_name: string  # Full name of the hospital manager
+    contact_number: string  # Manager's contact number
+    email: string  # Manager's email address
+    role: string  # Role of the manager (e.g., "Hospital Manager")
+    created_at: date  # Date the hospital manager was assigned
+    updated_at: date  # Date the hospital manager's details were last updated
+
+  Administration_Admin:
+    id: int  # Unique identifier for the admin
+    administration_id: int  # Foreign key referencing the Administration table
+    user_id: int  # Foreign key referencing the User table (this user is the admin)
+    full_name: string  # Full name of the admin
+    contact_number: string  # Admin's contact number
+    email: string  # Admin's email address
+    role: string  # Role of the admin (e.g., "Super Admin", "System Admin")
+    created_at: date  # Date the admin was added to the system
+    updated_at: date  # Date the admin's details were last updated
+
+
+  # Global System
+
+  MedicalHistory:
+    id: int  # Unique identifier for the medical history record
+    patient_id: int  # Foreign key referencing the patient
+    diagnosis: string  # A brief description of the diagnosis or condition
+    diagnosis_date: date  # The date when the diagnosis was made
+    treatment: string  # Treatment(s) provided (e.g., medication, therapy)
+    treatment_start_date: date  # Start date of the treatment
+    treatment_end_date: date  # End date of the treatment (if applicable)
+    prescribed_medicines: string  # List of prescribed medicines (can be a comma-separated list)
+    surgery: string  # If the patient has undergone surgery, describe it
+    surgery_date: date  # Date of surgery (if applicable)
+    follow_up_needed: boolean  # Whether follow-up care is needed (true/false)
+    created_at: date  # Date when this record was created
+    updated_at: date  # Date when this record was last updated
+    notes: text  # Additional notes related to the medical history entry
+ 
+  ClinicAppointment:
+    id: int  # Unique identifier for the clinic appointment
+    patient_id: int  # Foreign key referencing the Patient table
+    clinic_id: int  # Foreign key referencing the Clinic table
+    hospital_id: int # Foreign key referencing the hospital table
+    appointment_date: date  # The date of the clinic appointment
+    doctor_id: int  # Foreign key referencing the Doctor (clinic manager or specialist)
+    duration: int  # Duration of the appointment in minutes
+    reason_for_visit: string  # Reason for the clinic visit (e.g., consultation, check-up)
+    notes: text  # Additional notes about the appointment
+    follow_up_needed: boolean  # Indicates whether a follow-up appointment is needed
+    clinic_appointment_id_related_to: int #forgien key related to previos clinic appoinment
+    lab_appoinment_needed: boolean
+    lab_appoinments_number_done: int
+    radiology_appoinment_needed: boolean
+    radiology_appoinments_number_done: int
+    created_at: date  # Date when the appointment record was created
+    updated_at: date  # Date when the appointment record was last updated
+    is_end: boolean 
+
+  Lab_Appointment:
+    id: int  # Unique identifier for the lab appointment link
+    clinic_appointment_id: int  # Foreign key referencing the ClinicAppointment table
+    lab_center_id: int  # Foreign key referencing the LabCenter table
+    hospital_id: int # Foreign key referencing the hospital table
+    test_type: string  # Type of test required (e.g., blood test, urine test)
+    test_date: date  # Date of the test appointment
+    test_notes: text  # Additional details or instructions for the test
+    lab_tester_id: int # forgien key
+    test_result: text
+
+  Radiology_Appointment:
+    id: int  # Unique identifier for the radiology appointment link
+    clinic_appointment_id: int  # Foreign key referencing the ClinicAppointment table
+    radiology_center_id: int  # Foreign key referencing the RadiologyCenter table
+    hospital_id: int # Foreign key referencing the hospital table
+    test_type: string  # Type of radiology test (e.g., MRI, CT scan, X-ray)
+    test_date: date  # Date of the radiology test
+    radiology_tester_id: int # forgien key
+    test_notes: text  # Additional details or instructions for the radiology test
+    test_result: text
+
+  role:
+    id: int
+    name: string
+
+  user_log:
+    id: int
+    user_id: int
+    is_login: boolean
+    login_time: date
+    logout_time: date
+    notes: text
+
+
+many_to_many_tables:
+  Medicine_SideEffect:
+    medicine_id: int  # معرف الدواء (مرتبط بجدول الأدوية)
+    side_effect_id: int  # معرف العرض الجانبي (مرتبط بجدول الأعراض الجانبية)
+    likelihood: float  # احتمال الحدوث (مثال: 0.25 تعني 25%)
+    onset_time: string  # وقت ظهور العرض (مثل: "1-3 ساعات بعد تناول الدواء")
+    severity_in_specific_case: enum  # شدة العرض في هذه الحالة (إذا كان يختلف عن المعتاد)
+    clinical_notes: text  # ملاحظات سريرية
+    mitigation_steps: text  # خطوات للتخفيف من العرض الجانبي (مثل: "شرب الماء")
+
+  Medicine_EffectiveSubstance:
+    medicine_id: int  # معرف الدواء (مرتبط بجدول الأدوية)
+    effective_substance_id: int  # معرف المادة الفعالة (مرتبط بجدول المواد الفعالة)
+    concentration: string  # تركيز المادة الفعالة (مثل: "10 مجم/مل")
+    purpose: string  # الغرض من المادة الفعالة في هذا الدواء (مثل: "مسكن للألم")
+    interaction_notes: text  # ملاحظات حول تفاعلات المادة مع مكونات أخرى
+    formulation: string  # شكل التركيبة (مثل: محلول، أقراص)
+
+  EffectiveSubstance_Disease:
+    effective_substance_id: int  # معرف المادة الفعالة (مرتبط بجدول المواد الفعالة)
+    disease_id: int  # معرف المرض (مرتبط بجدول الأمراض)
+    effectiveness_percentage: float  # نسبة الفعالية (مثل: 85.5 تعني 85.5%)
+    dosage_guideline: string  # دليل الجرعات (مثل: "تناول مرتين يوميًا")
+    clinical_study_reference: string  # مرجع دراسة سريرية تدعم الفعالية
+    duration_of_effect: string  # مدة التأثير (مثل: "6-8 ساعات")
+    contraindications: text  # موانع الاستخدام (مثل: "غير مناسب للحامل")
+
+  Disease_Symptom:
+    disease_id: int  # معرف المرض (مرتبط بجدول الأمراض)
+    symptom_id: int  # معرف العرض (مرتبط بجدول الأعراض)
+    symptom_severity: enum  # شدة العرض بالنسبة للمرض (مثل: خفيف، متوسط، شديد)
+    frequency: string  # مدى شيوع العرض لهذا المرض (مثل: "شائع جدًا")
+    occurrence_percentage: float  # احتمال ظهور العرض بالنسبة للمرض (مثل: 75.5% تعني 75.5%)
+    typical_duration: string  # مدة استمرار العرض (مثل: "3-5 أيام")
+    first_occurrence_time: string  # الوقت المتوقع لظهور العرض الأول (مثل: "خلال أول 48 ساعة")
+    requires_diagnosis: boolean  # هل يتطلب تشخيصًا طبيًا لتأكيد العرض
+    impact_on_quality_of_life: enum  # تأثير العرض على جودة الحياة (مثل: منخفض، متوسط، مرتفع)
+
+  MedicinePharmacy:
+    id: int  # معرف العلاقة (رقم فريد لهذه العلاقة بين الدواء والصيدلية)
+    pharmacy_id: int  # معرف الصيدلية (مرجع إلى جدول الصيدليات)
+    medicine_id: int  # معرف الدواء (مرجع إلى جدول الأدوية)
+    production_date: date  # تاريخ إنتاج الدواء
+    expiration_date: date  # تاريخ انتهاء صلاحية الدواء
+    quantity: int  # كمية الدواء المتوفرة في الصيدلية
+    price: float  # سعر الدواء في الصيدلية
+    storage_conditions: string  # شروط تخزين الدواء (مثل: "يخزن في مكان بارد وجاف")
+    is_prescription_required: boolean  # هل يحتاج الدواء إلى وصفة طبية
+    availability_status: enum  # حالة توافر الدواء (مثل: "متوفر"، "نفد من المخزون")
+
+  user_roles:
+    user_id: int
+    role_id: int
+    

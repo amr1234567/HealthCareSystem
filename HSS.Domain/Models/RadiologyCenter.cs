@@ -1,0 +1,12 @@
+﻿namespace HSS.Domain.Models
+{
+    public class RadiologyCenter
+    {
+        public int id { get; set; }
+        public int hospital_id { get; set; }
+        public string location { get; set; }
+        public string equipment_list { get; set; }
+        public string operational_hours { get; set; }
+        public int appointment_duration { get; set; }
+    }
+}

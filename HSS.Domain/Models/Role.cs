@@ -1,8 +1,8 @@
 ﻿namespace HSS.Domain.Models
 {
-    public class Role
+    public class Role : BaseClass<int>
     {
-        public int id { get; set; }
-        public string name { get; set; }
+        [Required]
+        public ApplicationRole RoleName { get; set; }
     }
 }

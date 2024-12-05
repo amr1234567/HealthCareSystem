@@ -7,12 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Exceptions\" />
-    <Folder Include="IdentityModels\" />
-    <Folder Include="Helpers\" />
     <Folder Include="Abstractions\" />
-    <Folder Include="Models\ManyToManyRelationEntitys\" />
-    <Folder Include="ObjectValues\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
 
 </Project>

@@ -157,7 +157,7 @@ entities:
     created_at: date  # Date when the reception area was added to the system
     updated_at: date  # Date when the reception area was last updated
 
-  # identity system
+  # global system
 
   LabManager:
     id: int  # معرف المدير
@@ -257,7 +257,6 @@ entities:
     role: string  # Role of the admin (e.g., "Super Admin", "System Admin")
     created_at: date  # Date the admin was added to the system
     updated_at: date  # Date the admin's details were last updated
-
 
   # Global System
 

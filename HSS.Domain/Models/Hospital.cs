@@ -1,32 +1,87 @@
-﻿namespace HSS.Domain.Models
+﻿
+using HSS.Domain.IdentityModels;
+using HSS.Domain.Models.ManyToManyRelationEntitys;
+
+namespace HSS.Domain.Models
 {
-    public class Hospital
+    public class Hospital : BaseClass<int>
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public string location { get; set; }
-        public int capacity { get; set; }
-        public string contact_number { get; set; }
-        public string email { get; set; }
-        public DateTime established_date { get; set; }
-        public int admin_id { get; set; }
-        public string facilities { get; set; }
-        public string specialties { get; set; }
-        public string working_hours { get; set; }
-        public bool emergency_services { get; set; }
-        public int bed_availability { get; set; }
-        public int number_of_doctors { get; set; }
-        public int number_of_nurses { get; set; }
-        public int departments_count { get; set; }
-        public float latitude { get; set; }
-        public float longitude { get; set; }
-        public string website_url { get; set; }
-        public string license_number { get; set; }
-        public string tax_identification_number { get; set; }
-        public float rating { get; set; }
-        public int review_count { get; set; }
-        public string feedback_url { get; set; }
-        public bool is_automated { get; set; }
-        public bool has_online_consultation { get; set; }
+        [Required]
+        [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
+        public string Name { get; set; }
+
+        [Required]
+        [StringLength(300, ErrorMessage = "Location cannot exceed 300 characters.")]
+        public string Location { get; set; }
+
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Capacity must be at least 1.")]
+        public int Capacity { get; set; }
+
+        [Required]
+        [Phone(ErrorMessage = "Invalid contact number.")]
+        public string ContactNumber { get; set; }
+
+        [Required]
+        [EmailAddress(ErrorMessage = "Invalid email address.")]
+        public string Email { get; set; }
+
+        [Required]
+        public DateTime EstablishedDate { get; set; }
+
+        [Required]
+        public int AdminId { get; set; }
+        public HospitalAdmin HospitalAdmin { get; set; }
+
+        [Required]
+        public TimeSpan StartAt { get; set; }
+
+        [Required]
+        public TimeSpan EndAt { get; set; }
+
+        [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "Bed availability must be non-negative.")]
+        public int BedAvailability { get; set; }
+
+        [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "Number of doctors must be non-negative.")]
+        public int NumberOfDoctors { get; set; }
+
+        [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "Number of nurses must be non-negative.")]
+        public int NumberOfNurses { get; set; }
+
+        [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "Departments count must be non-negative.")]
+        public int DepartmentsCount { get; set; }
+
+        [Required]
+        [Range(-90, 90, ErrorMessage = "Latitude must be between -90 and 90.")]
+        public float Latitude { get; set; }
+
+        [Required]
+        [Range(-180, 180, ErrorMessage = "Longitude must be between -180 and 180.")]
+        public float Longitude { get; set; }
+
+        [AllowNull]
+        [Url(ErrorMessage = "Invalid URL.")]
+        public string WebsiteUrl { get; set; }
+
+        [Required]
+        [StringLength(50, ErrorMessage = "License number cannot exceed 50 characters.")]
+        public string LicenseNumber { get; set; }
+
+        [AllowNull]
+        [StringLength(50, ErrorMessage = "Tax identification number cannot exceed 50 characters.")]
+        public string TaxIdentificationNumber { get; set; }
+
+        [Required]
+        [Range(0, 5, ErrorMessage = "Rating must be between 0 and 5.")]
+        public float Rating { get; set; } = 0;
+
+        public List<ClinicSpecializationHospital> ClinicSpecializations { get; set; }
     }
+
 }
+
+

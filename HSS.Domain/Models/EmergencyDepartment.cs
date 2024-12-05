@@ -1,11 +1,17 @@
 ﻿namespace HSS.Domain.Models
 {
-    public class EmergencyDepartment
+    public class EmergencyDepartment : BaseClass<int>
     {
-        public int id { get; set; }
-        public int hospital_id { get; set; }
-        public string location { get; set; }
-        public int capacity { get; set; }
-        public bool ambulance_availability { get; set; }
+        [Required]
+        public int HospitalId { get; set; }
+        public Hospital Hospital { get; set; }
+
+        [Required, MaxLength(500)]
+        public string Location { get; set; }
+
+        [Required, Range(0, int.MaxValue)]
+        public int Capacity { get; set; }
+
+        public bool AmbulanceAvailability { get; set; }
     }
 }

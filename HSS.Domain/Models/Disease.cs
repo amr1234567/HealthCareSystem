@@ -1,28 +1,65 @@
-﻿namespace HSS.Domain.Models
+﻿using HSS.Domain.Models.ManyToManyRelationEntitys;
+
+namespace HSS.Domain.Models
 {
-    public class Disease
+    public class Disease : BaseClass<int>
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public string severity { get; set; }
-        public bool contagious { get; set; }
-        public DateTime discovery_date { get; set; }
-        public int affected_population { get; set; }
-        public string disease_code { get; set; }
-        public float cure_rate { get; set; }
-        public float fatality_rate { get; set; }
-        public string treatment_duration { get; set; }
-        public bool is_chronic { get; set; }
-        public bool has_vaccine { get; set; }
-        public string common_age_group { get; set; }
-        public string common_gender { get; set; }
-        public string risk_factors { get; set; }
-        public string geographic_spread { get; set; }
-        public DateTime last_outbreak_date { get; set; }
-        public string research_status { get; set; }
-        public string prevention_measures { get; set; }
-        public string related_diseases { get; set; }
-        public string notes { get; set; }
+        [Required, MaxLength(100)]
+        public string Name { get; set; }
+
+        [Required, MaxLength(200)]
+        public string Description { get; set; }
+
+        [Required]
+        public Severity Severity { get; set; }
+        [Required]
+        public bool Contagious { get; set; }
+
+        [Required]
+        public DateTime Discovery_date { get; set; }
+        [Required]
+        public int AffectedPopulation { get; set; }
+        [Required]
+        public string DiseaseCode { get; set; }
+
+        [Required, Range(0, 100)]
+        public float CureRate { get; set; }
+
+        [Required, Range(0, 100)]
+        public float FatalityRate { get; set; }
+
+        [Required, Range(0, int.MaxValue)]
+        public string TreatmentDurationInDays { get; set; }
+
+        [Required]
+        public bool IsChronic { get; set; }
+
+        [Required]
+        public bool HasVaccine { get; set; }
+
+        [Required]
+        public AgeGroup CommonAgeGroup { get; set; }
+
+        [Required]
+        public Gender CommonGender { get; set; }
+
+        [Required, MaxLength(300)]
+        public string RiskFactors { get; set; }    // هل نعملها تيبل ونخزن فيها كل اشكال عرضة المرض ؟
+        
+        [AllowNull, MaxLength(200)]
+        public string? GeographicSpread { get; set; }
+        
+        public DateTime? LastOutbreakDate { get; set; }
+        
+        [Required]
+        public ResearchStatus ResearchStatus { get; set; }
+        
+        [Required, MaxLength(300)]
+        public string PreventionMeasures { get; set; }
+        
+        [AllowNull, MaxLength(300)]
+        public string? Notes { get; set; }
+
+        public List<SymptomDisease> Symptoms { get; set; }
     }
 }

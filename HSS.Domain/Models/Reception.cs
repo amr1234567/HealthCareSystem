@@ -1,13 +1,22 @@
-﻿namespace HSS.Domain.Models
+﻿using HSS.Domain.IdentityModels;
+
+namespace HSS.Domain.Models
 {
-    public class Reception
+    public class Reception : BaseClass<int>
     {
-        public int id { get; set; }
-        public int hospital_id { get; set; }
-        public string location { get; set; }
-        public string working_hours { get; set; }
-        public string contact_email { get; set; }
-        public DateTime created_at { get; set; }
-        public DateTime updated_at { get; set; }
+        [Required]  // Ensures this field is mandatory
+        public int HospitalId { get; set; }
+        public Hospital Hospital { get; set; }
+
+        [Required]  // Ensures this field cannot be null
+        [StringLength(100, ErrorMessage = "Location cannot be longer than 100 characters.")]
+        public string Location { get; set; }
+
+        [Required]
+        public TimeSpan StartAt { get; set; }
+
+        [Required]
+        public TimeSpan EndAt { get; set; }
+
     }
 }

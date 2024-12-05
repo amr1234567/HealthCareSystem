@@ -1,16 +1,32 @@
 ﻿namespace HSS.Domain.Models
 {
-    public class SideEffect
+    public class SideEffect : BaseClass<int>
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public string age_range { get; set; }
-        public string severity { get; set; }
-        public string commonality { get; set; }
-        public string duration { get; set; }
-        public bool reversibility { get; set; }
-        public string affected_system { get; set; }
-        public string notes { get; set; }
+        [Required]  // Ensures this field cannot be null
+        [StringLength(100, ErrorMessage = "Name cannot be longer than 100 characters.")]
+        public string Name { get; set; }
+
+        [Required]  // Ensures this field cannot be null
+        [StringLength(1000, ErrorMessage = "Description cannot be longer than 1000 characters.")]
+        public string Description { get; set; }
+
+        [Required]
+        public AgeGroup AgeRange { get; set; }
+
+        [Required]  // Ensures this field is mandatory
+        public Severity Severity { get; set; }
+
+        [Required]  // Ensures this field is mandatory
+        public SideEffectCommonality Commonality { get; set; }
+
+        [Required]
+        public TimeSpan Duration { get; set; }
+
+        [Required]  // Ensures this field is mandatory
+        public bool Reversibility { get; set; }
+
+        [AllowNull]
+        [StringLength(500, ErrorMessage = "Notes cannot be longer than 500 characters.")]
+        public string Notes { get; set; }
     }
 }

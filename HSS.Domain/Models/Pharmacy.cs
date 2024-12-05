@@ -1,15 +1,36 @@
 ﻿namespace HSS.Domain.Models
 {
-    public class Pharmacy
+    using HSS.Domain.IdentityModels;
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
+    public class Pharmacy : BaseClass<int>
     {
-        public int id { get; set; }
-        public int hospital_id { get; set; }
-        public string location { get; set; }
-        public string working_hours { get; set; }
-        public bool emergency_availability { get; set; }
-        public string contact_number { get; set; }
-        public string services_provided { get; set; }
-        public string pharmacist_in_charge { get; set; }
-        public bool availability_of_specialized_medicines { get; set; }
+        [Required]
+        public int HospitalId { get; set; }
+        public Hospital Hospital { get; set; }
+
+        [Required]
+        [StringLength(400)]
+        public string Location { get; set; }
+
+        [Required]
+        public TimeSpan StartAt { get; set; }
+
+        [Required]
+        public TimeSpan EndAt { get; set; }
+
+        [Required]
+        [Phone]
+        public string ContactNumber { get; set; }
+
+        //[StringLength(500)]
+        //public string ServicesProvided { get; set; }
+
+        [StringLength(200)]
+        public int PharmacistId { get; set; }
+        public Pharmacist Pharmacist { get; set; }
+
     }
+
 }

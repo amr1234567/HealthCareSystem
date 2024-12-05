@@ -1,17 +1,31 @@
 ﻿namespace HSS.Domain.Models
 {
-    public class Symptom
+    public class Symptom : BaseClass<int>
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public string age { get; set; }
-        public string description { get; set; }
-        public string severity { get; set; }
-        public string duration { get; set; }
-        public string type { get; set; }
-        public string associated_conditions { get; set; }
-        public string onset_pattern { get; set; }
-        public bool is_chronic { get; set; }
-        public bool treatment_required { get; set; }
+        [Required]  // Ensures this field cannot be null
+        [StringLength(100, ErrorMessage = "Name cannot be longer than 100 characters.")]
+        public string Name { get; set; }
+
+        [Required]
+        public AgeGroup Age { get; set; }
+
+        [Required]  // Ensures this field is mandatory
+        [StringLength(1000, ErrorMessage = "Description cannot be longer than 1000 characters.")]
+        public string Description { get; set; }
+
+        [Required]  // Ensures this field is mandatory
+        public Severity Severity { get; set; }
+
+        [Required]
+        public TimeSpan Duration { get; set; }
+
+        [Required]
+        public SymptomOnsetPattern OnsetPattern { get; set; }
+
+        [Required]  // Ensures this field cannot be null
+        public bool IsChronic { get; set; }
+
+        [Required]  // Ensures this field cannot be null
+        public bool TreatmentRequired { get; set; }
     }
 }

@@ -13,7 +13,8 @@ namespace HSS.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<IdentityUser<int>> builder)
         {
-            throw new NotImplementedException();
+            builder.Property(b => b.Id).IsRequired();
+            builder.HasKey(b => b.Id);
         }
     }
 }

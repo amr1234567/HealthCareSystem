@@ -1,12 +1,28 @@
-﻿namespace HSS.Domain.Models
+﻿
+namespace HSS.Domain.Models
 {
-    public class Clinic
+    public class Clinic : BaseClass<int>
     {
-        public int id { get; set; }
-        public int hospital_id { get; set; }
-        public string specialization { get; set; }
-        public string location { get; set; }
-        public string operational_hours { get; set; }
-        public int appointment_duration { get; set; }
+        [Required]
+        public int HospitalId { get; set; }
+        public Hospital Hospital { get; set; }
+
+        public ClinicSpecialization Specialization { get; set; }
+        [Required]
+        public string SpecializationName { get; set; }
+        [Required]
+        public int SpecializationId { get; set; }
+
+        [AllowNull, MaxLength(200)]
+        public string Location { get; set; } // وصف للمكان بالمستشفي
+        
+        [Required]
+        public TimeSpan StartAt { get; set; }
+        
+        [Required]
+        public TimeSpan FinishAt { get; set; }
+
+        [Required, Range(5, 90)]
+        public int AppointmentDurationInMinutes { get; set; }
     }
 }

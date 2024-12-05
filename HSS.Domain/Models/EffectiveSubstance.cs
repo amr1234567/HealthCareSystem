@@ -1,16 +1,34 @@
-﻿namespace HSS.Domain.Models
+﻿
+using HSS.Domain.Models.ManyToManyRelationEntitys;
+
+namespace HSS.Domain.Models
 {
-    public class EffectiveSubstance
+    public class EffectiveSubstance : BaseClass<int>
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public string chemical_formula { get; set; }
-        public string description { get; set; }
-        public DateTime discovery_date { get; set; }
-        public string approved_by { get; set; }
-        public string stability_conditions { get; set; }
-        public string side_effects { get; set; }
-        public string primary_usage { get; set; }
-        public string alternative_names { get; set; }
+        [Required, MaxLength(100)]
+        public string Name { get; set; }
+
+        [AllowNull, MaxLength(500)]
+        public string ChemicalFormula { get; set; }
+
+        [AllowNull, MaxLength(500)]
+        public string Description { get; set; }
+
+        [AllowNull]
+        public DateTime DiscoveryDate { get; set; }
+
+        [Required]
+        public string ApprovedBy { get; set; }
+
+        [Required, MaxLength(500)]
+        public string StabilityConditions { get; set; }
+
+        public List<SideEffectEffectiveSubstance> SideEffects { get; set; }
+
+        [Required, MaxLength(300)]
+        public string PrimaryUsage { get; set; }
+        
+        [AllowNull, MaxLength(500)]
+        public string AlternativeNames { get; set; }
     }
 }

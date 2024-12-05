@@ -1,19 +1,43 @@
-﻿namespace HSS.Domain.Models
+﻿using HSS.Domain.Models.ManyToManyRelationEntitys;
+
+namespace HSS.Domain.Models
 {
-    public class Medicine
+    public class Medicine : BaseClass<int>
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public string type { get; set; }
-        public string manufacturer { get; set; }
-        public string active_ingredient { get; set; }
-        public string dosage { get; set; }
-        public DateTime expiration_date { get; set; }
-        public DateTime approval_date { get; set; }
-        public string storage_conditions { get; set; }
-        public bool prescription_required { get; set; }
-        public float cost { get; set; }
-        public string usage_instructions { get; set; }
+        [Required]
+        [StringLength(200)]
+        public string Name { get; set; }
+
+        [StringLength(500)]
+        public string Description { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public MedicineType Type { get; set; }
+
+        [Required]
+        [StringLength(200)]
+        public string Manufacturer { get; set; }
+
+        public EffectiveSubstance EffectiveSubstance { get; set; }
+        [Required]
+        public int EffectiveSubstanceId { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        public DateTime ApprovalDate { get; set; }
+
+        [AllowNull]
+        [StringLength(300)]
+        public string StorageConditions { get; set; }
+
+        [Required]
+        public bool PrescriptionRequired { get; set; }
+
+        [Required]
+        [Range(0, double.MaxValue)]
+        public float Cost { get; set; }
+
+        public List<SideEffectMedicine> SideEffects { get; set; }
     }
 }

@@ -1,12 +1,28 @@
-﻿namespace HSS.Domain.Models
+﻿using HSS.Domain.IdentityModels;
+using HSS.Domain.Models.ManyToManyRelationEntitys;
+
+namespace HSS.Domain.Models
 {
-    public class LabCenter
+    public class LabCenter : BaseClass<int>
     {
-        public int id { get; set; }
-        public int hospital_id { get; set; }
-        public string location { get; set; }
-        public string tests_available { get; set; }
-        public string operational_hours { get; set; }
-        public int appointment_duration { get; set; }
+        [Required]
+        public int HospitalId { get; set; }
+        public Hospital Hospital { get; set; }
+
+        [Required, MaxLength(500)]
+        public string Location { get; set; }
+
+        public List<LabCenterLabTest> TestsAvailable { get; set; }
+
+        [Required]
+        public TimeSpan StartAt { get; set; }
+
+        [Required]
+        public TimeSpan EndAt { get; set; }
+
+        [Required, Range(5, 90)]
+        public int AppointmentDuration { get; set; }
+
+        public List<LabManager> labManagers { get; set; }
     }
 }

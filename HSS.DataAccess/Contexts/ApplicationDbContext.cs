@@ -5,11 +5,6 @@ using HSS.Domain.Models;
 using HSS.Domain.Models.Aggregates;
 using HSS.Domain.Models.ManyToManyRelationEntitys;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HSS.DataAccess.Contexts
 {
@@ -60,7 +55,24 @@ namespace HSS.DataAccess.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(IdentityUserConfigurations).Assembly);
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                if (typeof(BaseClass<>).IsAssignableFrom(entityType.ClrType.BaseType))
+                {
+                    var method = typeof(ApplicationDbContext).GetMethod(nameof(ApplySoftDeleteFilter),
+                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
+                        ?.MakeGenericMethod(entityType.ClrType);
+
+                    method?.Invoke(null, new object[] { modelBuilder });
+                }
+            }
             base.OnModelCreating(modelBuilder);
         }
+
+        private static void ApplySoftDeleteFilter<TEntity>(ModelBuilder modelBuilder) where TEntity : BaseClass<int> 
+        {
+            modelBuilder.Entity<TEntity>().HasQueryFilter(e => !e.IsDeleted);
+        }
+
     }
 }

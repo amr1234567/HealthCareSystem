@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using HSS.DataAccess.Contexts;
+using HSS.DataAccess.Interceptors;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -12,6 +15,12 @@ namespace HSS.DataAccess
     {
         public static IServiceCollection AddDataAccessServices(this IServiceCollection services, IConfiguration configuration)
         {
+            var connectionString = configuration.GetConnectionString("default");
+            services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
+            {
+                var softDeleteInterceptor = serviceProvider.GetRequiredService<SoftDeleteInterceptor>();
+                options.UseSqlServer(connectionString).AddInterceptors(softDeleteInterceptor);
+            });
             return services;
         }
     }

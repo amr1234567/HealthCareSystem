@@ -16,6 +16,7 @@ namespace HSS.Domain.Models
         public bool Contagious { get; set; }
 
         [Required]
+        [DataType(DataType.DateTime)]
         public DateTime Discovery_date { get; set; }
         [Required]
         public int AffectedPopulation { get; set; }

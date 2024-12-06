@@ -27,16 +27,19 @@ namespace HSS.Domain.Models
         public string Email { get; set; }
 
         [Required]
+        [DataType(DataType.DateTime)]
         public DateTime EstablishedDate { get; set; }
 
         [Required]
-        public int AdminId { get; set; }
+        public int HospitalAdminId { get; set; }
         public HospitalAdmin HospitalAdmin { get; set; }
 
         [Required]
+        [DataType(DataType.Time)]
         public TimeSpan StartAt { get; set; }
 
         [Required]
+        [DataType(DataType.Time)]
         public TimeSpan EndAt { get; set; }
 
         [Required]

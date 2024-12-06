@@ -18,14 +18,18 @@ namespace HSS.Domain.Models
         //public List<string> EquipmentList { get; set; } = new List<string>();
 
         [Required]
+        [DataType(DataType.Time)]
         public TimeSpan StartAt { get; set; }
 
         [Required]
+        [DataType(DataType.Time)]
         public TimeSpan EndAt { get; set; }
 
         [Required]  // Ensures this field is mandatory
         [Range(typeof(TimeSpan), "00:05:00", "02:00:00", ErrorMessage = "Appointment duration must be between 5 minutes and 2 hours.")]
         public TimeSpan AppointmentDuration { get; set; }
+
+        public List<RadiologyManager> RadiologyManagers { get; set; }
     }
 
 }

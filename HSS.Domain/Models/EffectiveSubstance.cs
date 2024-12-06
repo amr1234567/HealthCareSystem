@@ -15,6 +15,7 @@ namespace HSS.Domain.Models
         public string Description { get; set; }
 
         [AllowNull]
+        [DataType(DataType.Time)]
         public DateTime DiscoveryDate { get; set; }
 
         [Required]

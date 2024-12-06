@@ -20,6 +20,7 @@
         public SideEffectCommonality Commonality { get; set; }
 
         [Required]
+        [DataType(DataType.Time)]
         public TimeSpan Duration { get; set; }
 
         [Required]  // Ensures this field is mandatory

@@ -14,6 +14,7 @@ namespace HSS.Domain.Models.Aggregates
         public LabCenterTest TestType { get; set; }
 
         [AllowNull]
+        [DataType(DataType.DateTime)]
         public DateTime? ResultDate { get; set; }
 
         [Required]  // Ensures this field cannot be null

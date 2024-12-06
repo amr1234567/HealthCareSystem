@@ -15,23 +15,28 @@
         public string Diagnosis { get; set; }
 
         [Required]
+        [DataType(DataType.DateTime)]
         public DateTime DiagnosisDate { get; set; }
 
         [StringLength(1000, ErrorMessage = "Treatment details cannot exceed 1000 characters.")]
         public string Treatment { get; set; } //???
 
         [AllowNull]
+        [DataType(DataType.DateTime)]
         public DateTime? TreatmentStartDate { get; set; }
 
         [AllowNull]
+        [DataType(DataType.DateTime)]
         public DateTime? TreatmentEndDate { get; set; }
 
         public bool FollowUpNeeded { get; set; }
 
         [Required]
+        [DataType(DataType.DateTime)]
         public DateTime CreatedAt { get; set; }
 
         [Required]
+        [DataType(DataType.DateTime)]
         public DateTime UpdatedAt { get; set; }
 
         [AllowNull]

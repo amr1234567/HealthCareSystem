@@ -11,19 +11,24 @@ namespace HSS.Domain.Models.Aggregates
         [Required]
         public int HospitalId { get; set; }
         public Hospital Hospital { get; set; }
+
         [Required]
+        [DataType(DataType.Time)]
         public TimeSpan Duration { get; set; }
 
         [AllowNull, MaxLength(600)]
         public string Notes { get; set; }
 
         [Required]  // Ensures this field is mandatory
+        [DataType(DataType.DateTime)]
         public DateTime AppointmentDate { get; set; }
 
         [Required]  // Ensures this field is mandatory
+        [DataType(DataType.DateTime)]
         public DateTime CreatedAt { get; set; }
 
         [Required]  // Ensures this field is mandatory
+        [DataType(DataType.DateTime)]
         public DateTime UpdatedAt { get; set; }
 
         [AllowNull]

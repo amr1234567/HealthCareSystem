@@ -17,6 +17,7 @@
         public Severity Severity { get; set; }
 
         [Required]
+        [DataType(DataType.Time)]
         public TimeSpan Duration { get; set; }
 
         [Required]

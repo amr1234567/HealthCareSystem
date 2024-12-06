@@ -7,7 +7,8 @@ namespace HSS.Domain.IdentityModels
         [Required]  // Ensures this field cannot be null
         [DataType(DataType.Date)]  // Ensures the date is in proper date format
         public DateTime HireDate { get; set; }
-
+        
+        [DataType(DataType.Duration)] 
         public TimeSpan WorkingTime { get; set; }
 
         public Hospital Hospital { get; set; }
@@ -16,7 +17,7 @@ namespace HSS.Domain.IdentityModels
 
         [Required]  // Ensures this field cannot be null
         [Range(0, int.MaxValue, ErrorMessage = "Experience years must be a positive integer.")]
-        public int ExperienceYears { get; set; }
+        public int ExperienceYears { get; set; } // ??
 
         [Required]  // Ensures this field cannot be null
         [StringLength(100, ErrorMessage = "Specialization cannot exceed 100 characters.")]

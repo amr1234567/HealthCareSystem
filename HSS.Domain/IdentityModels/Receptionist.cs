@@ -4,6 +4,7 @@ namespace HSS.Domain.IdentityModels
 {
     public class Receptionist
     {
+        [DataType(DataType.Time)]
         public TimeSpan WorkingTime { get; set; }
 
         [Required]

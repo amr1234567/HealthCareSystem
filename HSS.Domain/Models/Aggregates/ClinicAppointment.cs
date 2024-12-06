@@ -7,6 +7,7 @@ namespace HSS.Domain.Models.Aggregates
         [Required]  // Ensures this field cannot be null
         [Range(1, int.MaxValue, ErrorMessage = "PatientId must be a positive integer.")]
         public int PatientId { get; set; }
+        public Patient Patient { get; set; }
 
         [Required]  // Ensures this field cannot be null
         [Range(1, int.MaxValue, ErrorMessage = "ClinicId must be a positive integer.")]

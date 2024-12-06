@@ -15,9 +15,11 @@
         public string Location { get; set; }
 
         [Required]
+        [DataType(DataType.Time)]
         public TimeSpan StartAt { get; set; }
 
         [Required]
+        [DataType(DataType.Time)]
         public TimeSpan EndAt { get; set; }
 
         [Required]
@@ -27,9 +29,7 @@
         //[StringLength(500)]
         //public string ServicesProvided { get; set; }
 
-        [StringLength(200)]
-        public int PharmacistId { get; set; }
-        public Pharmacist Pharmacist { get; set; }
+        public List<Pharmacist> Pharmacists { get; set; }
 
     }
 

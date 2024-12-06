@@ -1,4 +1,6 @@
-﻿namespace HSS.Domain.Models
+﻿using HSS.Domain.IdentityModels;
+
+namespace HSS.Domain.Models
 {
     public class PatientMediacalDetails : BaseClass<int>
     {
@@ -77,5 +79,9 @@
         [Required]
         [DataType(DataType.Date)]
         public DateTime LastVisitDate { get; set; }
+
+        [Required]
+        public int PatientId { get; set; }
+        public Patient Patient { get; set; }
     }
 }

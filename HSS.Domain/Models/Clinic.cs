@@ -9,6 +9,7 @@ namespace HSS.Domain.Models
 
         public ClinicSpecialization Specialization { get; set; }
         [Required]
+        [MaxLength(100)]
         public string SpecializationName { get; set; }
         [Required]
         public int SpecializationId { get; set; }
@@ -17,9 +18,11 @@ namespace HSS.Domain.Models
         public string Location { get; set; } // وصف للمكان بالمستشفي
         
         [Required]
+        [DataType(DataType.Time)]
         public TimeSpan StartAt { get; set; }
         
         [Required]
+        [DataType(DataType.Time)]
         public TimeSpan FinishAt { get; set; }
 
         [Required, Range(5, 90)]

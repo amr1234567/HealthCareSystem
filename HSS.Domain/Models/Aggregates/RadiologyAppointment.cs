@@ -9,9 +9,9 @@ namespace HSS.Domain.Models.Aggregates
         public int RadiologyCenterId { get; set; }
         public RadiologyCenter RadiologyCenter { get; set; }
 
-        [Required]  // Ensures this field cannot be null
-        [StringLength(100, ErrorMessage = "Test type cannot exceed 100 characters.")]
         public RadiologyTestType TestType { get; set; }
+        [Required]  // Ensures this field cannot be null
+        public int TestTypeId { get; set; }
 
         [Required]  // Ensures this field cannot be null
         [Range(1, int.MaxValue, ErrorMessage = "RadiologyTesterId must be a positive integer.")]

@@ -15,9 +15,11 @@ namespace HSS.Domain.Models
         public List<LabCenterLabTest> TestsAvailable { get; set; }
 
         [Required]
+        [DataType(DataType.Time)]
         public TimeSpan StartAt { get; set; }
 
         [Required]
+        [DataType(DataType.Time)]
         public TimeSpan EndAt { get; set; }
 
         [Required, Range(5, 90)]

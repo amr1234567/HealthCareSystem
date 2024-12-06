@@ -24,7 +24,7 @@ namespace HSS.Domain.Models
         public int EffectiveSubstanceId { get; set; }
 
         [Required]
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         public DateTime ApprovalDate { get; set; }
 
         [AllowNull]

@@ -13,10 +13,14 @@ namespace HSS.Domain.Models
         public string Location { get; set; }
 
         [Required]
+        [DataType(DataType.Time)]
         public TimeSpan StartAt { get; set; }
 
         [Required]
+        [DataType(DataType.Time)]
         public TimeSpan EndAt { get; set; }
+
+        public List<Receptionist> Receptionists { get; set; }
 
     }
 }

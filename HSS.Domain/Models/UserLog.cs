@@ -10,9 +10,11 @@
         public bool IsLogin { get; set; }
 
         [Required]  // Ensures this field is mandatory
+        [DataType(DataType.DateTime)]
         public DateTime LoginTime { get; set; }
 
         [Required]  // Ensures this field cannot be null
+        [DataType(DataType.DateTime)]
         public DateTime LogoutTime { get; set; }
 
         [StringLength(500, ErrorMessage = "Notes cannot be longer than 500 characters.")]

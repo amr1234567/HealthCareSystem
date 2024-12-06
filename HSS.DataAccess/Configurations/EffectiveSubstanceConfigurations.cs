@@ -13,9 +13,9 @@ namespace HSS.DataAccess.Configurations
                 .WithMany()
                 .UsingEntity<SideEffectEffectiveSubstance>(join =>
                 {
-                    join.HasOne(j => j.EffectiveSubstance)
+                    join.HasOne(j => j.SideEffect)
                         .WithMany()
-                        .HasForeignKey(join => join.EffectiveSubstanceId)
+                        .HasForeignKey(join => join.SideEffectId)
                         .IsRequired()
                         .OnDelete(DeleteBehavior.Restrict);
                     join.HasOne(j => j.EffectiveSubstance)

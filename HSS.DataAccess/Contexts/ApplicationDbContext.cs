@@ -10,6 +10,10 @@ namespace HSS.DataAccess.Contexts
 {
     public class ApplicationDbContext : DbContext
     {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+            
+        }
         public DbSet<IdentityUser<int>> IdentityUsers { get; set; }
         public DbSet<AdministrationAdmin> AdministrationAdmins { get; set; }
         public DbSet<Doctor> Doctors { get; set; }

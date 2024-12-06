@@ -12,7 +12,6 @@ namespace HSS.DataAccess.Configurations
             builder.HasOne(b => b.Hospital)
                 .WithOne()
                 .HasForeignKey<HospitalAdmin>(a => a.HospitalId)
-                .HasForeignKey<Hospital>(a => a.HospitalAdminId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
         }

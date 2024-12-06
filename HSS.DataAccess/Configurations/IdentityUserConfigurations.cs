@@ -36,7 +36,6 @@ namespace HSS.DataAccess.Configurations
                 .HasForeignKey(u => u.UserId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired();
-                
         }
     }
 }

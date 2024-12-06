@@ -16,6 +16,7 @@ namespace HSS.DataAccess
         public static IServiceCollection AddDataAccessServices(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("default");
+            services.AddScoped<SoftDeleteInterceptor>();
             services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
             {
                 var softDeleteInterceptor = serviceProvider.GetRequiredService<SoftDeleteInterceptor>();

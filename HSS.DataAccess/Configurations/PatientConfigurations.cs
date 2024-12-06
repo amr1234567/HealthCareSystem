@@ -12,7 +12,6 @@ namespace HSS.DataAccess.Configurations
         {
             builder.HasOne(b => b.PatientMediacalDetails)
                 .WithOne(b => b.Patient)
-                .HasForeignKey<PatientMediacalDetails>(a => a.PatientId)
                 .HasForeignKey<Patient>(a => a.PatientMediacalDetailsId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);

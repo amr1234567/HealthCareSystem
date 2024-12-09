@@ -8,6 +8,7 @@ namespace HSS.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<UserLog> builder)
         {
+            builder.HasKey(x => x.Id);
 
         }
     }

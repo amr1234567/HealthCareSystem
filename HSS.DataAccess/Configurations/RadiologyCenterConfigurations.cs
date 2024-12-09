@@ -8,6 +8,7 @@ namespace HSS.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<RadiologyCenter> builder)
         {
+            builder.HasKey(x => x.Id);
             builder.HasOne(u => u.Hospital)
               .WithMany()
               .HasForeignKey(u => u.HospitalId)

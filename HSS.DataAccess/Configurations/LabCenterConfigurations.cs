@@ -9,6 +9,7 @@ namespace HSS.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<LabCenter> builder)
         {
+            builder.HasKey(x => x.Id);
             builder.HasMany<LabCenterTest>()
                 .WithMany()
                 .UsingEntity<LabCenterLabTest>(join =>
@@ -20,10 +21,10 @@ namespace HSS.DataAccess.Configurations
                         .OnDelete(DeleteBehavior.Restrict);
                     join.HasOne(j => j.LabCenterTest)
                         .WithMany()
-                        .HasForeignKey(join => join.LabTestId)
+                        .HasForeignKey(join => join.LabCenterTestId)
                         .IsRequired()
                         .OnDelete(DeleteBehavior.Restrict);
-                    join.HasKey(j => new { j.LabTestId, j.LabCenterId });
+                    join.HasKey(j => new { j.LabCenterTestId, j.LabCenterId });
                 });
         }
     }

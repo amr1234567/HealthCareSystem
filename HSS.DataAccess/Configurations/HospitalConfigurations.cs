@@ -1,4 +1,5 @@
-﻿using HSS.Domain.Models;
+﻿using HSS.Domain.IdentityModels;
+using HSS.Domain.Models;
 using HSS.Domain.Models.ManyToManyRelationEntitys;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -9,6 +10,7 @@ namespace HSS.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<Hospital> builder)
         {
+            builder.HasKey(x => x.Id);
             builder.HasMany<ClinicSpecialization>()
                 .WithMany()
                 .UsingEntity<ClinicSpecializationHospital>(join =>

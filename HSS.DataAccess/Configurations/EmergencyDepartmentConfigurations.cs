@@ -8,7 +8,8 @@ namespace HSS.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<EmergencyDepartment> builder)
         {
-            
+            builder.HasKey(x => x.Id);
+
         }
     }
 }

@@ -32,6 +32,7 @@ namespace HSS.Domain.Models
 
         [Required]
         public int HospitalAdminId { get; set; }
+        [ForeignKey(nameof(HospitalAdminId))]
         public HospitalAdmin HospitalAdmin { get; set; }
 
         [Required]
@@ -82,7 +83,7 @@ namespace HSS.Domain.Models
         [Range(0, 5, ErrorMessage = "Rating must be between 0 and 5.")]
         public float Rating { get; set; } = 0;
 
-        public List<ClinicSpecializationHospital> ClinicSpecializations { get; set; }
+        public List<ClinicSpecialization> ClinicSpecializations { get; set; }
     }
 
 }

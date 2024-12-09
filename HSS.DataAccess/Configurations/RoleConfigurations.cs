@@ -9,6 +9,7 @@ namespace HSS.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<Role> builder)
         {
+            builder.HasKey(x => x.Id);
             builder.Property(b => b.RoleName)
               .HasConversion(
                       data => data.ToString(),

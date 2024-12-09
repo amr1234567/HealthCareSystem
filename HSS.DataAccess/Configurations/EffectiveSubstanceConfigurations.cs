@@ -9,22 +9,53 @@ namespace HSS.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<EffectiveSubstance> builder)
         {
+            builder.HasKey(x => x.Id);
             builder.HasMany<SideEffect>()
+               .WithMany()
+               .UsingEntity<SideEffectEffectiveSubstance>(
+                  join => join.HasOne(j => j.SideEffect)
+                       .WithMany()
+                       .HasForeignKey(join => join.SideEffectId)
+                       .IsRequired()
+                       .OnDelete(DeleteBehavior.Restrict),
+                  join => join.HasOne(j => j.EffectiveSubstance)
+                       .WithMany()
+                       .HasForeignKey(join => join.EffectiveSubstanceId)
+                       .IsRequired()
+                       .OnDelete(DeleteBehavior.Restrict),
+                  join => join.HasKey(j => new { j.SideEffectId, j.EffectiveSubstanceId }));
+
+
+            builder.HasMany<Medicine>()
                 .WithMany()
-                .UsingEntity<SideEffectEffectiveSubstance>(join =>
-                {
-                    join.HasOne(j => j.SideEffect)
+                .UsingEntity<EffectiveSubstanceMedicine>(
+                   join => join.HasOne(j => j.Medicine)
                         .WithMany()
-                        .HasForeignKey(join => join.SideEffectId)
+                        .HasForeignKey(join => join.MedicineId)
                         .IsRequired()
-                        .OnDelete(DeleteBehavior.Restrict);
-                    join.HasOne(j => j.EffectiveSubstance)
+                        .OnDelete(DeleteBehavior.Restrict),
+                   join => join.HasOne(j => j.EffectiveSubstance)
                         .WithMany()
                         .HasForeignKey(join => join.EffectiveSubstanceId)
                         .IsRequired()
-                        .OnDelete(DeleteBehavior.Restrict);
-                    join.HasKey(j => new { j.SideEffectId, j.EffectiveSubstanceId });
-                });
+                        .OnDelete(DeleteBehavior.Restrict),
+                   join => join.HasKey(j => new { j.MedicineId, j.EffectiveSubstanceId }));
+
+            builder.HasMany<Disease>()
+               .WithMany()
+               .UsingEntity<EffectiveSubstanceDisease>(
+                  join => join.HasOne(j => j.Disease)
+                       .WithMany()
+                       .HasForeignKey(join => join.DiseaseId)
+                       .IsRequired()
+                       .OnDelete(DeleteBehavior.Restrict),
+                  join => join.HasOne(j => j.EffectiveSubstance)
+                       .WithMany()
+                       .HasForeignKey(join => join.EffectiveSubstanceId)
+                       .IsRequired()
+                       .OnDelete(DeleteBehavior.Restrict),
+                  join => join.HasKey(j => new { j.DiseaseId, j.EffectiveSubstanceId }));
+
         }
     }
 }

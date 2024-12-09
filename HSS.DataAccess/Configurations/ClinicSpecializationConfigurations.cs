@@ -8,7 +8,8 @@ namespace HSS.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<ClinicSpecialization> builder)
         {
-            
+            builder.HasKey(x => x.Id);
+
         }
     }
 }

@@ -22,7 +22,7 @@ namespace HSS.DataAccess.Configurations
                 .UsingEntity<UserRole>(join =>
                 {
                     join.HasOne(j => j.User)
-                        .WithMany(u => u.Roles)
+                        .WithMany()
                         .HasForeignKey(u => u.UserId)
                         .OnDelete(DeleteBehavior.Cascade);
                     join.HasOne(j => j.Role)

@@ -26,18 +26,28 @@ namespace HSS.DataAccess.Configurations
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
+
             builder.HasMany(b => b.RadiologyAppointments)
               .WithOne(a => a.ClinicAppointmentRelatedTo)
               .HasForeignKey(a => a.ClinicAppointmentIdRelatedTo)
               .IsRequired(false)
               .OnDelete(DeleteBehavior.Restrict);
 
-            
+
             builder.HasMany(b => b.LabAppointments)
               .WithOne(a => a.ClinicAppointmentRelatedTo)
               .HasForeignKey(a => a.ClinicAppointmentIdRelatedTo)
               .IsRequired(false)
               .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(a => a.ClinicAppointmentRelatedTo)
+                .WithOne()
+                .HasForeignKey<ClinicAppointment>(a => a.ClinicAppointmentIdRelatedTo)
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired(false);
+
+            builder.Property(a => a.LabAppointmentsNumberDone).HasDefaultValue(0);
+            builder.Property(a => a.RadiologyAppointmentsNumberDone).HasDefaultValue(0);
 
         }
     }

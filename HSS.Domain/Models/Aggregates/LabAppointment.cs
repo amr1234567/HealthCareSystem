@@ -25,6 +25,11 @@ namespace HSS.Domain.Models.Aggregates
         [StringLength(500, ErrorMessage = "Test result cannot exceed 500 characters.")]
         public string TestResult { get; set; }
 
+        [AllowNull]
+        public int ClinicAppointmentIdRelatedTo { get; set; }
+        public ClinicAppointment? ClinicAppointmentRelatedTo { get; set; }
+
+
         public bool IsFinish => ResultDate != null;
     }
 

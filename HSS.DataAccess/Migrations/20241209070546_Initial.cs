@@ -25,21 +25,6 @@ namespace HSS.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClinicSpecializations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ClinicSpecializations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Diseases",
                 columns: table => new
                 {
@@ -73,27 +58,6 @@ namespace HSS.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EffectiveSubstances",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    ChemicalFormula = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    DiscoveryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ApprovedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StabilityConditions = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    PrimaryUsage = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    AlternativeNames = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EffectiveSubstances", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "LabCenterTests",
                 columns: table => new
                 {
@@ -106,6 +70,28 @@ namespace HSS.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LabCenterTests", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Medicines",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Manufacturer = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    EffectiveSubstanceId = table.Column<int>(type: "int", nullable: false),
+                    ApprovalDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StorageConditions = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    PrescriptionRequired = table.Column<bool>(type: "bit", nullable: false),
+                    Cost = table.Column<float>(type: "real", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Medicines", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -157,38 +143,30 @@ namespace HSS.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Roles",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SideEffects",
+                name: "EffectiveSubstances",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    AgeRange = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Severity = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Commonality = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Duration = table.Column<TimeSpan>(type: "time", nullable: false),
-                    Reversibility = table.Column<bool>(type: "bit", nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    ChemicalFormula = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    DiscoveryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ApprovedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StabilityConditions = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    PrimaryUsage = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    AlternativeNames = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    DiseaseId = table.Column<int>(type: "int", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SideEffects", x => x.Id);
+                    table.PrimaryKey("PK_EffectiveSubstances", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EffectiveSubstances_Diseases_DiseaseId",
+                        column: x => x.DiseaseId,
+                        principalTable: "Diseases",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -205,63 +183,94 @@ namespace HSS.DataAccess.Migrations
                     OnsetPattern = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsChronic = table.Column<bool>(type: "bit", nullable: false),
                     TreatmentRequired = table.Column<bool>(type: "bit", nullable: false),
+                    DiseaseId = table.Column<int>(type: "int", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Symptoms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Symptoms_Diseases_DiseaseId",
+                        column: x => x.DiseaseId,
+                        principalTable: "Diseases",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Medicines",
+                name: "SideEffects",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Manufacturer = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    EffectiveSubstanceId = table.Column<int>(type: "int", nullable: false),
-                    ApprovalDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StorageConditions = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    PrescriptionRequired = table.Column<bool>(type: "bit", nullable: false),
-                    Cost = table.Column<float>(type: "real", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    AgeRange = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Severity = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Commonality = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Duration = table.Column<TimeSpan>(type: "time", nullable: false),
+                    Reversibility = table.Column<bool>(type: "bit", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    MedicineId = table.Column<int>(type: "int", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Medicines", x => x.Id);
+                    table.PrimaryKey("PK_SideEffects", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Medicines_EffectiveSubstances_EffectiveSubstanceId",
-                        column: x => x.EffectiveSubstanceId,
-                        principalTable: "EffectiveSubstances",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_SideEffects_Medicines_MedicineId",
+                        column: x => x.MedicineId,
+                        principalTable: "Medicines",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "SideEffectEffectiveSubstances",
+                name: "EffectiveSubstanceDisease",
                 columns: table => new
                 {
-                    SideEffectId = table.Column<int>(type: "int", nullable: false),
-                    EffectiveSubstanceId = table.Column<int>(type: "int", nullable: false)
+                    EffectiveSubstanceId = table.Column<int>(type: "int", nullable: false),
+                    DiseaseId = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SideEffectEffectiveSubstances", x => new { x.SideEffectId, x.EffectiveSubstanceId });
+                    table.PrimaryKey("PK_EffectiveSubstanceDisease", x => new { x.DiseaseId, x.EffectiveSubstanceId });
                     table.ForeignKey(
-                        name: "FK_SideEffectEffectiveSubstances_EffectiveSubstances_EffectiveSubstanceId",
+                        name: "FK_EffectiveSubstanceDisease_Diseases_DiseaseId",
+                        column: x => x.DiseaseId,
+                        principalTable: "Diseases",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_EffectiveSubstanceDisease_EffectiveSubstances_EffectiveSubstanceId",
+                        column: x => x.EffectiveSubstanceId,
+                        principalTable: "EffectiveSubstances",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EffectiveSubstanceMedicine",
+                columns: table => new
+                {
+                    EffectiveSubstanceId = table.Column<int>(type: "int", nullable: false),
+                    MedicineId = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EffectiveSubstanceMedicine", x => new { x.MedicineId, x.EffectiveSubstanceId });
+                    table.ForeignKey(
+                        name: "FK_EffectiveSubstanceMedicine_EffectiveSubstances_EffectiveSubstanceId",
                         column: x => x.EffectiveSubstanceId,
                         principalTable: "EffectiveSubstances",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SideEffectEffectiveSubstances_SideEffects_SideEffectId",
-                        column: x => x.SideEffectId,
-                        principalTable: "SideEffects",
+                        name: "FK_EffectiveSubstanceMedicine_Medicines_MedicineId",
+                        column: x => x.MedicineId,
+                        principalTable: "Medicines",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -284,6 +293,30 @@ namespace HSS.DataAccess.Migrations
                         name: "FK_SymptomDiseases_Symptoms_SymptomId",
                         column: x => x.SymptomId,
                         principalTable: "Symptoms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SideEffectEffectiveSubstances",
+                columns: table => new
+                {
+                    SideEffectId = table.Column<int>(type: "int", nullable: false),
+                    EffectiveSubstanceId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SideEffectEffectiveSubstances", x => new { x.SideEffectId, x.EffectiveSubstanceId });
+                    table.ForeignKey(
+                        name: "FK_SideEffectEffectiveSubstances_EffectiveSubstances_EffectiveSubstanceId",
+                        column: x => x.EffectiveSubstanceId,
+                        principalTable: "EffectiveSubstances",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SideEffectEffectiveSubstances_SideEffects_SideEffectId",
+                        column: x => x.SideEffectId,
+                        principalTable: "SideEffects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -324,28 +357,29 @@ namespace HSS.DataAccess.Migrations
                     AppointmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ClinicAppointmentIdRelatedTo = table.Column<int>(type: "int", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
                     PatientId = table.Column<int>(type: "int", nullable: true),
                     ClinicId = table.Column<int>(type: "int", nullable: true),
                     DoctorId = table.Column<int>(type: "int", nullable: true),
                     ReasonForVisit = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    LabAppointmentsNumberDone = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
+                    RadiologyAppointmentsNumberDone = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
                     FollowUpNeeded = table.Column<bool>(type: "bit", nullable: true),
-                    LabAppointmentNeeded = table.Column<bool>(type: "bit", nullable: true),
-                    LabAppointmentsNumberDone = table.Column<int>(type: "int", nullable: true),
+                    FollowUpExpectedPeriod = table.Column<TimeSpan>(type: "time", nullable: true),
                     RadiologyAppointmentNeeded = table.Column<bool>(type: "bit", nullable: true),
-                    RadiologyAppointmentsNumberDone = table.Column<int>(type: "int", nullable: true),
-                    IsEnd = table.Column<bool>(type: "bit", nullable: true),
-                    ClinicAppointmentRelatedToId = table.Column<int>(type: "int", nullable: true),
+                    LabAppointmentNeeded = table.Column<bool>(type: "bit", nullable: true),
+                    ClinicAppointmentIdRelatedTo = table.Column<int>(type: "int", nullable: true),
                     LabCenterId = table.Column<int>(type: "int", nullable: true),
                     TestTypeId = table.Column<int>(type: "int", nullable: true),
                     ResultDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LabTesterId = table.Column<int>(type: "int", nullable: true),
                     TestResult = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    LabAppointment_ClinicAppointmentIdRelatedTo = table.Column<int>(type: "int", nullable: true),
                     RadiologyCenterId = table.Column<int>(type: "int", nullable: true),
                     RadiologyAppointment_TestTypeId = table.Column<int>(type: "int", nullable: true),
                     RadiologyTesterId = table.Column<int>(type: "int", nullable: true),
                     RadiologyAppointment_TestResult = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    RadiologyAppointment_ClinicAppointmentIdRelatedTo = table.Column<int>(type: "int", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -358,10 +392,17 @@ namespace HSS.DataAccess.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Appointments_Appointments_ClinicAppointmentRelatedToId",
-                        column: x => x.ClinicAppointmentRelatedToId,
+                        name: "FK_Appointments_Appointments_LabAppointment_ClinicAppointmentIdRelatedTo",
+                        column: x => x.LabAppointment_ClinicAppointmentIdRelatedTo,
                         principalTable: "Appointments",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Appointments_RadiologyAppointment_ClinicAppointmentIdRelatedTo",
+                        column: x => x.RadiologyAppointment_ClinicAppointmentIdRelatedTo,
+                        principalTable: "Appointments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Appointments_LabCenterTests_TestTypeId",
                         column: x => x.TestTypeId,
@@ -372,6 +413,42 @@ namespace HSS.DataAccess.Migrations
                         name: "FK_Appointments_radiologyTestTypes_RadiologyAppointment_TestTypeId",
                         column: x => x.RadiologyAppointment_TestTypeId,
                         principalTable: "radiologyTestTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PrescriptionRecord",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MedicineId = table.Column<int>(type: "int", nullable: false),
+                    MedicineName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MedicineUnitType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NumberOfUnits = table.Column<int>(type: "int", nullable: false),
+                    DosageFrequency = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TimingDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DispenseStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DispensedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DispensedAmount = table.Column<int>(type: "int", nullable: false),
+                    ClinicAppointmentId = table.Column<int>(type: "int", nullable: false),
+                    TimesOfDispensed = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PrescriptionRecord", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PrescriptionRecord_Appointments_ClinicAppointmentId",
+                        column: x => x.ClinicAppointmentId,
+                        principalTable: "Appointments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PrescriptionRecord_Medicines_MedicineId",
+                        column: x => x.MedicineId,
+                        principalTable: "Medicines",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -394,12 +471,6 @@ namespace HSS.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clinics", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Clinics_ClinicSpecializations_SpecializationId",
-                        column: x => x.SpecializationId,
-                        principalTable: "ClinicSpecializations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -412,12 +483,22 @@ namespace HSS.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_clinicSpecializationHospitals", x => new { x.HospitalId, x.ClinicSpecializationId });
-                    table.ForeignKey(
-                        name: "FK_clinicSpecializationHospitals_ClinicSpecializations_ClinicSpecializationId",
-                        column: x => x.ClinicSpecializationId,
-                        principalTable: "ClinicSpecializations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClinicSpecializations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    HospitalId = table.Column<int>(type: "int", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClinicSpecializations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -450,7 +531,6 @@ namespace HSS.DataAccess.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EstablishedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     HospitalAdminId = table.Column<int>(type: "int", nullable: false),
-                    HospitalAdminId1 = table.Column<int>(type: "int", nullable: false),
                     StartAt = table.Column<TimeSpan>(type: "time", nullable: false),
                     EndAt = table.Column<TimeSpan>(type: "time", nullable: false),
                     BedAvailability = table.Column<int>(type: "int", nullable: false),
@@ -463,6 +543,7 @@ namespace HSS.DataAccess.Migrations
                     LicenseNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     TaxIdentificationNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Rating = table.Column<float>(type: "real", nullable: false),
+                    HospitalAdminId2 = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -481,6 +562,7 @@ namespace HSS.DataAccess.Migrations
                     StartAt = table.Column<TimeSpan>(type: "time", nullable: false),
                     EndAt = table.Column<TimeSpan>(type: "time", nullable: false),
                     AppointmentDuration = table.Column<int>(type: "int", nullable: false),
+                    LabCenterId = table.Column<int>(type: "int", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -492,6 +574,11 @@ namespace HSS.DataAccess.Migrations
                         principalTable: "Hospitals",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LabCenters_LabCenters_LabCenterId",
+                        column: x => x.LabCenterId,
+                        principalTable: "LabCenters",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -570,14 +657,14 @@ namespace HSS.DataAccess.Migrations
                 columns: table => new
                 {
                     LabCenterId = table.Column<int>(type: "int", nullable: false),
-                    LabTestId = table.Column<int>(type: "int", nullable: false)
+                    LabCenterTestId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LabCenterLabTests", x => new { x.LabTestId, x.LabCenterId });
+                    table.PrimaryKey("PK_LabCenterLabTests", x => new { x.LabCenterTestId, x.LabCenterId });
                     table.ForeignKey(
-                        name: "FK_LabCenterLabTests_LabCenterTests_LabTestId",
-                        column: x => x.LabTestId,
+                        name: "FK_LabCenterLabTests_LabCenterTests_LabCenterTestId",
+                        column: x => x.LabCenterTestId,
                         principalTable: "LabCenterTests",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -598,6 +685,7 @@ namespace HSS.DataAccess.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Salt = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ContactNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ExpirationOfRefreshToken = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -727,6 +815,26 @@ namespace HSS.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IdentityUserintId = table.Column<int>(name: "IdentityUser<int>Id", type: "int", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Roles_IdentityUsers_IdentityUser<int>Id",
+                        column: x => x.IdentityUserintId,
+                        principalTable: "IdentityUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserLogs",
                 columns: table => new
                 {
@@ -777,12 +885,9 @@ namespace HSS.DataAccess.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_ClinicAppointmentIdRelatedTo",
                 table: "Appointments",
-                column: "ClinicAppointmentIdRelatedTo");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Appointments_ClinicAppointmentRelatedToId",
-                table: "Appointments",
-                column: "ClinicAppointmentRelatedToId");
+                column: "ClinicAppointmentIdRelatedTo",
+                unique: true,
+                filter: "[ClinicAppointmentIdRelatedTo] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_ClinicId",
@@ -800,6 +905,11 @@ namespace HSS.DataAccess.Migrations
                 column: "HospitalId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Appointments_LabAppointment_ClinicAppointmentIdRelatedTo",
+                table: "Appointments",
+                column: "LabAppointment_ClinicAppointmentIdRelatedTo");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Appointments_LabCenterId",
                 table: "Appointments",
                 column: "LabCenterId");
@@ -813,6 +923,11 @@ namespace HSS.DataAccess.Migrations
                 name: "IX_Appointments_PatientId",
                 table: "Appointments",
                 column: "PatientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_RadiologyAppointment_ClinicAppointmentIdRelatedTo",
+                table: "Appointments",
+                column: "RadiologyAppointment_ClinicAppointmentIdRelatedTo");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_RadiologyAppointment_TestTypeId",
@@ -850,9 +965,35 @@ namespace HSS.DataAccess.Migrations
                 column: "ClinicSpecializationId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ClinicSpecializations_HospitalId",
+                table: "ClinicSpecializations",
+                column: "HospitalId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EffectiveSubstanceDisease_EffectiveSubstanceId",
+                table: "EffectiveSubstanceDisease",
+                column: "EffectiveSubstanceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EffectiveSubstanceMedicine_EffectiveSubstanceId",
+                table: "EffectiveSubstanceMedicine",
+                column: "EffectiveSubstanceId");
+
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EffectiveSubstances_DiseaseId",
+                table: "EffectiveSubstances",
+                column: "DiseaseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EmergencyDepartments_HospitalId",
                 table: "EmergencyDepartments",
                 column: "HospitalId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Hospitals_HospitalAdminId",
+                table: "Hospitals",
+                column: "HospitalAdminId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_IdentityUsers_AdministrationId",
@@ -916,19 +1057,30 @@ namespace HSS.DataAccess.Migrations
                 column: "HospitalId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_LabCenters_LabCenterId",
+                table: "LabCenters",
+                column: "LabCenterId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MedicalHistories_PatientId",
                 table: "MedicalHistories",
                 column: "PatientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Medicines_EffectiveSubstanceId",
-                table: "Medicines",
-                column: "EffectiveSubstanceId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Pharmacies_HospitalId",
                 table: "Pharmacies",
                 column: "HospitalId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PrescriptionRecord_ClinicAppointmentId",
+                table: "PrescriptionRecord",
+                column: "ClinicAppointmentId");
+
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PrescriptionRecord_MedicineId",
+                table: "PrescriptionRecord",
+                column: "MedicineId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RadiologyCenters_HospitalId",
@@ -941,9 +1093,15 @@ namespace HSS.DataAccess.Migrations
                 column: "HospitalId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Roles_IdentityUser<int>Id",
+                table: "Roles",
+                column: "IdentityUser<int>Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SideEffectEffectiveSubstances_EffectiveSubstanceId",
                 table: "SideEffectEffectiveSubstances",
                 column: "EffectiveSubstanceId");
+
 
             migrationBuilder.CreateIndex(
                 name: "IX_SideEffectMedicines_SideEffectId",
@@ -951,8 +1109,18 @@ namespace HSS.DataAccess.Migrations
                 column: "SideEffectId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SideEffects_MedicineId",
+                table: "SideEffects",
+                column: "MedicineId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SymptomDiseases_DiseaseId",
                 table: "SymptomDiseases",
+                column: "DiseaseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Symptoms_DiseaseId",
+                table: "Symptoms",
                 column: "DiseaseId");
 
             migrationBuilder.CreateIndex(
@@ -1030,10 +1198,26 @@ namespace HSS.DataAccess.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
+                name: "FK_Clinics_ClinicSpecializations_SpecializationId",
+                table: "Clinics",
+                column: "SpecializationId",
+                principalTable: "ClinicSpecializations",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_Clinics_Hospitals_HospitalId",
                 table: "Clinics",
                 column: "HospitalId",
                 principalTable: "Hospitals",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_clinicSpecializationHospitals_ClinicSpecializations_ClinicSpecializationId",
+                table: "clinicSpecializationHospitals",
+                column: "ClinicSpecializationId",
+                principalTable: "ClinicSpecializations",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
@@ -1045,6 +1229,12 @@ namespace HSS.DataAccess.Migrations
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
+            migrationBuilder.AddForeignKey(
+                name: "FK_ClinicSpecializations_Hospitals_HospitalId",
+                table: "ClinicSpecializations",
+                column: "HospitalId",
+                principalTable: "Hospitals",
+                principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_EmergencyDepartments_Hospitals_HospitalId",
@@ -1054,6 +1244,13 @@ namespace HSS.DataAccess.Migrations
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
+            migrationBuilder.AddForeignKey(
+                name: "FK_Hospitals_IdentityUsers_HospitalAdminId",
+                table: "Hospitals",
+                column: "HospitalAdminId",
+                principalTable: "IdentityUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
@@ -1088,10 +1285,13 @@ namespace HSS.DataAccess.Migrations
                 table: "Receptions");
 
             migrationBuilder.DropTable(
-                name: "Appointments");
+                name: "clinicSpecializationHospitals");
 
             migrationBuilder.DropTable(
-                name: "clinicSpecializationHospitals");
+                name: "EffectiveSubstanceDisease");
+
+            migrationBuilder.DropTable(
+                name: "EffectiveSubstanceMedicine");
 
             migrationBuilder.DropTable(
                 name: "EmergencyDepartments");
@@ -1101,6 +1301,9 @@ namespace HSS.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "MedicalHistories");
+
+            migrationBuilder.DropTable(
+                name: "PrescriptionRecord");
 
             migrationBuilder.DropTable(
                 name: "SideEffectEffectiveSubstances");
@@ -1118,19 +1321,13 @@ namespace HSS.DataAccess.Migrations
                 name: "UserRoles");
 
             migrationBuilder.DropTable(
-                name: "radiologyTestTypes");
+                name: "Appointments");
 
             migrationBuilder.DropTable(
-                name: "LabCenterTests");
-
-            migrationBuilder.DropTable(
-                name: "Medicines");
+                name: "EffectiveSubstances");
 
             migrationBuilder.DropTable(
                 name: "SideEffects");
-
-            migrationBuilder.DropTable(
-                name: "Diseases");
 
             migrationBuilder.DropTable(
                 name: "Symptoms");
@@ -1139,7 +1336,16 @@ namespace HSS.DataAccess.Migrations
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "EffectiveSubstances");
+                name: "LabCenterTests");
+
+            migrationBuilder.DropTable(
+                name: "radiologyTestTypes");
+
+            migrationBuilder.DropTable(
+                name: "Medicines");
+
+            migrationBuilder.DropTable(
+                name: "Diseases");
 
             migrationBuilder.DropTable(
                 name: "Clinics");

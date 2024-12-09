@@ -9,6 +9,7 @@ namespace HSS.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<SideEffect> builder)
         {
+            builder.HasKey(x => x.Id);
             builder.Property(b => b.AgeRange)
               .HasConversion(
                       data => data.ToString(),

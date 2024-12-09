@@ -31,10 +31,5 @@ namespace HSS.Domain.Models.Aggregates
         [DataType(DataType.DateTime)]
         public DateTime UpdatedAt { get; set; }
 
-        [AllowNull]
-        [Range(0, int.MaxValue, ErrorMessage = "Clinic appointment ID related to must be a non-negative integer.")]
-        public int ClinicAppointmentIdRelatedTo { get; set; }
-        public ClinicAppointment? ClinicAppointmentRelatedTo { get; set; }
-
     }
 }

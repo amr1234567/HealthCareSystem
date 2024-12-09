@@ -10,6 +10,7 @@ namespace HSS.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<Disease> builder)
         {
+            builder.HasKey(x => x.Id);
             builder.Property(b => b.Severity)
                .HasConversion(
                        data => data.ToString(),

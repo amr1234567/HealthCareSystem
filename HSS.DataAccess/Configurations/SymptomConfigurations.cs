@@ -9,6 +9,7 @@ namespace HSS.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<Symptom> builder)
         {
+            builder.HasKey(x => x.Id);
             builder.Property(b => b.Age)
              .HasConversion(
                      data => data.ToString(),

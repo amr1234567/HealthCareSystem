@@ -7,7 +7,7 @@
         public LabCenter LabCenter { get; set; }
 
         [Required]
-        public int LabTestId { get; set; }
+        public int LabCenterTestId { get; set; }
         public LabCenterTest LabCenterTest { get; set; }
     }
 }

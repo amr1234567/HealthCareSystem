@@ -18,9 +18,13 @@ namespace HSS.Domain.BaseModels
         [EmailAddress(ErrorMessage = "Invalid email address.")]
         public string Email { get; set; }
 
+        [Required]
         public string Password { get; set; }
+        
+        [Required]
+        public string Salt { get; set; }
 
-        public List<UserRole> Roles { get; set; }
+        public List<Role> Roles { get; set; }
 
         public List<UserLog> UserLogs { get; set; }
 
@@ -32,9 +36,11 @@ namespace HSS.Domain.BaseModels
         public DateTime? ExpirationOfRefreshToken { get; set; }
 
         [Required]  // Ensures this field cannot be null
+        [DataType(DataType.DateTime)]
         public DateTime CreatedAt { get; set; }
 
         [Required]  // Ensures this field cannot be null
+        [DataType(DataType.DateTime)]
         public DateTime UpdatedAt { get; set; }
     }
 }

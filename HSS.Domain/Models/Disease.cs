@@ -11,6 +11,7 @@ namespace HSS.Domain.Models
         public string Description { get; set; }
 
         [Required]
+        [EnumDataType(typeof(Severity))]
         public Severity Severity { get; set; }
         [Required]
         public bool Contagious { get; set; }
@@ -39,9 +40,11 @@ namespace HSS.Domain.Models
         public bool HasVaccine { get; set; }
 
         [Required]
+        [EnumDataType(typeof(AgeGroup))]
         public AgeGroup CommonAgeGroup { get; set; }
 
         [Required]
+        [EnumDataType(typeof(Gender))]
         public Gender CommonGender { get; set; }
 
         [Required, MaxLength(300)]
@@ -53,6 +56,7 @@ namespace HSS.Domain.Models
         public DateTime? LastOutbreakDate { get; set; }
         
         [Required]
+        [EnumDataType(typeof(ResearchStatus))]
         public ResearchStatus ResearchStatus { get; set; }
         
         [Required, MaxLength(300)]
@@ -61,6 +65,8 @@ namespace HSS.Domain.Models
         [AllowNull, MaxLength(300)]
         public string? Notes { get; set; }
 
-        public List<SymptomDisease> Symptoms { get; set; }
+        public List<Symptom> Symptoms { get; set; }
+
+        public List<EffectiveSubstance> EffectiveSubstances { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace HSS.Domain.Models
         [Required, MaxLength(500)]
         public string Location { get; set; }
 
-        public List<LabCenterLabTest> TestsAvailable { get; set; }
+        public List<LabCenter> TestsAvailable { get; set; }
 
         [Required]
         [DataType(DataType.Time)]

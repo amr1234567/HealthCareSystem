@@ -11,11 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Abstractions\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\HSS.DataAccess\HSS.DataAccess.csproj" />
     <ProjectReference Include="..\HSS.Domain\HSS.Domain.csproj" />
   </ItemGroup>

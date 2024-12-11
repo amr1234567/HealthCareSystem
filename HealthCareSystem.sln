@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HSS.Services", "HSS.Service
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HSS.Presentation.Patient.Api", "HSS.Presentation.Patient.Api\HSS.Presentation.Patient.Api.csproj", "{869AB66B-6298-4829-A6D2-C3CC1823B44B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HSS.Presentation.MVC", "HSS.Presentation.MVC\HSS.Presentation.MVC.csproj", "{E4C547F9-6C29-45EF-8A1F-459DA9640AB6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{869AB66B-6298-4829-A6D2-C3CC1823B44B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{869AB66B-6298-4829-A6D2-C3CC1823B44B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{869AB66B-6298-4829-A6D2-C3CC1823B44B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4C547F9-6C29-45EF-8A1F-459DA9640AB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4C547F9-6C29-45EF-8A1F-459DA9640AB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4C547F9-6C29-45EF-8A1F-459DA9640AB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4C547F9-6C29-45EF-8A1F-459DA9640AB6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

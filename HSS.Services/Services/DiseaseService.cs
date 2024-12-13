@@ -57,7 +57,7 @@ namespace HSS.Services.Services
             }
         }
 
-        public async Task<DiseaseDto?> GetDiseaseByIdAsync(int id)
+        public async Task<DiseaseDto> GetDiseaseByIdAsync(int id)
         {
             try
             {

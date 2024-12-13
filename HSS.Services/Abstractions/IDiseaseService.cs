@@ -1,4 +1,5 @@
-﻿using HSS.Domain.Enums;
+﻿using DiseaseService.Dtos;
+using HSS.Domain.Enums;
 using HSS.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,10 @@ namespace HSS.Services.Abstractions
 {
     public interface IDiseaseService
     {
-        Task<Disease> GetDiseaseAsync(int id);
-        Task<IEnumerable<Disease>> GetDiseasesAsync();
-        Task<IEnumerable<Disease>> SearchDiseasesAsync(string name, string code);
-        Task<IEnumerable<Disease>> FilterDiseasesAsync(Severity? severity, bool? contagious, int? affectedPopulation);
-        Task AddDiseaseAsync(Disease disease);
-        Task UpdateDiseaseAsync(Disease disease);
-        Task DeleteDiseaseAsync(int id);
+        Task<IEnumerable<DiseaseDto>> GetAllDiseasesAsync();
+        Task<DiseaseDto?> GetDiseaseByIdAsync(int id);
+        Task<DiseaseDto> CreateDiseaseAsync(DiseaseDto disease);
+        Task<DiseaseDto?> UpdateDiseaseAsync(int id, DiseaseDto disease);
+        Task<bool> DeleteDiseaseAsync(int id);
     }
 }

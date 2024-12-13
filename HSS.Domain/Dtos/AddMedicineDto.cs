@@ -1,8 +1,14 @@
 ﻿using HSS.Domain.Models.ManyToManyRelationEntitys;
+using HSS.Domain.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace HSS.Domain.Models
+namespace HSS.Domain.Dtos
 {
-    public class Medicine : BaseClass<int>
+    public class AddMedicineDto 
     {
         [Required]
         [StringLength(200)]
@@ -22,18 +28,12 @@ namespace HSS.Domain.Models
         public List<EffectiveSubstanceMedicine> EffectiveSubstanceM { get; set; }
 
         [Required]
-        public int EffectiveSubstanceId { get; set; }
-
-        [Required]
         [DataType(DataType.DateTime)]
         public DateTime ApprovalDate { get; set; }
 
         [AllowNull]
         [StringLength(300)]
         public string StorageConditions { get; set; }
-
-        [Required]
-        public bool PrescriptionRequired { get; set; }
 
         [Required]
         [Range(0, double.MaxValue)]

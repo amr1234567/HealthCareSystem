@@ -1,4 +1,4 @@
-﻿namespace HSS.Domain.IdentityModels
+﻿namespace HSS.Domain.Enums
 {
     public enum EducationLevel
     {

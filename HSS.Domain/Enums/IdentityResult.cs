@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HSS.Domain.Helpers
+namespace HSS.Domain.Enums
 {
-    internal class Class1
+    public enum IdentityResult
     {
+        Success,
+        Fail
     }
 }

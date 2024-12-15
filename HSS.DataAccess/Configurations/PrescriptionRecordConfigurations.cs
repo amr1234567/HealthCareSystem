@@ -1,5 +1,5 @@
 ﻿using HSS.Domain.Enums;
-using HSS.Domain.Models.Aggregates;
+using HSS.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

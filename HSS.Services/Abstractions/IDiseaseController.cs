@@ -1,8 +1,8 @@
-﻿using DiseaseService.Dtos;
+﻿using HSS.Domain.Dtos;
 using HSS.Domain.Enums;
 using HSS.Domain.Models;
 
-namespace DiseaseService.Abstractions
+namespace HSS.Services.Abstractions
 {
     public interface IDiseaseController
     {

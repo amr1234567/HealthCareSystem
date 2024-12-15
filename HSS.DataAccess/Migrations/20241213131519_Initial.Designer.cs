@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HSS.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241209070546_Initial")]
+    [Migration("20241213131519_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -35,7 +35,6 @@ namespace HSS.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ContactNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -47,7 +46,6 @@ namespace HSS.DataAccess.Migrations
                         .HasColumnType("nvarchar(21)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ExpirationOfRefreshToken")
@@ -61,18 +59,21 @@ namespace HSS.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("NationalId")
                         .IsRequired()
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
+
+                    b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Salt")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -1172,9 +1173,6 @@ namespace HSS.DataAccess.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int?>("DiseaseId")
-                        .HasColumnType("int");
-
                     b.Property<TimeSpan>("Duration")
                         .HasColumnType("time");
 
@@ -1201,8 +1199,6 @@ namespace HSS.DataAccess.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DiseaseId");
 
                     b.ToTable("Symptoms");
                 });
@@ -1350,21 +1346,19 @@ namespace HSS.DataAccess.Migrations
                     b.HasBaseType("HSS.Domain.BaseModels.IdentityUser<int>");
 
                     b.Property<string>("AgeCategory")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EducationLevel")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IncomeCategory")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PatientMediacalDetailsId")
+                    b.Property<int?>("PatientMediacalDetailsId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Sex")
@@ -1944,13 +1938,6 @@ namespace HSS.DataAccess.Migrations
                         .HasForeignKey("MedicineId");
                 });
 
-            modelBuilder.Entity("HSS.Domain.Models.Symptom", b =>
-                {
-                    b.HasOne("HSS.Domain.Models.Disease", null)
-                        .WithMany("Symptoms")
-                        .HasForeignKey("DiseaseId");
-                });
-
             modelBuilder.Entity("HSS.Domain.Models.UserLog", b =>
                 {
                     b.HasOne("HSS.Domain.BaseModels.IdentityUser<int>", "User")
@@ -2170,8 +2157,6 @@ namespace HSS.DataAccess.Migrations
             modelBuilder.Entity("HSS.Domain.Models.Disease", b =>
                 {
                     b.Navigation("EffectiveSubstances");
-
-                    b.Navigation("Symptoms");
                 });
 
             modelBuilder.Entity("HSS.Domain.Models.EffectiveSubstance", b =>

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HSS.DataAccess.Repositories
+namespace HSS.Domain.Helpers
 {
-    public class DiseaseRepository 
+    public class CustomClaimType
     {
+        public const string NationalId = "NationalId";
     }
 }

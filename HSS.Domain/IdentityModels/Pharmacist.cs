@@ -2,7 +2,7 @@
 
 namespace HSS.Domain.IdentityModels
 {
-    public class Pharmacist : IdentityUser<int>
+    public class Pharmacist : IdentityUser
     {
         [Required]
         [DataType(DataType.Time)]

@@ -11,7 +11,7 @@ namespace HSS.Presentation.MVC
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddDataAccessServices(builder.Configuration)
-               .AddServiceLayerServices();
+               .AddServiceLayerServices(builder.Configuration);
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

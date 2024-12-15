@@ -1,4 +1,4 @@
-﻿using DiseaseService.Dtos;
+﻿using HSS.Domain.Dtos;
 using HSS.Domain.Enums;
 using HSS.Domain.Models;
 using System;

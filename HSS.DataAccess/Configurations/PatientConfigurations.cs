@@ -31,7 +31,7 @@ namespace HSS.DataAccess.Configurations
             builder.Property(b => b.Sex)
                 .HasConversion(
                         data => data.ToString(),
-                        data => (SexType)Enum.Parse(typeof(SexType), data));
+                        data => (Gender)Enum.Parse(typeof(Gender), data));
             builder.ComplexProperty(b => b.Address, a =>
             {
 

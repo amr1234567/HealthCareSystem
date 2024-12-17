@@ -2,7 +2,7 @@
 
 namespace HSS.Domain.IdentityModels
 {
-    public class LabManager : IdentityUser<int>
+    public class LabManager : IdentityUser
     {
         [Required]
         [DataType(DataType.DateTime)]

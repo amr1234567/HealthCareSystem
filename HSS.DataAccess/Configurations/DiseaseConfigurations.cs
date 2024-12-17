@@ -28,7 +28,7 @@ namespace HSS.DataAccess.Configurations
                        data => data.ToString(),
                        data => (ResearchStatus)Enum.Parse(typeof(ResearchStatus), data));
 
-            builder.HasMany<Symptom>()
+            builder.HasMany<Symptom>(d => d.Symptoms)
                 .WithMany()
                 .UsingEntity<SymptomDisease>(join =>
                 {

@@ -4,20 +4,20 @@
     {
         [Required]  // Ensures this field cannot be null
         public int UserId { get; set; }
-        public IdentityUser<int> User { get; set; }
+        public IdentityUser User { get; set; }
 
         [Required]  // Ensures this field is mandatory
-        public bool IsLogin { get; set; }
+        public bool IsLoggedIn { get; set; }
 
         [Required]  // Ensures this field is mandatory
         [DataType(DataType.DateTime)]
         public DateTime LoginTime { get; set; }
 
-        [Required]  // Ensures this field cannot be null
+        [AllowNull]  // Ensures this field cannot be null
         [DataType(DataType.DateTime)]
-        public DateTime LogoutTime { get; set; }
+        public DateTime? LogoutTime { get; set; }
 
-        [StringLength(500, ErrorMessage = "Notes cannot be longer than 500 characters.")]
-        public string Notes { get; set; }
+        [AllowNull, StringLength(500, ErrorMessage = "Notes cannot be longer than 500 characters.")]
+        public string? Notes { get; set; }
     }
 }

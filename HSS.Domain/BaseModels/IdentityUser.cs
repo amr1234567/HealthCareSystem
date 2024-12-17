@@ -10,27 +10,35 @@ namespace HSS.Domain.BaseModels
 {
     public class IdentityUser<T> : BaseClass<T> where T : struct
     {
+       
+    }
+
+    public class IdentityUser : IdentityUser<int> {
         [Required]
         [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
         public string Name { get; set; }
 
         [Required]
-        [EmailAddress(ErrorMessage = "Invalid email address.")]
-        public string Email { get; set; }
+        [StringLength(14)]
+        public string NationalId { get; set; }
 
-        [Required]
-        public string Password { get; set; }
-        
-        [Required]
-        public string Salt { get; set; }
+        [AllowNull]
+        [EmailAddress(ErrorMessage = "Invalid email address.")]
+        public string? Email { get; set; }
+
+        [AllowNull]
+        public string? Password { get; set; }
+
+        [AllowNull]
+        public string? Salt { get; set; }
 
         public List<Role> Roles { get; set; }
 
-        public List<UserLog> UserLogs { get; set; }
+        public List<UserLog>? UserLogs { get; set; }
 
-        [Required]
+        [AllowNull]
         [Phone(ErrorMessage = "Invalid contact number.")]
-        public string ContactNumber { get; set; }
+        public string? ContactNumber { get; set; }
 
         public string? RefreshToken { get; set; }
         public DateTime? ExpirationOfRefreshToken { get; set; }
@@ -39,8 +47,8 @@ namespace HSS.Domain.BaseModels
         [DataType(DataType.DateTime)]
         public DateTime CreatedAt { get; set; }
 
-        [Required]  // Ensures this field cannot be null
+        [AllowNull]  // Ensures this field cannot be null
         [DataType(DataType.DateTime)]
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
     }
 }

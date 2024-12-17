@@ -1,4 +1,4 @@
-﻿namespace DiseaseService.Dtos
+﻿namespace HSS.Domain.Dtos
 {
     public class DiseaseDto
     {

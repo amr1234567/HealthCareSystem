@@ -14,7 +14,7 @@ namespace HSS.DataAccess.Contexts
         {
             
         }
-        public DbSet<IdentityUser<int>> IdentityUsers { get; set; }
+        public DbSet<IdentityUser> IdentityUsers { get; set; }
         public DbSet<AdministrationAdmin> AdministrationAdmins { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<HospitalAdmin> HospitalAdmins { get; set; }

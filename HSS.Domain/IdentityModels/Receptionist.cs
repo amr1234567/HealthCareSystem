@@ -2,7 +2,7 @@
 
 namespace HSS.Domain.IdentityModels
 {
-    public class Receptionist : IdentityUser<int>
+    public class Receptionist : IdentityUser
     {
         [DataType(DataType.Time)]
         public TimeSpan WorkingTime { get; set; }

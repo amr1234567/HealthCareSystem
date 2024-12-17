@@ -1,0 +1,139 @@
+<style>
+    * {
+        direction: rtl;
+    }
+
+    .input-control-container {
+        width: -webkit-fit-content;
+        width: -moz-fit-content;
+        width: fit-content;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-align: end;
+        -ms-flex-align: end;
+        align-items: end;
+        margin: 5rem;
+    }
+
+    .input-control-container .input-control {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        max-width: -webkit-fit-content;
+        max-width: -moz-fit-content;
+        max-width: fit-content;
+        height: -webkit-fit-content;
+        height: -moz-fit-content;
+        height: fit-content;
+        border: 1px solid #0E88AD;
+        gap: 1rem;
+        padding: 1rem;
+        position: relative;
+        z-index: 9;
+        background-color: white;
+        border-radius: 7px;
+    }
+
+    .input-control-container .input-control.invalid-input {
+        border-color: #B3261E;
+    }
+
+    .input-control-container .input-control.invalid-input .seperator {
+        background-color: #B3261E;
+    }
+
+    .input-control-container .input-control:has(.extra-icon) input {
+        width: 60%;
+    }
+
+    .input-control-container .input-control label {
+        position: absolute;
+        color: #0E88AD;
+        top: 0;
+        right: 35px;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        display: block;
+        background-color: inherit;
+        z-index: 10;
+        padding: 0 0.5rem;
+    }
+
+    .input-control-container .input-control .seperator {
+        height: 35px;
+        width: 1px;
+        background-color: #0E88AD;
+    }
+
+    .input-control-container .input-control input {
+        width: 100%;
+        padding: 0.5rem;
+        border: none;
+        background-color: inherit;
+        font-size: 1rem;
+        margin: 0;
+        outline: none;
+        -webkit-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+    }
+
+    .input-control-container .input-control input::-webkit-input-placeholder {
+        color: #0E88AD;
+    }
+
+    .input-control-container .input-control input::-moz-placeholder {
+        color: #0E88AD;
+    }
+
+    .input-control-container .input-control input:-ms-input-placeholder {
+        color: #0E88AD;
+    }
+
+    .input-control-container .input-control input::-ms-input-placeholder {
+        color: #0E88AD;
+    }
+
+    .input-control-container .input-control input::placeholder {
+        color: #0E88AD;
+    }
+
+    .input-control-container .input-control .extra-icon {
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        font-size: 1.5rem;
+        cursor: pointer;
+        background-color: inherit;
+    }
+
+    .input-control-container .error-message {
+        color: #B3261E;
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+        text-align: right;
+    }
+</style>
+
+<div class="input-control-container">
+    <div class="input-control invalid-input">
+        <label for="search-input">الرقم القومي</label>
+        <div class="icon">
+            <img src="/icons/national-id-icon.svg" alt="">
+        </div>
+        <div class="seperator">
+
+        </div>
+        <input type="text" id="search-input" placeholder="أدخل الرقم القومي...">
+    </div>
+    <p class="error-message">كلمة المرور التي ادخلتها غير صحيحة</p>
+</div>

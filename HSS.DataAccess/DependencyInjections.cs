@@ -1,13 +1,11 @@
 ﻿using HSS.DataAccess.Contexts;
+using HSS.DataAccess.Helpers;
 using HSS.DataAccess.Interceptors;
+using HSS.DataAccess.Repositories;
+using HSS.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HSS.DataAccess
 {
@@ -16,7 +14,11 @@ namespace HSS.DataAccess
         public static IServiceCollection AddDataAccessServices(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("default");
+            services.AddScoped<IUserIdentityRepository, UserIdentityRepository>();
+            services.AddScoped<IUserLogRepository, UserLogRepository>();
             services.AddScoped<SoftDeleteInterceptor>();
+            services.AddScoped<Helper>();
+            services.AddSingleton<AccountServicesHelpers>();
             services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
             {
                 var softDeleteInterceptor = serviceProvider.GetRequiredService<SoftDeleteInterceptor>();

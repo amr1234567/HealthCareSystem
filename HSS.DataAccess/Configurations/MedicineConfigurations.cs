@@ -15,8 +15,8 @@ namespace HSS.DataAccess.Configurations
               .HasConversion(
                       data => data.ToString(),
                       data => (MedicinesType)Enum.Parse(typeof(MedicinesType), data));
-            builder.HasMany<SideEffect>()
-               .WithMany()
+            builder.HasMany<SideEffect>(m => m.SideEffects)
+               .WithMany(s => s.Medicines)
                .UsingEntity<SideEffectMedicine>(join =>
                {
                    join.HasOne(j => j.SideEffect)

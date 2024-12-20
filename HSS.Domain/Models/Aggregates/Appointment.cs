@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HSS.Domain.Models.Aggregates
+﻿namespace HSS.Domain.Models.Aggregates
 {
     public class Appointment : BaseClass<int>
     {
@@ -19,15 +13,15 @@ namespace HSS.Domain.Models.Aggregates
         [AllowNull, MaxLength(600)]
         public string Notes { get; set; }
 
-        [Required]  // Ensures this field is mandatory
+        [Required]
         [DataType(DataType.DateTime)]
         public DateTime AppointmentDate { get; set; }
 
-        [Required]  // Ensures this field is mandatory
+        [Required]
         [DataType(DataType.DateTime)]
         public DateTime CreatedAt { get; set; }
 
-        [Required]  // Ensures this field is mandatory
+        [Required]
         [DataType(DataType.DateTime)]
         public DateTime UpdatedAt { get; set; }
 

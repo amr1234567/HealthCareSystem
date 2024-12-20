@@ -3,7 +3,7 @@ using HSS.Domain.ObjectValues;
 
 namespace HSS.Domain.IdentityModels
 {
-    public class Patient : IdentityUser<int>
+    public class Patient : IdentityUser
     {
         [Required]
         [DataType(DataType.Date)]
@@ -11,22 +11,24 @@ namespace HSS.Domain.IdentityModels
 
         [Required]
         [Range(0, 1, ErrorMessage = "Sex must be either 0 (female) or 1 (male).")]
-        public SexType Sex { get; set; }
+        public Gender Sex { get; set; }
 
-        [Required]
-        public AgeGroup AgeCategory { get; set; }
+        [AllowNull]
+        public AgeGroup? AgeCategory { get; set; }
 
-        [Required]
-        public EducationLevel EducationLevel { get; set; }
+        [AllowNull]
+        public EducationLevel? EducationLevel { get; set; }
 
-        [Required]
-        public IncomeCategory IncomeCategory { get; set; }
+        [AllowNull]
+        public IncomeCategory? IncomeCategory { get; set; }
 
         [Required]
         public PatientAddress Address { get; set; }
 
-        [Required]
-        public int PatientMediacalDetailsId { get; set; }
+        [AllowNull]
+        public int? PatientMediacalDetailsId { get; set; }
+
+        [AllowNull]
         public PatientMediacalDetails PatientMediacalDetails { get; set; }
     }
 }

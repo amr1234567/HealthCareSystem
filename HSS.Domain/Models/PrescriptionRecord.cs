@@ -1,4 +1,6 @@
-﻿namespace HSS.Domain.Models.Aggregates
+﻿using HSS.Domain.Models.Aggregates;
+
+namespace HSS.Domain.Models
 {
     public class PrescriptionRecord : BaseClass<int>
     {
@@ -10,7 +12,7 @@
 
         [Required, EnumDataType(typeof(MedicineUnitType))]
         public MedicineUnitType MedicineUnitType { get; set; }
-        
+
         [Required, Range(0, int.MaxValue)]
         public int NumberOfUnits { get; set; }
 
@@ -24,7 +26,7 @@
         public DispenseStatus DispenseStatus { get; set; } = DispenseStatus.NotDispensed;
 
         [AllowNull, DataType(DataType.DateTime)]
-        public DateTime DispensedDate { get; set; }  
+        public DateTime DispensedDate { get; set; }
 
         [AllowNull, Range(0, int.MaxValue)]
         public int DispensedAmount { get; set; }
@@ -34,6 +36,8 @@
 
         [Required, Range(0, int.MaxValue)]
         public int TimesOfDispensed { get; set; } = 0; // ديه انا عايز اقول عدد المرات اللي راح فيها للصيدلية عشان يصرف من الدواء ده لحد ما خلص الكمية اللي الدكتور قال عليها
+    
+        public List<PrescriptionRecord> PrescriptionRecords { get; set; }
     }
 
 }

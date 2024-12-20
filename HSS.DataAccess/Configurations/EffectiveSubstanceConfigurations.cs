@@ -10,8 +10,8 @@ namespace HSS.DataAccess.Configurations
         public void Configure(EntityTypeBuilder<EffectiveSubstance> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.HasMany<SideEffect>()
-               .WithMany()
+            builder.HasMany<SideEffect>(e => e.SideEffects)
+               .WithMany(s => s.EffectiveSubstances)
                .UsingEntity<SideEffectEffectiveSubstance>(
                   join => join.HasOne(j => j.SideEffect)
                        .WithMany()
@@ -26,8 +26,8 @@ namespace HSS.DataAccess.Configurations
                   join => join.HasKey(j => new { j.SideEffectId, j.EffectiveSubstanceId }));
 
 
-            builder.HasMany<Medicine>()
-                .WithMany()
+            builder.HasMany<Medicine>(e => e.Medicines)
+                .WithMany(m => m.EffectiveSubstances)
                 .UsingEntity<EffectiveSubstanceMedicine>(
                    join => join.HasOne(j => j.Medicine)
                         .WithMany()

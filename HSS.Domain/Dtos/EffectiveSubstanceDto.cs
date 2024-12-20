@@ -12,6 +12,6 @@ namespace HSS.Domain.Dtos
         public string Name { get; set; }
         public string Description { get; set; }
         public string ChemicalFormula { get; set; }
-        public List<SideEffectEffectiveSubstance> SideEffects { get; set; }
+        public List<SideEffectDto> SideEffects { get; set; }
     }
 }

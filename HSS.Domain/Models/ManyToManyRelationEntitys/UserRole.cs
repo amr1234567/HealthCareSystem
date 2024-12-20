@@ -4,7 +4,7 @@
     {
         [Required]
         public int UserId { get; set; }
-        public IdentityUser<int> User { get; set; }
+        public IdentityUser User { get; set; }
 
         [Required]
         public int RoleId { get; set; }

@@ -14,10 +14,9 @@ namespace HSS.Domain.Models.Aggregates
         public int ClinicId { get; set; }
         public Clinic Clinic { get; set; }
 
-        [Required]  // Ensures this field cannot be null
-        [Range(1, int.MaxValue, ErrorMessage = "DoctorId must be a positive integer.")]
-        public int DoctorId { get; set; }
-        public Doctor Doctor { get; set; }
+        [AllowNull]  // Ensures this field cannot be null
+        public int? DoctorId { get; set; }
+        public Doctor? Doctor { get; set; }
 
         [Required]  // Ensures this field cannot be null
         [StringLength(500, ErrorMessage = "Reason for visit cannot exceed 500 characters.")]
@@ -54,6 +53,8 @@ namespace HSS.Domain.Models.Aggregates
         [AllowNull]
         public int ClinicAppointmentIdRelatedTo { get; set; }
         public ClinicAppointment? ClinicAppointmentRelatedTo { get; set; }
+
+        public bool IsStarted { get; set; } = false;
 
         public bool IsEnd
         {

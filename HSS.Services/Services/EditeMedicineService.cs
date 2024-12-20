@@ -47,7 +47,7 @@ namespace HSS.Services.Services
                         .SetProperty(m => m.Description, newMedicine.Description)
                         .SetProperty(m => m.Type, newMedicine.Type)
                         .SetProperty(m => m.Manufacturer, newMedicine.Manufacturer)
-                        .SetProperty(m => m.EffectiveSubstanceM, newMedicine.EffectiveSubstanceM)
+                        .SetProperty(m => m.EffectiveSubstances, newMedicine.EffectiveSubstance)
                         .SetProperty(m => m.SideEffects, newMedicine.SideEffects)
                         .SetProperty(m => m.ApprovalDate, newMedicine.ApprovalDate)
                         .SetProperty(m => m.StorageConditions, newMedicine.StorageConditions)

@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HSS.Services.SharedDto;
 
-namespace HSS.Domain.Helpers
+namespace HSS.Domain.Enums
 {
-    internal class Class1
+    public enum IdentityResult
     {
+        Success,
+        Fail
     }
 }

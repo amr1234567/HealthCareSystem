@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-namespace HSS.Services.Models
+
+namespace HSS.Domain.Helpers
 {
-    internal class Class1
+    public class CustomClaimType
     {
+        public const string NationalId = "NationalId";
     }
 }

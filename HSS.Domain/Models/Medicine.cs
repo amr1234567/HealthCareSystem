@@ -19,8 +19,6 @@ namespace HSS.Domain.Models
         [StringLength(200)]
         public string Manufacturer { get; set; }
 
-        public List<EffectiveSubstanceMedicine> EffectiveSubstanceM { get; set; }
-
         [Required]
         public int EffectiveSubstanceId { get; set; }
 
@@ -38,6 +36,8 @@ namespace HSS.Domain.Models
         [Required]
         [Range(0, double.MaxValue)]
         public float Cost { get; set; }
+        public List<EffectiveSubstance> EffectiveSubstances { get; set; }
         public List<SideEffect> SideEffects { get; set; }
+        public List<PrescriptionRecord> PrescriptionRecords { get; set; }
     }
 }

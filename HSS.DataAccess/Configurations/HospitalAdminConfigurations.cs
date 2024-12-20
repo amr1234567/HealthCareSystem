@@ -10,9 +10,9 @@ namespace HSS.DataAccess.Configurations
         public void Configure(EntityTypeBuilder<HospitalAdmin> builder)
         {
             builder.HasOne(b => b.Hospital)
-                .WithOne()
+                .WithOne(b => b.HospitalAdmin)
+                .IsRequired(false)
                 .HasForeignKey<HospitalAdmin>(a => a.HospitalId)
-                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

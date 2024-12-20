@@ -11,7 +11,7 @@ namespace HSS.Services.Abstractions
     {
         Task CreateEffectiveSubstance(CreateEffectiveSubstanceDto effectiveSubstance);
         Task<bool> DeleteEffectiveSubstance(int? id);
-        Task<IEnumerable<EffectiveSubstanceDto>> GetAllEffectiveSustance();
-        Task<EffectiveSubstanceDto> GetEffectiveSustanceById(int? id);
+        Task<IEnumerable<EffectiveSubstanceDto>> GetAllEffectiveSubstance();
+        Task<EffectiveSubstanceDto> GetEffectiveSubstanceById(int? id);
     }
 }

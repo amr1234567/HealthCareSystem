@@ -20,7 +20,7 @@ namespace HSS.Presentation.MVC
             });
 
             builder.Services.AddDataAccessServices(builder.Configuration)
-               .AddServiceLayerServices(builder.Configuration);
+               .AddServiceLayerServicesForMvc(builder.Configuration);
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -36,7 +36,7 @@ namespace HSS.Presentation.MVC
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseMvcAuth();
             app.UseStaticFiles();
             app.UseNToastNotify();
             app.MapControllerRoute(

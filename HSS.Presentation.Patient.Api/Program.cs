@@ -16,7 +16,7 @@ namespace HSS.Presentation.Patient.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddDataAccessServices(builder.Configuration)
-                .AddServiceLayerServices(builder.Configuration);
+                .AddServiceLayerServicesForApi(builder.Configuration);
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
@@ -30,7 +30,8 @@ namespace HSS.Presentation.Patient.Api
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseApiAuth();
+
 
 
             app.MapControllers();

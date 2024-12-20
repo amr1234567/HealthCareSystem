@@ -31,7 +31,7 @@ namespace HSS.Services.Services
                     DiscoveryDate = effectiveSubstance.DiscoveryDate,
                     ApprovedBy = effectiveSubstance.ApprovedBy,
                     StabilityConditions = effectiveSubstance.StabilityConditions,
-                    SideEffects = effectiveSubstance.SideEffects,
+                    SideEffects = effectiveSubstance.SideEffects.Select(s=> SideEffectDto.ToModel(s)).ToList(),
                     PrimaryUsage = effectiveSubstance.PrimaryUsage,
                     AlternativeNames = effectiveSubstance.AlternativeNames,
                 };
@@ -58,7 +58,7 @@ namespace HSS.Services.Services
             }
         }
 
-        public async Task<IEnumerable<EffectiveSubstanceDto>> GetAllEffectiveSustance()
+        public async Task<IEnumerable<EffectiveSubstanceDto>> GetAllEffectiveSubstance()
         {
             try
             {
@@ -68,7 +68,7 @@ namespace HSS.Services.Services
                             Name = x.Name,
                             Description = x.Description,
                             ChemicalFormula = x.ChemicalFormula,
-                            SideEffects = x.SideEffects.ToList(),
+                            SideEffects = x.SideEffects.Select(s => new SideEffectDto(s)).ToList(),
                         }).ToListAsync();
                 return effectiveSustances;
             }catch(Exception ex)
@@ -77,7 +77,7 @@ namespace HSS.Services.Services
             }
         }
 
-        public async Task<EffectiveSubstanceDto> GetEffectiveSustanceById(int? id)
+        public async Task<EffectiveSubstanceDto> GetEffectiveSubstanceById(int? id)
         {
             try
             {
@@ -94,7 +94,7 @@ namespace HSS.Services.Services
                     Name = e.Name,
                     Description = e.Description,
                     ChemicalFormula = e.ChemicalFormula,
-                    SideEffects = e.SideEffects.ToList(),
+                    SideEffects = e.SideEffects.Select(s => new SideEffectDto(s)).ToList(),
                 };
                 return effectiveSustance;
             }catch (Exception ex)

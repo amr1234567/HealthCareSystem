@@ -18,6 +18,7 @@ namespace HSS.Domain.Abstractions
         Task<IdentityCheckPasswordResult> CheckUserPassword(string userNationalId, string password);
 
         Task<IdentityResult> CreateNewAccount(IdentityUser user);
+        Task<IdentityResult> AssignUserToRole(IdentityUser user, params string[] roleNames);
 
         Task<IdentityResult> UpdateAccount(IdentityUser user);
         Task<IdentityResult> UpdateAccount(Expression<Func<IdentityUser, bool>> predicate, IdentityUser user);
@@ -36,5 +37,6 @@ namespace HSS.Domain.Abstractions
 
         Task<IdentityResult> UpdateAllWithFunc(Action<IdentityUser> value);
         Task<IdentityResult> UpdateByCriteriaWithFunc(Expression<Func<IdentityUser, bool>> criteria, Action<IdentityUser> action);
+        Task<IdentityResult> AssignUserToRole(IdentityUser user, params ApplicationRole[] roleNames);
     }
 }

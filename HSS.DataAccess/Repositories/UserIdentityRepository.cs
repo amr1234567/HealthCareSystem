@@ -4,6 +4,7 @@ using HSS.Domain.Abstractions;
 using HSS.Domain.BaseModels;
 using HSS.Domain.Enums;
 using HSS.Domain.Models;
+using HSS.Domain.Models.ManyToManyRelationEntitys;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -13,6 +14,60 @@ namespace HSS.DataAccess.Repositories
         (ApplicationDbContext context,AccountServicesHelpers accountServices, IUserLogRepository userLogRepository) :
         IUserIdentityRepository
     {
+        public async Task<IdentityResult> AssignUserToRole(IdentityUser user, params string[] roleNames)
+        {
+            ArgumentNullException.ThrowIfNull(user, nameof(user));
+            ArgumentNullException.ThrowIfNull(roleNames, nameof(roleNames));
+            if (roleNames.Length == 0)
+                return IdentityResult.Fail;
+            var checkUser = await GetIdentityUserById(user.Id);
+            if (checkUser is null)
+                return IdentityResult.Fail;
+            foreach (var roleName in roleNames)
+            {
+                if (!Enum.TryParse(typeof(ApplicationRole), roleName, out object roleNameParsed))
+                    return IdentityResult.Fail;
+
+                var role = await context.Roles.FirstOrDefaultAsync(r => r.RoleName == (ApplicationRole)roleNameParsed);
+                if (role is null)
+                    return IdentityResult.Fail;
+                var newUserRole = new UserRole
+                {
+                    RoleId = role.Id,
+                    UserId = user.Id,
+                };
+                await context.UserRoles.AddAsync(newUserRole);
+            }
+            await context.SaveChangesAsync();
+            return IdentityResult.Success;
+        }
+
+        public async Task<IdentityResult> AssignUserToRole(IdentityUser user, params ApplicationRole[] roleNames)
+        {
+            ArgumentNullException.ThrowIfNull(user, nameof(user));
+            ArgumentNullException.ThrowIfNull(roleNames, nameof(roleNames));
+
+            if (roleNames.Length == 0)
+                return IdentityResult.Fail;
+            var checkUser = await GetIdentityUserById(user.Id);
+            if (checkUser is null)
+                return IdentityResult.Fail;
+            foreach (var roleName in roleNames)
+            {
+                var role = await context.Roles.FirstOrDefaultAsync(r => r.RoleName == roleName);
+                if (role is null)
+                    return IdentityResult.Fail;
+                var newUserRole = new UserRole
+                {
+                    RoleId = role.Id,
+                    UserId = user.Id,
+                };
+                await context.UserRoles.AddAsync(newUserRole);
+            }
+            await context.SaveChangesAsync();
+            return IdentityResult.Success;
+        }
+
         public Task<IdentityResult> BlockAccount(IdentityUser user)
         {
             throw new NotImplementedException();
@@ -59,7 +114,7 @@ namespace HSS.DataAccess.Repositories
             bool result = ComparePasswords(user.Password, password, user.Salt);
             if (result)
                 return IdentityCheckPasswordResult.Available;
-            return IdentityCheckPasswordResult.AccountHasNoPassword;
+            return IdentityCheckPasswordResult.NotFound;
         }
 
         public async Task<IdentityResult> CreateNewAccount(IdentityUser model)
@@ -230,7 +285,7 @@ namespace HSS.DataAccess.Repositories
 
         private bool ComparePasswords(string originalPassword, string comparablePassword, string salt)
         {
-            string hashedGivenPassword = accountServices.HashPasswordWithSalt(comparablePassword, salt);
+            string hashedGivenPassword = accountServices.HashPasswordWithSalt(salt, comparablePassword);
             return originalPassword.Equals(hashedGivenPassword);
         }
 

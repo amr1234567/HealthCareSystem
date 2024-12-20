@@ -76,13 +76,28 @@ namespace HSS.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "IdentityUsers",
-                columns: new[] { "Id", "ContactNumber", "CreatedAt", "Discriminator", "Email", "ExpirationOfRefreshToken", "HospitalAdmin_HospitalId", "IsDeleted", "Name", "NationalId", "Password", "RefreshToken", "Salt", "UpdatedAt" },
-                values: new object[] { 1, null, new DateTime(2024, 12, 20, 8, 51, 14, 361, DateTimeKind.Utc).AddTicks(1770), "HospitalAdmin", "admin@hospital.com", null, 1, false, "Admin User", "12345678901234", "DuMNMjf83fqBhMioLbS2Mc3lOur1DtTQceSk63RWQX0=", null, "jcEClrARnDw8L47hrgbQyQ==", null });
+                columns: new[] { "Id", "ContactNumber", "CreatedAt", "Discriminator",
+                    "Email", "ExpirationOfRefreshToken", "HospitalAdmin_HospitalId", 
+                    "IsDeleted", "Name", "NationalId", "Password", "RefreshToken", "Salt",
+                    "UpdatedAt" },
+                values: new object[] { 1, null, 
+                    new DateTime(2024, 12, 20, 8, 51, 14, 361, DateTimeKind.Utc).AddTicks(1770),
+                    "HospitalAdmin", "admin@hospital.com", null, 1, false, "Admin User",
+                    "12345678901234", "DuMNMjf83fqBhMioLbS2Mc3lOur1DtTQceSk63RWQX0=", null, 
+                    "jcEClrARnDw8L47hrgbQyQ==", null });
 
             migrationBuilder.InsertData(
                 table: "IdentityUsers",
-                columns: new[] { "Id", "AgeCategory", "ContactNumber", "CreatedAt", "DateOfBirth", "Discriminator", "EducationLevel", "Email", "ExpirationOfRefreshToken", "IncomeCategory", "IsDeleted", "Name", "NationalId", "Password", "PatientMediacalDetailsId", "RefreshToken", "Salt", "Sex", "UpdatedAt" },
-                values: new object[] { 4, null, "123-456-7890", new DateTime(2024, 12, 20, 8, 51, 14, 361, DateTimeKind.Utc).AddTicks(2108), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Patient", null, "jane.doe@hospital.com", null, null, false, "Jane Doe", "33333333333333", "DuMNMjf83fqBhMioLbS2Mc3lOur1DtTQceSk63RWQX0=", null, null, "jcEClrARnDw8L47hrgbQyQ==", "Male", null });
+                columns: new[] { "Id", "AgeCategory", "ContactNumber", 
+                    "CreatedAt", "DateOfBirth", "Discriminator", "EducationLevel", "Email",
+                    "ExpirationOfRefreshToken", "IncomeCategory", "IsDeleted", "Name", "NationalId",
+                    "Password", "PatientMediacalDetailsId", "RefreshToken", "Salt", "Sex", "UpdatedAt" },
+                values: new object[] { 4, null, "123-456-7890",
+                    new DateTime(2024, 12, 20, 8, 51, 14, 361, DateTimeKind.Utc).AddTicks(2108),
+                    new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Patient", null, 
+                    "jane.doe@hospital.com", null, null, false, "Jane Doe", "33333333333333",
+                    "DuMNMjf83fqBhMioLbS2Mc3lOur1DtTQceSk63RWQX0=", null, null, "jcEClrARnDw8L47hrgbQyQ==",
+                    "Male", null });
 
             migrationBuilder.InsertData(
                 table: "Roles",
@@ -97,8 +112,17 @@ namespace HSS.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "Hospitals",
-                columns: new[] { "Id", "BedAvailability", "Capacity", "ContactNumber", "DepartmentsCount", "Email", "EndAt", "EstablishedDate", "HospitalAdminId", "IsDeleted", "Latitude", "LicenseNumber", "Location", "Longitude", "Name", "NumberOfDoctors", "NumberOfNurses", "Rating", "StartAt", "TaxIdentificationNumber", "WebsiteUrl" },
-                values: new object[] { 1, 100, 300, "123-456-7890", 10, "info@centralhospital.com", new TimeSpan(0, 18, 0, 0, 0), new DateTime(1974, 12, 20, 10, 51, 14, 361, DateTimeKind.Local).AddTicks(1886), 1, false, 40.7128f, "HOSP123456", "123 Main St", -74.006f, "Central Hospital", 50, 100, 4.5f, new TimeSpan(0, 8, 0, 0, 0), "TAX123456", "http://www.centralhospital.com" });
+                columns: new[] { "Id", "BedAvailability", "Capacity", 
+                    "ContactNumber", "DepartmentsCount", "Email", "EndAt", 
+                    "EstablishedDate", "HospitalAdminId", "IsDeleted", "Latitude",
+                    "LicenseNumber", "Location", "Longitude", "Name", "NumberOfDoctors",
+                    "NumberOfNurses", "Rating", "StartAt", "TaxIdentificationNumber", "WebsiteUrl" },
+                values: new object[] { 1, 100, 300, "123-456-7890", 10, 
+                    "info@centralhospital.com", new TimeSpan(0, 18, 0, 0, 0),
+                    new DateTime(1974, 12, 20, 10, 51, 14, 361, DateTimeKind.Local).AddTicks(1886), 1,
+                    false, 40.7128f, "HOSP123456", "123 Main St", -74.006f,
+                    "Central Hospital", 50, 100, 4.5f, new TimeSpan(0, 8, 0, 0, 0), "TAX123456"
+                    , "http://www.centralhospital.com" });
 
             migrationBuilder.InsertData(
                 table: "UserRoles",
@@ -121,8 +145,13 @@ namespace HSS.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "IdentityUsers",
-                columns: new[] { "Id", "ContactNumber", "CreatedAt", "Discriminator", "Email", "ExpirationOfRefreshToken", "IsDeleted", "Name", "NationalId", "Password", "ReceptionId", "RefreshToken", "Salt", "UpdatedAt", "Receptionist_WorkingTime" },
-                values: new object[] { 2, null, new DateTime(2024, 12, 20, 8, 51, 14, 361, DateTimeKind.Utc).AddTicks(1997), "Receptionist", null, null, false, "receptionist1", "11111111111111", "DuMNMjf83fqBhMioLbS2Mc3lOur1DtTQceSk63RWQX0=", 1, null, "jcEClrARnDw8L47hrgbQyQ==", null, new TimeSpan(0, 9, 0, 0, 0) });
+                columns: new[] { "Id", "ContactNumber", "CreatedAt", "Discriminator",
+                    "Email", "ExpirationOfRefreshToken", "IsDeleted", "Name", "NationalId",
+                    "Password", "ReceptionId", "RefreshToken", "Salt", "UpdatedAt", 
+                    "Receptionist_WorkingTime" },
+                values: new object[] { 2, null, 
+                    new DateTime(2024, 12, 20, 8, 51, 14, 361, DateTimeKind.Utc).AddTicks(1997),
+                    "Receptionist", null, null, false, "receptionist1", "11111111111111", "DuMNMjf83fqBhMioLbS2Mc3lOur1DtTQceSk63RWQX0=", 1, null, "jcEClrARnDw8L47hrgbQyQ==", null, new TimeSpan(0, 9, 0, 0, 0) });
 
             migrationBuilder.InsertData(
                 table: "IdentityUsers",

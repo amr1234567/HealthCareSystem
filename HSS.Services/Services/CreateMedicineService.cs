@@ -30,7 +30,7 @@ namespace HSS.Services.Services
                         Description = newMedicine.Description,
                         Type = newMedicine.Type,
                         Manufacturer = newMedicine.Manufacturer,
-                        EffectiveSubstanceM = newMedicine.EffectiveSubstanceM,
+                        EffectiveSubstances = newMedicine.EffectiveSubstance,
                         SideEffects = newMedicine.SideEffects,
                         ApprovalDate = newMedicine.ApprovalDate,
                         StorageConditions = newMedicine.StorageConditions,

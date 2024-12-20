@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HSS.Domain.Abstractions
+namespace HSS.Services.Abstractions
 {
-    internal class Class1
+    public interface IReceptionService
     {
     }
 }

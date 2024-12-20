@@ -1,6 +1,6 @@
 ﻿namespace HSS.Domain.Enums
 {
-    public enum MedicineType
+    public enum MedicinesType
     {
         Tablet
     }

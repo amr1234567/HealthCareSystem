@@ -42,7 +42,10 @@ namespace HSS.DataAccess.Repositories
             return sideEffect;
         }
 
-       
+        public Task UpdateSideEffectAsync(SideEffect effect, int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

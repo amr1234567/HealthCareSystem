@@ -31,5 +31,6 @@
         public string Notes { get; set; }
 
         public List<EffectiveSubstance> EffectiveSubstances { get; set; }
+        public List<Medicine> Medicines { get; set; }
     }
 }

@@ -6,7 +6,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
 	ProjectSection(SolutionItems) = preProject
 		ProjectDocs\ai_strucure.yaml = ProjectDocs\ai_strucure.yaml
+		FrontEndComponents\components\appoinments-list.html = FrontEndComponents\components\appoinments-list.html
+		FrontEndComponents\components\button.html = FrontEndComponents\components\button.html
 		ProjectDocs\erd.drawio = ProjectDocs\erd.drawio
+		FrontEndComponents\components\input.html = FrontEndComponents\components\input.html
+		FrontEndComponents\components\Profile-preview.html = FrontEndComponents\components\Profile-preview.html
 		ProjectDocs\structure.yaml = ProjectDocs\structure.yaml
 	EndProjectSection
 EndProject

@@ -15,7 +15,7 @@ namespace HSS.Domain.Dtos
         public string Description { get; set; }
         public float Cost { get; set; }
         public string Manufacturer {  get; set; }
-        public List<EffectiveSubstanceMedicine> EffectiveSubstanceM { get; set; }
+        public List<EffectiveSubstance> EffectiveSubstances { get; set; }
         public List<SideEffect> SideEffects { get; set; }
         public MedicinesType Type { get; set; }
         public string StorageConditions { get; set; }

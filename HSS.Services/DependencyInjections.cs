@@ -1,7 +1,10 @@
 ﻿using HSS.Domain.Helpers;
 using HSS.Services.Abstractions;
 using HSS.Services.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -12,21 +15,64 @@ namespace HSS.Services
 {
     public static class DependencyInjections
     {
-        public static IServiceCollection AddServiceLayerServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddServiceLayerServicesForApi(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<ITokenServices, TokenServices>();
-            services.AddScoped<IUserIdentityServices, UserIdentityServices>();
-
             services.Configure<JwtHelper>(configuration.GetSection("Jwt"));
 
             var jwtConfig = new JwtHelper();
             configuration.GetSection("Jwt").Bind(jwtConfig);
-            services.AddAuthServices(jwtConfig);
+            services.AddServiceLayerServices(configuration);
+            services.AddAuthServicesForApi(jwtConfig);
 
             return services;
         }
 
-        private static IServiceCollection AddAuthServices(this IServiceCollection services, JwtHelper jwtConfig)
+        public static IServiceCollection AddServiceLayerServicesForMvc(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<CookieConfiguration>(configuration.GetSection(nameof(CookieConfiguration)));
+            services.AddHttpContextAccessor();
+            services.AddAuthServicesForMvc();
+            services.AddScoped<CustomSignInManager>();
+            services.AddServiceLayerServices(configuration);
+
+            return services;
+        }
+
+        
+        public static WebApplication UseApiAuth(this WebApplication app)
+        {
+            app.UseAuthentication();
+            app.UseAuthorization();
+            return app;
+        }
+
+        public static WebApplication UseMvcAuth(this WebApplication app)
+        {
+            app.UseAuthentication();
+            app.UseAuthorization();
+            var cookiePolicyOptions = new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Strict,
+                Secure = CookieSecurePolicy.SameAsRequest
+            };
+            app.UseCookiePolicy(cookiePolicyOptions);
+            return app;
+        }
+
+
+
+        private static IServiceCollection AddServiceLayerServices
+            (this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddScoped<ITokenServices, TokenServices>();
+            services.AddScoped<IReceptionServices, ReceptionServices>();
+            services.AddScoped(typeof(IUserIdentityServices<>), typeof(UserIdentityServices<>));
+            services.AddAutoMapper(r => { });
+            return services;
+        }
+
+        private static IServiceCollection AddAuthServicesForApi
+            (this IServiceCollection services, JwtHelper jwtConfig)
         {
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
@@ -64,6 +110,23 @@ namespace HSS.Services
                 });
             return services;
         }
+   
+        private static IServiceCollection AddAuthServicesForMvc(this IServiceCollection services)
+        {
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                {
+
+                    options.LoginPath = "/Home/Login";
+                    options.AccessDeniedPath = "/Home/UnAuthAccess";
+                    options.LogoutPath = "/Home/Logout";
+
+                });
+            return services;
+        }
+    
+        
     }
 }
  

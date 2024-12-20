@@ -25,7 +25,7 @@ namespace HSS.Domain.Dtos
         [StringLength(200)]
         public string Manufacturer { get; set; }
 
-        public List<EffectiveSubstanceMedicine> EffectiveSubstanceM { get; set; }
+        public List<EffectiveSubstance> EffectiveSubstance { get; set; }
 
         [Required]
         [DataType(DataType.DateTime)]

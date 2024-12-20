@@ -27,7 +27,7 @@ namespace HSS.Domain.Dtos
         
         public string StabilityConditions { get; set; }
 
-        public List<SideEffectEffectiveSubstance> SideEffects { get; set; }
+        public List<SideEffectDto> SideEffects { get; set; }
 
        
         public string PrimaryUsage { get; set; }

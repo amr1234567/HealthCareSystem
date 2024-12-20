@@ -13,8 +13,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HSS.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241209070546_Initial")]
-    partial class Initial
+    [Migration("20241214164724_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -158,9 +158,6 @@ namespace HSS.DataAccess.Migrations
                     b.Property<int>("ClinicAppointmentId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ClinicAppointmentId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("DispenseStatus")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -199,13 +196,16 @@ namespace HSS.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("TreatmentId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClinicAppointmentId");
 
-                    b.HasIndex("ClinicAppointmentId1");
-
                     b.HasIndex("MedicineId");
+
+                    b.HasIndex("TreatmentId");
 
                     b.ToTable("PrescriptionRecord");
                 });
@@ -234,6 +234,9 @@ namespace HSS.DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("MedicalDepartment")
+                        .HasColumnType("int");
 
                     b.Property<int>("SpecializationId")
                         .HasColumnType("int");
@@ -1207,6 +1210,19 @@ namespace HSS.DataAccess.Migrations
                     b.ToTable("Symptoms");
                 });
 
+            modelBuilder.Entity("HSS.Domain.Models.Treatment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Treatment");
+                });
+
             modelBuilder.Entity("HSS.Domain.Models.UserLog", b =>
                 {
                     b.Property<int>("Id")
@@ -1524,6 +1540,9 @@ namespace HSS.DataAccess.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<int>("TreatmentId")
+                        .HasColumnType("int");
+
                     b.HasIndex("ClinicAppointmentIdRelatedTo")
                         .IsUnique()
                         .HasFilter("[ClinicAppointmentIdRelatedTo] IS NOT NULL");
@@ -1533,6 +1552,8 @@ namespace HSS.DataAccess.Migrations
                     b.HasIndex("DoctorId");
 
                     b.HasIndex("PatientId");
+
+                    b.HasIndex("TreatmentId");
 
                     b.HasDiscriminator().HasValue("ClinicAppointment");
                 });
@@ -1641,15 +1662,15 @@ namespace HSS.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("HSS.Domain.Models.Aggregates.ClinicAppointment", null)
-                        .WithMany("PrescriptionRecords")
-                        .HasForeignKey("ClinicAppointmentId1");
-
                     b.HasOne("HSS.Domain.Models.Medicine", "Medicine")
                         .WithMany()
                         .HasForeignKey("MedicineId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("HSS.Domain.Models.Treatment", null)
+                        .WithMany("PrescriptionRecords")
+                        .HasForeignKey("TreatmentId");
 
                     b.Navigation("ClinicAppointment");
 
@@ -1779,7 +1800,7 @@ namespace HSS.DataAccess.Migrations
                         .IsRequired();
 
                     b.HasOne("HSS.Domain.Models.Medicine", null)
-                        .WithMany("EffectiveSubstance")
+                        .WithMany("EffectiveSubstanceM")
                         .HasForeignKey("MedicineId1");
 
                     b.Navigation("EffectiveSubstance");
@@ -2083,6 +2104,12 @@ namespace HSS.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("HSS.Domain.Models.Treatment", "Treatment")
+                        .WithMany()
+                        .HasForeignKey("TreatmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Clinic");
 
                     b.Navigation("ClinicAppointmentRelatedTo");
@@ -2090,6 +2117,8 @@ namespace HSS.DataAccess.Migrations
                     b.Navigation("Doctor");
 
                     b.Navigation("Patient");
+
+                    b.Navigation("Treatment");
                 });
 
             modelBuilder.Entity("HSS.Domain.Models.Aggregates.LabAppointment", b =>
@@ -2193,7 +2222,7 @@ namespace HSS.DataAccess.Migrations
 
             modelBuilder.Entity("HSS.Domain.Models.Medicine", b =>
                 {
-                    b.Navigation("EffectiveSubstance");
+                    b.Navigation("EffectiveSubstanceM");
 
                     b.Navigation("SideEffects");
                 });
@@ -2219,11 +2248,14 @@ namespace HSS.DataAccess.Migrations
                     b.Navigation("Receptionists");
                 });
 
+            modelBuilder.Entity("HSS.Domain.Models.Treatment", b =>
+                {
+                    b.Navigation("PrescriptionRecords");
+                });
+
             modelBuilder.Entity("HSS.Domain.Models.Aggregates.ClinicAppointment", b =>
                 {
                     b.Navigation("LabAppointments");
-
-                    b.Navigation("PrescriptionRecords");
 
                     b.Navigation("RadiologyAppointments");
                 });

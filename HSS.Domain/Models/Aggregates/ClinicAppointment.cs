@@ -30,7 +30,7 @@ namespace HSS.Domain.Models.Aggregates
         public int RadiologyAppointmentsNumberDone { get; set; }
 
         [AllowNull]
-        public List<PrescriptionRecord> PrescriptionRecords { get; set; }
+        public Treatment Treatment { get; set; }
 
         [Required]  // Ensures this field cannot be null
         public bool FollowUpNeeded { get; set; }

@@ -8,13 +8,9 @@ using System.Threading.Tasks;
 
 namespace HSS.Domain.BaseModels
 {
-    public class IdentityUser<T> : BaseClass<T> where T : struct
+    public class IdentityUser : BaseClass<int> 
     {
-       
-    }
-
-    public class IdentityUser : IdentityUser<int> {
-        [Required]
+       [Required]
         [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
         public string Name { get; set; }
 

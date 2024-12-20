@@ -15,6 +15,7 @@ namespace HSS.Services
         public static IServiceCollection AddServiceLayerServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<ITokenServices, TokenServices>();
+            services.AddScoped<IUserIdentityServices, UserIdentityServices>();
 
             services.Configure<JwtHelper>(configuration.GetSection("Jwt"));
 
@@ -53,6 +54,8 @@ namespace HSS.Services
                     cfg.SaveToken = true;
                     cfg.TokenValidationParameters = new TokenValidationParameters
                     {
+                        ValidateIssuer = !string.IsNullOrEmpty(jwtConfig.JwtIssuer),
+                        ValidateAudience = !string.IsNullOrEmpty(jwtConfig.JwtAudience),
                         ValidIssuer = jwtConfig.JwtIssuer,
                         ValidAudience = jwtConfig.JwtAudience,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.JwtKey)),

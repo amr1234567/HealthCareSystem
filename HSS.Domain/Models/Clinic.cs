@@ -8,9 +8,11 @@ namespace HSS.Domain.Models
         public Hospital Hospital { get; set; }
 
         public ClinicSpecialization Specialization { get; set; }
+
         [Required]
         [MaxLength(100)]
         public string SpecializationName { get; set; }
+
         [Required]
         public int SpecializationId { get; set; }
 

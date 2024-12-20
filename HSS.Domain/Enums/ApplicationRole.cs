@@ -10,6 +10,7 @@ namespace HSS.Domain.Enums
     {
         Patient,
         Doctor,
-        Admin
+        Admin,
+        Receptionist
     }
 }

@@ -99,6 +99,8 @@ namespace HSS.Services.Services
             var signInCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256Signature);
             var tokeOptions = new JwtSecurityToken(
                 claims: customClaims.Union(claims ?? []),
+                issuer: _jwtHelper.JwtIssuer,
+                audience: _jwtHelper.JwtAudience,
                 expires: DateTime.Now.AddMinutes(_jwtHelper.JwtExpireMinutes),
                 signingCredentials: signInCredentials
             );

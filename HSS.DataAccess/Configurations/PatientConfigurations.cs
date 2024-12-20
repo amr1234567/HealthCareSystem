@@ -13,7 +13,7 @@ namespace HSS.DataAccess.Configurations
             builder.HasOne(b => b.PatientMediacalDetails)
                 .WithOne(b => b.Patient)
                 .HasForeignKey<Patient>(a => a.PatientMediacalDetailsId)
-                .IsRequired()
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(b => b.AgeCategory)

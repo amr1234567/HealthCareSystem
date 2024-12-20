@@ -1,22 +1,193 @@
-html {
-  font-size: 14px;
+:root {
+    --primary-color: #0E88AD;
+    --error-color: #B3261E;
+    --text-color: #313131;
+    --font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    direction: rtl;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+/*Login Page*/
+.login-page {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding-top: 5rem;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+    .login-page .login-form {
+        width: 40%;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        padding: 0 5rem 0 8%;
+    }
+
+        .login-page .login-form > img {
+            width: fit-content;
+            margin-right: 1rem;
+        }
+
+        .login-page .login-form .intro {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.3rem;
+            letter-spacing: 1px;
+        }
+
+            .login-page .login-form .intro > * {
+                margin: 0;
+            }
+
+            .login-page .login-form .intro h2 {
+                font-size: 2rem;
+                font-weight: bold;
+            }
+
+            .login-page .login-form .intro p {
+                color: var(--text-color);
+            }
+
+        .login-page .login-form form{
+            display:flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .login-page .image-container {
+            width: 45%;
+            padding-left: 4rem;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .login-page .image-container img {
+            width: 100%;
+            border-radius: 1rem;
+        }
+
+/*Input Components*/
+.input-control-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-body {
-  margin-bottom: 60px;
+    .input-control-container .input-control {
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        height: fit-content;
+        border: 1px solid var(--primary-color);
+        gap: 1rem;
+        padding: 1rem;
+        position: relative;
+        z-index: 9;
+        background-color: white;
+        border-radius: 7px;
+        width: 100%;
+    }
+
+        .input-control-container .input-control.invalid-input {
+            border-color: var(--error-color);
+        }
+
+            .input-control-container .input-control.invalid-input .seperator {
+                background-color: var(--error-color);
+            }
+
+        .input-control-container .input-control:has(.extra-icon) input {
+            width: 60%;
+            outline: none;
+
+        }
+
+        .input-control-container .input-control label {
+            position: absolute;
+            color: var(--primary-color);
+            top: 0;
+            right: 35px;
+            transform: translateY(-50%);
+            display: block;
+            background-color: inherit;
+            z-index: 10;
+            padding: 0 0.5rem;
+        }
+
+        .input-control-container .input-control .seperator {
+            height: 35px;
+            width: 1px;
+            background-color: var(--primary-color);
+        }
+
+        .input-control-container .input-control input {
+            width: 100%;
+            padding: 0.5rem;
+            border: none;
+            background-color: inherit;
+            font-size: 1rem;
+            margin: 0;
+            outline: none;
+            transition: all 0.3s ease;
+            color: var(--primary-color);
+        }
+
+            .input-control-container .input-control input::placeholder {
+                color: var(--primary-color);
+            }
+
+        .input-control-container .input-control .extra-icon {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            cursor: pointer;
+            background-color: inherit;
+        }
+
+    .input-control-container .error-message {
+        color: var(--error-color);
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+        text-align: end;
+        margin-left: 1rem;
+    }
+    .input-control-container .error-message.hide {
+        display: none;
+    }
+
+/*Button components*/
+.button-container {
+    width: 100%;
 }
+
+    .button-container .custom-button {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        margin: 1rem auto;
+        background-color: var(--primary-color);
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: var(--font-family);
+    }
+
+        .button-container .custom-button.login {
+            padding: 1rem 7rem;
+        }
+
+        .button-container .custom-button:hover {
+            opacity: 0.7;
+        }

@@ -9,14 +9,14 @@ namespace HSS.Domain.Models
         public string Name { get; set; }
 
         [AllowNull, MaxLength(500)]
-        public string ChemicalFormula { get; set; }
+        public string? ChemicalFormula { get; set; }
 
         [AllowNull, MaxLength(500)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [AllowNull]
         [DataType(DataType.Time)]
-        public DateTime DiscoveryDate { get; set; }
+        public DateTime? DiscoveryDate { get; set; }
 
         [Required]
         public string ApprovedBy { get; set; }
@@ -24,12 +24,15 @@ namespace HSS.Domain.Models
         [Required, MaxLength(500)]
         public string StabilityConditions { get; set; }
 
-        public List<SideEffectEffectiveSubstance> SideEffects { get; set; }
+        public List<SideEffect> SideEffects { get; set; }
 
         [Required, MaxLength(300)]
         public string PrimaryUsage { get; set; }
         
         [AllowNull, MaxLength(500)]
-        public string AlternativeNames { get; set; }
+        public string? AlternativeNames { get; set; }
+
+        public List<Medicine> Medicines { get; set; }
+        public List<EffectiveSubstance> EffectiveSubstances { get; set; }
     }
 }

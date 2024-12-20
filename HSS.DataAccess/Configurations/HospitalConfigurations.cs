@@ -11,6 +11,13 @@ namespace HSS.DataAccess.Configurations
         public void Configure(EntityTypeBuilder<Hospital> builder)
         {
             builder.HasKey(x => x.Id);
+
+            builder.HasOne(b => b.HospitalAdmin)
+                .WithOne(b => b.Hospital)
+                .IsRequired(true)
+                .HasForeignKey<Hospital>(a => a.HospitalAdminId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.HasMany<ClinicSpecialization>()
                 .WithMany()
                 .UsingEntity<ClinicSpecializationHospital>(join =>

@@ -1,18 +1,51 @@
-﻿@model dynamic
+﻿@model LoginViewModel
 
 @{
-    Layout = null;
+    Layout = "_Layout";
 }
 
-<!DOCTYPE html>
+<main class="login-page">
+    <div class="login-form">
+        <img src="/images/logo.png" alt="" class="logo">
 
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
-<div>
-      
-</div>
-</body>
-</html>
+        <div class="intro">
+            <h2>تسجيل الدخول</h2>
+            <p>قم بتسجيل الدخول للوصول الي حسابك</p>
+        </div>
+        <form asp-action="Login">
+            <div class="input-control-container">
+                <div class="input-control @(ViewData.ModelState[nameof(Model.NationalId)]?.Errors.Count > 0 ? "invalid-input" : "")">
+                    <label asp-for="NationalId"></label>
+                    <div class="icon">
+                        <img src="/icons/national-id-icon.svg" alt="">
+                    </div>
+                    <div class="seperator">
+                    </div>
+                    <input asp-for="NationalId" placeholder="أدخل الرقم القومي...">
+                </div>
+                <span asp-validation-for="NationalId" class="error-message"></span>
+            </div>
+            <div class="input-control-container">
+                <div class="input-control @(ViewData.ModelState[nameof(Model.Password)]?.Errors.Count > 0 ? "invalid-input" : "")">
+                    <label asp-for="Password"></label>
+                    <div class="icon">
+                        <img src="/icons/national-id-icon.svg" alt="">
+                    </div>
+                    <div class="seperator">
+                    </div>
+                    <input asp-for="Password" placeholder="أدخل كلمة المرور ...">
+                </div>
+                <span asp-validation-for="Password" class="error-message"></span>
+            </div>
+            <p class="danger-link-button">
+                <a href=""></a>
+            </p>
+            <div class="button-container">
+                <button type="submit" class="custom-button login">تسجيل الدخول</button>
+            </div>
+        </form>
+    </div>
+    <div class="image-container">
+        <img src="/images/login-page-image.png" alt="">
+    </div>
+</main>

@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace HSS.Services.Services
 {
-    public class UserIdentityServices(IUserIdentityRepository userRepository, ITokenServices tokenServices)
+    public class UserIdentityServices(IUserIdentityRepository userRepository, ITokenServices tokenServices) : IUserIdentityServices
     {
         public async Task<TokenModel> Login(string nationalId, string password)
         {
@@ -18,18 +18,26 @@ namespace HSS.Services.Services
             var result = await userRepository.CheckUserPassword(user, password);
             if (result == IdentityCheckPasswordResult.NotFound)
                 throw new Exception("Id or password NOT CORRECT");
-            if(result == IdentityCheckPasswordResult.AccountHasNoPassword)
+            if (result == IdentityCheckPasswordResult.AccountHasNoPassword)
             {
                 ////TODO 
                 return new();
             }
+
+            var roles = await userRepository.GetUserRoles(user.Id);
+            if (roles.Count == 0)
+                throw new Exception("User has no role");
+
             var claims = new List<Claim>()
             {
                 new(CustomClaimType.NationalId, user.NationalId),
                 new(ClaimTypes.Name, user.Name),
                 new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(ClaimTypes.Email, user.Email),
+                new(ClaimTypes.MobilePhone, user.ContactNumber),
             };
-            foreach(var role in await userRepository.GetUserRoles(user.Id))
+
+            foreach (var role in roles)
             {
                 claims.Add(new(ClaimTypes.Role, role.RoleName.ToString()));
             }

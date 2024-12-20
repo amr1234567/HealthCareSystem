@@ -7,9 +7,11 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/HSS.Presentation.MVC.styles.css" asp-append-version="true" />
+    <link href="~/lib/toastify-js/toastify.css" rel="stylesheet" />
+    <link href="~/lib/toastify-js/toastify.min.css" rel="stylesheet" />
 </head>
 <body>
-    <header>
+    <!--<header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HSS.Presentation.MVC</a>
@@ -29,21 +31,76 @@
                 </div>
             </div>
         </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    </header>-->
+        <main role="main" class="">
             @RenderBody()
         </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
+   <!-- <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2024 - HSS.Presentation.MVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer>-->
+    @await Component.InvokeAsync("NToastNotify")
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/toastify-js/toastify.js"></script>
+    <script src="~/lib/toastify-js/toastify.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        
+        function showSuccessMessage(text, time = 2000){
+            Toastify({
+              text,
+              duration: time,
+              newWindow: true,
+              close: true,
+              gravity: "top", // `top` or `bottom`
+              position: "right", // `left`, `center` or `right`
+              stopOnFocus: true, // Prevents dismissing of toast on hover
+              style: {
+                background: "green",
+              },
+              onClick: function(){} 
+            }).showToast();
+        }
+
+        function showErrorMessage(text, time = 2000){
+            Toastify({
+              text,
+              duration: time,
+              newWindow: true,
+              close: true,
+              gravity: "top", // `top` or `bottom`
+              position: "right", // `left`, `center` or `right`
+              stopOnFocus: true, // Prevents dismissing of toast on hover
+              style: {
+                background: "red",
+              },
+              onClick: function(){}
+            }).showToast();
+        }
+
+        function showWarningMessage(text, time = 2000){
+            Toastify({
+              text,
+              duration: time,
+              newWindow: true,
+              close: true,
+              gravity: "top", // `top` or `bottom`
+              position: "right", // `left`, `center` or `right`
+              stopOnFocus: true, // Prevents dismissing of toast on hover
+              style: {
+                background: "orange",
+              },
+              onClick: function(){}
+            }).showToast();
+        }
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

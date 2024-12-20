@@ -30,10 +30,8 @@ namespace HSS.Domain.Models
         [DataType(DataType.DateTime)]
         public DateTime EstablishedDate { get; set; }
 
-        [Required]
-        public int HospitalAdminId { get; set; }
-        [ForeignKey(nameof(HospitalAdminId))]
         public HospitalAdmin HospitalAdmin { get; set; }
+        public int HospitalAdminId { get; set; }
 
         [Required]
         [DataType(DataType.Time)]
@@ -69,7 +67,7 @@ namespace HSS.Domain.Models
 
         [AllowNull]
         [Url(ErrorMessage = "Invalid URL.")]
-        public string WebsiteUrl { get; set; }
+        public string? WebsiteUrl { get; set; }
 
         [Required]
         [StringLength(50, ErrorMessage = "License number cannot exceed 50 characters.")]
@@ -77,7 +75,7 @@ namespace HSS.Domain.Models
 
         [AllowNull]
         [StringLength(50, ErrorMessage = "Tax identification number cannot exceed 50 characters.")]
-        public string TaxIdentificationNumber { get; set; }
+        public string? TaxIdentificationNumber { get; set; }
 
         [Required]
         [Range(0, 5, ErrorMessage = "Rating must be between 0 and 5.")]

@@ -1,4 +1,4 @@
-﻿namespace HSS.Domain.Models
+﻿namespace HSS.Domain.Enums
 {
     public enum ResearchStatus
     {

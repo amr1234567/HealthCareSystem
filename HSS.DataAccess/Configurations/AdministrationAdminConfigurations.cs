@@ -9,7 +9,7 @@ namespace HSS.DataAccess.Configurations
         public void Configure(EntityTypeBuilder<AdministrationAdmin> builder)
         {
             builder.HasOne(b => b.Administration)
-                .WithOne()
+                .WithOne(n => n.Admin)
                 .HasForeignKey<AdministrationAdmin>(a => a.AdministrationId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);

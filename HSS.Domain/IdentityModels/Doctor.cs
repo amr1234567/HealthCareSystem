@@ -2,7 +2,7 @@
 
 namespace HSS.Domain.IdentityModels
 {
-    public class Doctor : IdentityUser<int>
+    public class Doctor : IdentityUser
     {
         [Required]  // Ensures this field cannot be null
         [DataType(DataType.Date)]  // Ensures the date is in proper date format

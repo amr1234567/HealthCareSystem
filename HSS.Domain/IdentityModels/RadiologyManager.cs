@@ -2,7 +2,7 @@
 
 namespace HSS.Domain.IdentityModels
 {
-    public class RadiologyManager : IdentityUser<int>
+    public class RadiologyManager : IdentityUser
     {
         // Employment Info
         [DataType(DataType.DateTime)]

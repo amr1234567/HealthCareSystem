@@ -1,5 +1,5 @@
 ﻿using HSS.Domain.Enums;
-using HSS.Domain.Models.Aggregates;
+using HSS.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,13 +11,13 @@ namespace HSS.DataAccess.Configurations
         {
             builder.HasKey(b => b.Id);
             builder.HasOne(b => b.Medicine)
-                .WithMany()
+                .WithMany(m => m.PrescriptionRecords)
                 .HasForeignKey(a => a.MedicineId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(b => b.ClinicAppointment)
-              .WithMany()
+              .WithMany(p => p.PrescriptionRecords)
               .HasForeignKey(a => a.ClinicAppointmentId)
               .IsRequired()
               .OnDelete(DeleteBehavior.Restrict);

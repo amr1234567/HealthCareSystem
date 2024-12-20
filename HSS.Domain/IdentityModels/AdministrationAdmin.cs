@@ -2,7 +2,7 @@
 
 namespace HSS.Domain.IdentityModels
 {
-    public class AdministrationAdmin : IdentityUser<int>
+    public class AdministrationAdmin : IdentityUser
     {
         [Required]  // Ensures this field cannot be null
         public int AdministrationId { get; set; }

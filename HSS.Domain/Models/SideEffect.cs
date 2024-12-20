@@ -29,5 +29,7 @@
         [AllowNull]
         [StringLength(500, ErrorMessage = "Notes cannot be longer than 500 characters.")]
         public string Notes { get; set; }
+
+        public List<EffectiveSubstance> EffectiveSubstances { get; set; }
     }
 }

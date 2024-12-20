@@ -1,5 +1,6 @@
 using HSS.DataAccess;
 using HSS.Services;
+using NToastNotify;
 namespace HSS.Presentation.MVC
 {
     public class Program
@@ -9,9 +10,17 @@ namespace HSS.Presentation.MVC
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews().AddNToastNotifyToastr(new ToastrOptions
+            {
+                ProgressBar = false,
+                PositionClass = ToastPositions.TopRight
+            }).AddViewOptions(options =>
+            {
+                options.HtmlHelperOptions.ClientValidationEnabled = true;
+            });
+
             builder.Services.AddDataAccessServices(builder.Configuration)
-               .AddServiceLayerServices();
+               .AddServiceLayerServices(builder.Configuration);
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -28,10 +37,11 @@ namespace HSS.Presentation.MVC
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseStaticFiles();
+            app.UseNToastNotify();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Home}/{action=Login}/{id?}");
 
             app.Run();
         }

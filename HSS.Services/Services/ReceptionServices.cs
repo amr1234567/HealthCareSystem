@@ -5,6 +5,7 @@ using HSS.Domain.Models.Aggregates;
 using HSS.Services.Abstractions;
 using HSS.Services.Models;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace HSS.Services.Services
 {
@@ -84,5 +85,47 @@ namespace HSS.Services.Services
             var specializations = hospital.ClinicSpecializations.Select(s => new SpecializationDto(s));
             return specializations;
         }
+
+        public async Task<IEnumerable<ClinicDto>> GetClinicsByReceptionistIdAsync(int receptionistId, int specializationId)
+        {
+            var receptionist = await _context.Set<Receptionist>()
+               .Where(rs => rs.Id == receptionistId)
+               .Include(rs => rs.Reception)
+               .FirstOrDefaultAsync();
+
+            if (receptionist == null)
+                return [];
+
+            var clinics = await _context.Clinics
+              .Where(c => c.HospitalId == receptionist.Reception.HospitalId && c.SpecializationId == specializationId)
+              .Include(c => c.Specialization)
+              .Include(c => c.Hospital)
+              .Include(c => c.Doctors)
+              .ToListAsync();
+
+            var clinicDtos = new List<ClinicDto>();
+            foreach (var clinic in clinics)
+            {
+                var activeDoctor = await GetCurrentlyWorkingDoctorAsync(clinic.Id);
+                var doctorName = activeDoctor?.Name ?? "No doctor available";
+                clinicDtos.Add(new ClinicDto(clinic, doctorName));
+            }
+
+            return clinicDtos;
+        }
+
+        public async Task<DoctorDto> GetCurrentlyWorkingDoctorAsync(int clinicId)
+        {
+            var currentTime = DateTime.UtcNow.TimeOfDay;
+            var doctor = await _context.Set<Doctor>()
+                .Where(d => d.ClinicId == clinicId && d.StartAt <= currentTime && d.StartAt.Add(d.WorkingTime) >= currentTime)
+                .FirstOrDefaultAsync();
+
+            if (doctor == null)
+                return null;
+
+            return new DoctorDto(doctor);
+        }
+
     }
 }

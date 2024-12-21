@@ -11,6 +11,9 @@ namespace HSS.Domain.IdentityModels
         [DataType(DataType.Duration)] 
         public TimeSpan WorkingTime { get; set; }
 
+        [DataType(DataType.Time)]
+        public TimeSpan StartAt { get; set; }
+
         public Hospital Hospital { get; set; }
         [Required]
         public int HospitalId { get; set; }

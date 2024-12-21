@@ -7,7 +7,7 @@
     gap: 1.5rem;
 }
 
-.specialization-page-title {
+.title {
     text-align: center;
     margin: 1rem 0;
 }
@@ -23,6 +23,8 @@
 }
 
 .specialization-card {
+    text-decoration: none;
+    color: inherit;
     width: 20%;
     height: 200px;
     border-radius: 1rem;

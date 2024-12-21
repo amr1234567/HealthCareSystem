@@ -1,0 +1,44 @@
+﻿@model ListClinicsViewModel
+
+@{
+    Layout = "_MainPagesLayout";
+}
+<div class="clinics-page">
+    <h2>العيادات الطبية بالقسم</h2>
+
+
+    <div class="clinics-container">
+        <h2>جميع الحالات</h2>
+        <header>
+            <p class="type">اسم العيادة</p>
+            <p class="date">اسم الطبيب</p>
+            <p class="time">حالة العيادة</p>
+            <p class="patient-info">مواعيد العمل</p>
+        </header>
+        <main>
+            @foreach(var clinic in Model.Clinics)
+            {
+                <div class="row">
+                    <div class="type">
+                        <span class="type">@clinic.ClinicName</span>
+                        <span class="icon">
+                            @Html.Raw(clinic.SpecializationIcon)
+                        </span>
+                    </div>
+                    <div class="date">
+                        <span class="time">@clinic.StartAt</span>
+                        <span>@(" <--> ")</span>
+                        <span class="time">@clinic.FinishAt</span>
+                    </div>
+                    <div class="id">
+                        @(clinic.IsOpen ? "مفتوح": "مغلق")
+                    </div>
+                    <div class="name-info">
+                        <span class="name">@clinic.DoctorName</span>
+                    </div>
+                </div>
+
+            }
+        </main>
+    </div>
+</div>

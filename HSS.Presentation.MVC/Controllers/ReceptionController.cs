@@ -31,6 +31,25 @@ namespace HSS.Presentation.MVC.Controllers
             }
         }
 
+        public async Task<IActionResult> Clinics(int id)
+        {
+            try
+            {
+                var userId = GetUserId();
+                if (string.IsNullOrEmpty(userId) || !Int32.TryParse(userId, out int userIdAsInt))
+                    return RedirectToAction("UnAuthAccess", "Home");
+                var clinics = await _receptionServices.GetClinicsByReceptionistIdAsync(id, userIdAsInt);
+                return View(new ListClinicsViewModel(clinics));
+            }
+            catch (Exception ex)
+            {
+                _toastNotification.AddErrorToastMessage("حدث خطأ ما");
+                return BadRequest(new
+                {
+                    ex.Message
+                });
+            }
+        }
 
         private string GetUserId()
         {

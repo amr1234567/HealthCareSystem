@@ -36,7 +36,8 @@
             let appointmentButton = document.getElementById("appointments-button");
             let mainListAppointment = document.getElementById("main-list-appointment");
 
-            $("#appointments-button").click(function () {
+            appointmentButton.click(function () {
+                if(appointmentButton.classList.contains("active")) return;
                 appointmentButton.classList.add("active")
                 queueButton.classList.remove("active")
                 $.ajax({
@@ -51,7 +52,8 @@
                     }
                 })
             });
-            $("#queue-button").click(function () {
+            queueButton.click(function () {
+                if(queueButton.classList.contains("active")) return;
                 appointmentButton.classList.add("active")
                 queueButton.classList.remove("active")
                 $.ajax({

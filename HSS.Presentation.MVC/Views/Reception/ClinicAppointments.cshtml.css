@@ -1,6 +1,27 @@
 ﻿.appointments-page{
 
 }
+    .appointments-page > header {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 1rem;
+        width:100%;
+    }
+        .appointments-page > header > div {
+            display: flex;
+            width: 50%;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.1s ease-in-out;
+            border: 1px solid #0E88AD;
+        }
+
+            .appointments-page > header > div.active {
+                border-bottom: none;
+                opacity: 0.7;
+            }
 
 .appointments-table-as-grid {
     display: -webkit-box;
@@ -18,7 +39,6 @@
     .appointments-table-as-grid header {
         display: -ms-grid;
         display: grid;
-        -ms-grid-columns: 1fr 1% 1fr 1% 1fr 1% 1fr;
         grid-template-columns: repeat(4, 1fr);
         gap: 1%;
         background-color: #0E88AD;
@@ -46,7 +66,6 @@
             -webkit-box-align: center;
             -ms-flex-align: center;
             align-items: center;
-            -ms-grid-columns: 1fr 1% 1fr 1% 1fr 1% 1fr;
             grid-template-columns: repeat(4, 1fr);
             gap: 1%;
             border: 1px solid #0E88AD;

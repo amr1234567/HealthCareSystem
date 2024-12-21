@@ -1,4 +1,6 @@
 ﻿
+using HSS.Domain.IdentityModels;
+
 namespace HSS.Domain.Models
 {
     public class Clinic : BaseClass<int>
@@ -29,5 +31,6 @@ namespace HSS.Domain.Models
 
         [Required, Range(5, 90)]
         public int AppointmentDurationInMinutes { get; set; }
+        public List<Doctor> Doctors { get; set; }
     }
 }

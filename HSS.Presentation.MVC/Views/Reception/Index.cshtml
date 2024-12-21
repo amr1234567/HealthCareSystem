@@ -1,7 +1,31 @@
-﻿@*
+﻿@model ListSpecializationsViewModel
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
     Layout = "_MainPagesLayout";
 }
-<h1>Reception</h1>
+<div class="specialization-page">
+    <h2 class="specialization-page-title">جميع التخصصات بالمستشفي</h2>
+
+    <div class="specialization-container">
+        @if (Model.Specializations.Any())
+        {
+            @foreach (var specialization in Model.Specializations)
+            {
+                <div class="specialization-card">
+                    <div class="specialization-card-icon">
+                        @Html.Raw(specialization.SpecializationIcon)
+                    </div>
+                    <div class="specialization-card-body">
+                        <p>@specialization.SpecializationName</p>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p>لا يوجد تخصصات بالمستشفي</p>
+        }
+    </div>
+</div>

@@ -5,6 +5,7 @@ using HSS.DataAccess.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -12,9 +13,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HSS.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241221071120_AddSpecializationForHospital")]
+    partial class AddSpecializationForHospital
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -217,6 +220,9 @@ namespace HSS.DataAccess.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
+                    b.Property<int?>("HospitalId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Icon")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -230,6 +236,8 @@ namespace HSS.DataAccess.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("HospitalId");
 
                     b.ToTable("ClinicSpecializations");
 
@@ -1934,7 +1942,7 @@ namespace HSS.DataAccess.Migrations
                         .IsRequired();
 
                     b.HasOne("HSS.Domain.Models.ClinicSpecialization", "Specialization")
-                        .WithMany("Clinics")
+                        .WithMany()
                         .HasForeignKey("SpecializationId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1942,6 +1950,13 @@ namespace HSS.DataAccess.Migrations
                     b.Navigation("Hospital");
 
                     b.Navigation("Specialization");
+                });
+
+            modelBuilder.Entity("HSS.Domain.Models.ClinicSpecialization", b =>
+                {
+                    b.HasOne("HSS.Domain.Models.Hospital", null)
+                        .WithMany("ClinicSpecializations")
+                        .HasForeignKey("HospitalId");
                 });
 
             modelBuilder.Entity("HSS.Domain.Models.EffectiveSubstance", b =>
@@ -1971,8 +1986,7 @@ namespace HSS.DataAccess.Migrations
                     b.HasOne("HSS.Domain.IdentityModels.HospitalAdmin", "HospitalAdmin")
                         .WithOne("Hospital")
                         .HasForeignKey("HSS.Domain.Models.Hospital", "HospitalAdminId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("HospitalAdmin");
                 });
@@ -2236,13 +2250,13 @@ namespace HSS.DataAccess.Migrations
             modelBuilder.Entity("HSS.Domain.IdentityModels.Doctor", b =>
                 {
                     b.HasOne("HSS.Domain.Models.Clinic", "Clinic")
-                        .WithMany("Doctors")
+                        .WithMany()
                         .HasForeignKey("ClinicId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("HSS.Domain.Models.Hospital", "Hospital")
-                        .WithMany("Doctors")
+                        .WithMany()
                         .HasForeignKey("HospitalId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -2419,16 +2433,6 @@ namespace HSS.DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("HSS.Domain.Models.Clinic", b =>
-                {
-                    b.Navigation("Doctors");
-                });
-
-            modelBuilder.Entity("HSS.Domain.Models.ClinicSpecialization", b =>
-                {
-                    b.Navigation("Clinics");
-                });
-
             modelBuilder.Entity("HSS.Domain.Models.Disease", b =>
                 {
                     b.Navigation("EffectiveSubstances");
@@ -2441,7 +2445,7 @@ namespace HSS.DataAccess.Migrations
 
             modelBuilder.Entity("HSS.Domain.Models.Hospital", b =>
                 {
-                    b.Navigation("Doctors");
+                    b.Navigation("ClinicSpecializations");
                 });
 
             modelBuilder.Entity("HSS.Domain.Models.LabCenter", b =>

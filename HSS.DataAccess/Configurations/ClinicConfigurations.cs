@@ -16,7 +16,7 @@ namespace HSS.DataAccess.Configurations
                 .IsRequired();
 
             builder.HasOne(u => u.Specialization)
-               .WithMany()
+               .WithMany(s => s.Clinics)
                .HasForeignKey(u => u.SpecializationId)
                .OnDelete(DeleteBehavior.Restrict)
                .IsRequired();

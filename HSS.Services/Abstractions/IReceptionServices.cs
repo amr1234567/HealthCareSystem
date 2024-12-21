@@ -8,5 +8,6 @@ namespace HSS.Services.Abstractions
         Task<IEnumerable<ClinicDto>> GetClinics(int hospitalId, int specializationId);
         Task<ReceptionDto> GetReception(int hospitalId);
         Task<IEnumerable<SpecializationDto>> GetSpecializationsAsync(int hospitalId);
+        Task<IEnumerable<SpecializationDto>> GetSpecializationsByReceptionistIdAsync(int receptionistId);
     }
 }

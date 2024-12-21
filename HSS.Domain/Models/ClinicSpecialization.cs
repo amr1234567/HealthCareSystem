@@ -12,5 +12,11 @@ namespace HSS.Domain.Models
         public string Name { get; set; }
         [AllowNull, MaxLength(300)]
         public string Description { get; set; }
+
+        [DataType(DataType.Html)]
+        public string Icon { get; set; }
+
+        public List<Hospital> Hospitals { get; set; }
+        public List<Clinic> Clinics { get; set; }
     }
 }

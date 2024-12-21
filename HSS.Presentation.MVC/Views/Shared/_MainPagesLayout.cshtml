@@ -1,33 +1,27 @@
 ﻿@using HSS.Domain
 @{
-
+    Layout = "_Layout";
 }
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
-</head>
-<body>
-    <header class="main-page-header">
-        <img src="/images/logo.png" alt="Alternate Text" />
-        <div class="profile-preview">
-            <div class="image-circle">
-                <img src="" alt="">
-            </div>
-            <div class="content">
-                @if (User.IsInRole(RolesConstants.Receptionist))
-                {
-                    <p class="title">موظف</p>
-                }
-                <span>/</span>
-                <p class="name">@User.Identity.Name</p>
-            </div>
+<header class="main-page-header">
+    <div class="profile-preview">
+        <div class="image-circle">
+            <img src="" alt="">
         </div>
-    </header>
-    <main class="main-container">
-        @RenderBody()
-    </main>
-</body>
-</html>
+        <div class="content">
+            @if (User.IsInRole(RolesConstants.Receptionist))
+            {
+                <p class="title">موظف</p>
+            }
+            <span class="slash">/</span>
+            <p class="name">@User.Identity.Name</p>
+        </div>
+    </div>
+    <img class="logo" src="/images/logo.png" alt="Alternate Text" />
+
+</header>
+<main class="main-container">
+    @RenderBody()
+</main>
+
+@await RenderSectionAsync("Scripts", required: false)

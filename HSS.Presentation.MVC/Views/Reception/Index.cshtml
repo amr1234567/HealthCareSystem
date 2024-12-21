@@ -1,7 +1,52 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ListSpecializationsViewModel
 @{
     Layout = "_MainPagesLayout";
 }
-<h1>Reception</h1>
+<div class="specialization-page">
+    <h2 class="title">جميع التخصصات بالمستشفي</h2>
+
+    <div class="specialization-container">
+        @if (Model.Specializations.Any())
+        {
+            @foreach (var specialization in Model.Specializations)
+            {
+                <a href="@Url.Action("Clinics", "Reception", new {id = specialization.SpecializationId})"
+                    class="specialization-card">
+                    <div class="specialization-card-icon">
+                        @Html.Raw(specialization.SpecializationIcon)
+                    </div>
+                    <div class="specialization-card-body">
+                        <p>@specialization.SpecializationName</p>
+                    </div>
+                </a>
+            }
+        }
+        else
+        {
+            <p>لا يوجد تخصصات بالمستشفي</p>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // function cardClicked(id) {
+        //     window.location.href = '@*Url.Action("Clinics", "Reception")*@' + `/${id}`;
+        //     $.ajax({
+        //             url: '@*Url.Action("Clinics", "Reception")*@', URL to your controller action
+        //             type: 'POST',          HTTP method
+        //             data: { id },       Data to send (if any)
+        //             success: function (response) {
+        //                 if (response.Success) {
+        //                     $("#result").html(`<p>${response.Message} - Item ID: ${response.ItemId}</p>`);
+        //                 } else {
+        //                     $("#result").html(`<p>Error fetching data</p>`);
+        //                 }
+        //             },
+        //             error: function (e) {
+        //                 showErrorMessage(e.Message)
+        //             }
+        //         })
+        // }
+    </script>
+}

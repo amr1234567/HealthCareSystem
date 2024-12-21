@@ -29,13 +29,9 @@ namespace HSS.Presentation.Patient.Api
             }
 
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
             app.UseApiAuth();
-
-
-
             app.MapControllers();
-
             app.Run();
         }
     }

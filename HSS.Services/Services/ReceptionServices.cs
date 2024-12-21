@@ -1,10 +1,12 @@
 ﻿using HSS.DataAccess.Contexts;
+using HSS.Domain.IdentityModels;
 using HSS.Domain.Models;
 using HSS.Domain.Models.Aggregates;
 using HSS.Services.Abstractions;
 using HSS.Services.Models;
 using HSS.Services.SharedDto;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace HSS.Services.Services
 {
@@ -32,7 +34,8 @@ namespace HSS.Services.Services
                 .Include(h => h.ClinicSpecializations)
                 .FirstOrDefaultAsync();
             if (hospital == null)
-                throw new NullReferenceException(nameof(hospital));
+                return [];
+
             var specializations = hospital.ClinicSpecializations.Select(s => new SpecializationDto(s));
             return specializations;
         }
@@ -50,28 +53,79 @@ namespace HSS.Services.Services
         public async Task<IEnumerable<ClinicAppointmentDto>> GetClinicAppointments
             (int clinicId, DateTime? dateStart, DateTime? dateEnd)
         {
-            Func<ClinicAppointment, bool> expression = ca =>
-            {
-                var result = ca.ClinicId == clinicId;
-                if (dateStart == null)
-                    result = result && ca.AppointmentDate.Date >= DateTime.Now.Date;
-                else
-                    result = result && ca.AppointmentDate.Date >= dateStart.Value.Date;
-
-                if (dateEnd != null)
-                    result = result && ca.AppointmentDate.Date <= dateEnd.Value.Date;
-
-                return result;
-            };
+            var query = _context.Set<ClinicAppointment>().AsNoTracking().AsQueryable();
 
             if (dateStart == null)
                 dateStart = DateTime.UtcNow;
-            var appointments = await _context.Set<ClinicAppointment>()
-                .Where(ca => expression(ca))
+
+            query = query.Where(ca => ca.ClinicId == clinicId && ca.AppointmentDate.Date >= dateStart.Value.Date);
+
+            if (dateEnd != null)
+                query = query.Where(ca => ca.AppointmentDate.Date <= dateEnd.Value.Date);
+
+            var appointments = await query
                 .Include(ca => ca.Clinic)
                 .Include(ca => ca.Doctor)
                 .Select(ca => new ClinicAppointmentDto(ca)).ToListAsync();
             return appointments;
+        }
+
+        public async Task<IEnumerable<SpecializationDto>> GetSpecializationsByReceptionistIdAsync(int receptionistId)
+        {
+            var hospital = await _context.Set<Receptionist>()
+               .Where(rs => rs.Id == receptionistId)
+               .Include(rs => rs.Reception)
+                    .ThenInclude(r => r.Hospital)
+                        .ThenInclude(h => h.ClinicSpecializations)
+               .Select(rs => rs.Reception.Hospital)
+               .FirstOrDefaultAsync();
+
+            if (hospital == null)
+                return [];
+
+            var specializations = hospital.ClinicSpecializations.Select(s => new SpecializationDto(s));
+            return specializations;
+        }
+
+        public async Task<IEnumerable<ClinicDto>> GetClinicsByReceptionistIdAsync(int receptionistId, int specializationId)
+        {
+            var receptionist = await _context.Set<Receptionist>()
+               .Where(rs => rs.Id == receptionistId)
+               .Include(rs => rs.Reception)
+               .FirstOrDefaultAsync();
+
+            if (receptionist == null)
+                return [];
+
+            var clinics = await _context.Clinics
+              .Where(c => c.HospitalId == receptionist.Reception.HospitalId && c.SpecializationId == specializationId)
+              .Include(c => c.Specialization)
+              .Include(c => c.Hospital)
+              .Include(c => c.Doctors)
+              .ToListAsync();
+
+            var clinicDtos = new List<ClinicDto>();
+            foreach (var clinic in clinics)
+            {
+                var activeDoctor = await GetCurrentlyWorkingDoctorAsync(clinic.Id);
+                var doctorName = activeDoctor?.Name ?? "No doctor available";
+                clinicDtos.Add(new ClinicDto(clinic, doctorName));
+            }
+
+            return clinicDtos;
+        }
+
+        public async Task<DoctorDto> GetCurrentlyWorkingDoctorAsync(int clinicId)
+        {
+            var currentTime = DateTime.UtcNow.TimeOfDay;
+            var doctor = await _context.Set<Doctor>()
+                .Where(d => d.ClinicId == clinicId && d.StartAt <= currentTime && d.StartAt.Add(d.WorkingTime) >= currentTime)
+                .FirstOrDefaultAsync();
+
+            if (doctor == null)
+                return null;
+
+            return new DoctorDto(doctor);
         }
 
         public async Task<bool> CreateAppointment(CreateAppointmentDto dto)

@@ -18,8 +18,8 @@ namespace HSS.DataAccess.Configurations
                 .HasForeignKey<Hospital>(a => a.HospitalAdminId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasMany<ClinicSpecialization>()
-                .WithMany()
+            builder.HasMany<ClinicSpecialization>(h => h.ClinicSpecializations)
+                .WithMany(s => s.Hospitals)
                 .UsingEntity<ClinicSpecializationHospital>(join =>
                 {
                     join.HasOne(j => j.ClinicSpecialization)

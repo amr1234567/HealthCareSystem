@@ -9,13 +9,13 @@ namespace HSS.DataAccess.Configurations
         public void Configure(EntityTypeBuilder<Doctor> builder)
         {
             builder.HasOne(b => b.Hospital)
-                .WithMany()
+                .WithMany(h => h.Doctors)
                 .HasForeignKey(a => a.HospitalId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(b => b.Clinic)
-               .WithMany()
+               .WithMany(h => h.Doctors)
                .HasForeignKey(a => a.ClinicId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);

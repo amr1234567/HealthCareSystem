@@ -1,19 +1,21 @@
 ﻿
+using HSS.Domain.IdentityModels;
 using HSS.Services.Enums;
+
 
 namespace HSS.Domain.Models
 {
     public class Clinic : BaseClass<int>
     {
         [Required]
+        [StringLength(50, MinimumLength = 3)]
+        public string Name { get; set; }
+        
+        [Required]
         public int HospitalId { get; set; }
         public Hospital Hospital { get; set; }
 
         public ClinicSpecialization Specialization { get; set; }
-
-        [Required]
-        [MaxLength(100)]
-        public string SpecializationName { get; set; }
 
         [Required]
         public int SpecializationId { get; set; }
@@ -33,5 +35,7 @@ namespace HSS.Domain.Models
 
         [Required, Range(5, 90)]
         public int AppointmentDurationInMinutes { get; set; }
+
+        public List<Doctor> Doctors { get; set; }
     }
 }

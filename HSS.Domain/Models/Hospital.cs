@@ -82,6 +82,7 @@ namespace HSS.Domain.Models
         public float Rating { get; set; } = 0;
 
         public List<ClinicSpecialization> ClinicSpecializations { get; set; }
+        public List<Doctor> Doctors { get; set; }
     }
 
 }

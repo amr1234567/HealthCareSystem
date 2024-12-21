@@ -7,7 +7,7 @@ namespace HSS.Domain.Models.Aggregates
         [Required]  // Ensures this field cannot be null
         [Range(1, int.MaxValue, ErrorMessage = "PatientId must be a positive integer.")]
         public int PatientId { get; set; }
-        public Patient Patient { get; set; }
+        public Patient? Patient { get; set; }
 
         [Required]  // Ensures this field cannot be null
         [Range(1, int.MaxValue, ErrorMessage = "ClinicId must be a positive integer.")]
@@ -29,7 +29,7 @@ namespace HSS.Domain.Models.Aggregates
         public int RadiologyAppointmentsNumberDone { get; set; }
 
         [AllowNull]
-        public List<PrescriptionRecord> PrescriptionRecords { get; set; }
+        public Treatment Treatment { get; set; }
 
         [Required]  // Ensures this field cannot be null
         public bool FollowUpNeeded { get; set; }
@@ -55,7 +55,7 @@ namespace HSS.Domain.Models.Aggregates
         public ClinicAppointment? ClinicAppointmentRelatedTo { get; set; }
 
         public bool IsStarted { get; set; } = false;
-
+        public bool IsConfirmed { get; set; } = false;
         public bool IsEnd
         {
             get

@@ -170,6 +170,9 @@ namespace HSS.DataAccess.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<int>("MedicalDepartment")
+                        .HasColumnType("int");
+
                     b.Property<int>("SpecializationId")
                         .HasColumnType("int");
 
@@ -1439,6 +1442,19 @@ namespace HSS.DataAccess.Migrations
                     b.ToTable("Symptoms");
                 });
 
+            modelBuilder.Entity("HSS.Domain.Models.Treatment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Treatment");
+                });
+
             modelBuilder.Entity("HSS.Domain.Models.UserLog", b =>
                 {
                     b.Property<int>("Id")
@@ -1816,6 +1832,9 @@ namespace HSS.DataAccess.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<int>("TreatmentId")
+                        .HasColumnType("int");
+
                     b.HasIndex("ClinicAppointmentIdRelatedTo")
                         .IsUnique()
                         .HasFilter("[ClinicAppointmentIdRelatedTo] IS NOT NULL");
@@ -1825,6 +1844,8 @@ namespace HSS.DataAccess.Migrations
                     b.HasIndex("DoctorId");
 
                     b.HasIndex("PatientId");
+
+                    b.HasIndex("TreatmentId");
 
                     b.HasDiscriminator().HasValue("ClinicAppointment");
                 });
@@ -2331,6 +2352,12 @@ namespace HSS.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("HSS.Domain.Models.Treatment", "Treatment")
+                        .WithMany()
+                        .HasForeignKey("TreatmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Clinic");
 
                     b.Navigation("ClinicAppointmentRelatedTo");
@@ -2338,6 +2365,8 @@ namespace HSS.DataAccess.Migrations
                     b.Navigation("Doctor");
 
                     b.Navigation("Patient");
+
+                    b.Navigation("Treatment");
                 });
 
             modelBuilder.Entity("HSS.Domain.Models.Aggregates.LabAppointment", b =>
@@ -2491,8 +2520,6 @@ namespace HSS.DataAccess.Migrations
             modelBuilder.Entity("HSS.Domain.Models.Aggregates.ClinicAppointment", b =>
                 {
                     b.Navigation("LabAppointments");
-
-                    b.Navigation("PrescriptionRecords");
 
                     b.Navigation("RadiologyAppointments");
                 });

@@ -1,41 +1,33 @@
-﻿
-using HSS.Domain.IdentityModels;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using HSS.Services.Enums;
 
-
-namespace HSS.Domain.Models
+namespace HSS.Services.Dtos
 {
-    public class Clinic : BaseClass<int>
+    public class ClinicDto
     {
-        [Required]
-        [StringLength(50, MinimumLength = 3)]
-        public string Name { get; set; }
-        
+        public int Id { get; set; }
         [Required]
         public int HospitalId { get; set; }
-        public Hospital Hospital { get; set; }
-
-        public ClinicSpecialization Specialization { get; set; }
-
         [Required]
-        public int SpecializationId { get; set; }
-
-        [AllowNull, MaxLength(200)]
         public string Location { get; set; } // وصف للمكان بالمستشفي
-
+        [Required]
         public MedicalDepartment MedicalDepartment { get; set; }
-        
+
         [Required]
         [DataType(DataType.Time)]
         public TimeSpan StartAt { get; set; }
-        
+
         [Required]
         [DataType(DataType.Time)]
         public TimeSpan FinishAt { get; set; }
 
         [Required, Range(5, 90)]
         public int AppointmentDurationInMinutes { get; set; }
-
-        public List<Doctor> Doctors { get; set; }
+        public string HospitalName { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using HSS.Domain.BaseModels;
 using HSS.Domain.Enums;
 using HSS.Domain.IdentityModels;
+using HSS.Domain.Models.ManyToManyRelationEntitys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HSS.DataAccess.Repositories
 {
-    public class Helper(ApplicationDbContext context)
+    public class Helper
     {
         public KeyValuePair<TKey, TValue> GetRandomElement<TKey, TValue>(Dictionary<TKey, TValue> dictionary)
         {
@@ -37,62 +38,62 @@ namespace HSS.DataAccess.Repositories
         }
         private List<string> maleNames = new List<string>
             {
-                "Ahmed", "Ali", "Omar", "Khalid", "Hassan", "Faisal", "Youssef", "Mohammed", "Sami", "Zaid",
-                "Abdullah", "Tariq", "Nasser", "Mustafa", "Ibrahim", "Adel", "Hadi", "Saif", "Bilal", "Salim",
-                "Walid", "Amr", "Farid", "Rami", "Kareem", "Bashir", "Jamal", "Ziyad", "Hatem", "Yahya",
-                "Ayman", "Majed", "Hamza", "Anwar", "Imran", "Mahmoud", "Suleiman", "Adnan", "Shadi", "Bassam",
-                "Fahd", "Samir", "Othman", "Rashid", "Issa", "Tamer", "Riyad", "Safwan", "Mounir", "Habib",
-                "Yassin", "Mazen", "Murad", "Musa", "Rafiq", "Ghassan", "Ehab", "Tawfiq", "Jabir", "Ashraf",
-                "Ihsan", "Munir", "Zuhair", "Waleed", "Firas", "Hussain", "Malik", "Shaker", "Saad", "Ismail",
-                "Zaher", "Fadi", "Nizar", "Hisham", "Elias", "Laith", "Rami", "Kamal", "Naeem", "Murtada",
-                "Sami", "Omar", "Nour", "Baraa", "Rakan", "Ameen", "Mujahid", "Izz", "Talal", "Yaser",
-                "Abdulrahman", "Qais", "Hamad", "Anas", "Raed", "Khayr", "Hadi", "Nabil", "Zuhair", "Samih"
+                "أحمد", "علي", "عمر", "خالد", "حسن", "فيصل", "يوسف", "محمد", "سامي", "زيد",
+                "عبدالله", "طارق", "ناصر", "مصطفى", "إبراهيم", "عادل", "هادي", "سيف", "بلال", "سليم",
+                "وليد", "عمرو", "فريد", "رامي", "كريم", "بشير", "جمال", "زياد", "حاتم", "يحيى",
+                "أيمن", "ماجد", "حمزة", "أنور", "عمران", "محمود", "سليمان", "عدنان", "شادي", "بسام",
+                "فهد", "سمير", "عثمان", "راشد", "عيسى", "تامر", "رياض", "صفوان", "منير", "حبيب",
+                "ياسين", "مازن", "مراد", "موسى", "رفيق", "غسان", "إيهاب", "توفيق", "جابر", "أشرف",
+                "إحسان", "منير", "زهير", "وليد", "فراس", "حسين", "مالك", "شاكر", "سعد", "إسماعيل",
+                "زاهر", "فادي", "نزار", "هشام", "إلياس", "ليث", "رامي", "كمال", "نعيم", "مرتضى",
+                "سامي", "عمر", "نور", "براء", "راكان", "أمين", "مجاهد", "عز", "طلال", "ياسر",
+                "عبدالرحمن", "قيس", "حمد", "أنس", "رائد", "خير", "هادي", "نبيل", "زهير", "سميح"
             };
         private List<string> femaleNames = new List<string>
             {
-                "Aisha", "Fatima", "Leila", "Noura", "Amira", "Mariam", "Huda", "Rania", "Salma", "Yasmin",
-                "Nadia", "Samira", "Sahar", "Dina", "Hala", "Reem", "Zainab", "Noor", "Lubna", "Sana",
-                "Farah", "Bushra", "Lina", "Shadia", "Amani", "Souad", "Nada", "Manal", "Ruqayya", "Rabab",
-                "Khadija", "Rana", "Maha", "Dalal", "Ghada", "Basma", "Jamila", "Asma", "Najwa", "Layla",
-                "Ibtisam", "Nisreen", "Hind", "Wafaa", "Hanadi", "Rawan", "Marwa", "Sumaya", "Mona", "Hanan",
-                "Rima", "Fadwa", "Abeer", "Tala", "Shereen", "Fadia", "Safaa", "Fawzia", "Lamya", "Nourhan",
-                "Tahani", "Afaf", "Rasha", "Sawsan", "Ahlam", "Najla", "Arwa", "Maysaa", "Suhair", "Shayma",
-                "Zahra", "Muna", "Heba", "Malak", "Wardah", "Rahaf", "Hadeel", "Haya", "Alaa", "Hadeer",
-                "Yara", "Rima", "Duaa", "Buthaina", "Zayn", "Jihan", "Eman", "Roua", "Thuraya", "Amani",
-                "Lamees", "Amal", "Shaima", "Rehab", "Maysoon", "Siham", "Ferial", "Shams", "Nouran", "Suha"
+                "عائشة", "فاطمة", "ليلى", "نورة", "أميرة", "مريم", "هدى", "رانيا", "سلمى", "ياسمين",
+                "نادية", "سميرة", "سحر", "دينا", "هالة", "ريم", "زينب", "نور", "لبنى", "سناء",
+                "فرح", "بشرى", "لينا", "شادية", "أماني", "سعاد", "ندى", "منال", "رقية", "رباب",
+                "خديجة", "رنا", "مها", "دلال", "غادة", "بسمة", "جميلة", "أسماء", "نجوى", "ليلى",
+                "ابتسام", "نسرين", "هند", "وفاء", "هنادي", "روان", "مروة", "سمية", "منى", "حنان",
+                "ريما", "فدوى", "عبير", "تالا", "شيرين", "فادية", "صفاء", "فوزية", "لمياء", "نورهان",
+                "تهاني", "عفاف", "رشا", "سوسن", "أحلام", "نجلاء", "أروى", "ميساء", "سهير", "شيماء",
+                "زهراء", "منى", "هبة", "ملك", "وردة", "رهف", "هديل", "هيا", "علاء", "هدير",
+                "يارا", "ريما", "دعاء", "بثينة", "زين", "جيهان", "إيمان", "روعة", "ثريا", "أماني",
+                "لميس", "أمل", "شيماء", "رحاب", "ميسون", "سهام", "فريال", "شمس", "نوران", "سهى"
             };
-        private Dictionary<string, string> governorates = new Dictionary<string, string>
+        public Dictionary<string, string> governorates = new Dictionary<string, string>
             {
-                { "Cairo", "01" },
-                { "Alexandria", "02" },
-                { "Port Said", "03" },
-                { "Suez", "04" },
-                { "Damietta", "11" },
-                { "Dakahlia", "12" },
-                { "Sharqia", "13" },
-                { "Kafr El Sheikh", "14" },
-                { "Gharbia", "15" },
-                { "Monufia", "16" },
-                { "Beheira", "17" },
-                { "Ismailia", "18" },
-                { "Giza", "19" },
-                { "Beni Suef", "22" },
-                { "Fayoum", "23" },
-                { "Minya", "24" },
-                { "Assiut", "25" },
-                { "Sohag", "26" },
-                { "Qena", "27" },
-                { "Aswan", "28" },
-                { "Luxor", "29" },
-                { "Red Sea", "31" },
-                { "New Valley", "32" },
-                { "Matruh", "33" },
-                { "North Sinai", "34" },
-                { "South Sinai", "35" }
+                { "القاهرة", "01" },
+                { "الإسكندرية", "02" },
+                { "بورسعيد", "03" },
+                { "السويس", "04" },
+                { "دمياط", "11" },
+                { "الدقهلية", "12" },
+                { "الشرقية", "13" },
+                { "كفر الشيخ", "14" },
+                { "الغربية", "15" },
+                { "المنوفية", "16" },
+                { "البحيرة", "17" },
+                { "الإسماعيلية", "18" },
+                { "الجيزة", "19" },
+                { "بني سويف", "22" },
+                { "الفيوم", "23" },
+                { "المنيا", "24" },
+                { "أسيوط", "25" },
+                { "سوهاج", "26" },
+                { "قنا", "27" },
+                { "أسوان", "28" },
+                { "الأقصر", "29" },
+                { "البحر الأحمر", "31" },
+                { "الوادي الجديد", "32" },
+                { "مطروح", "33" },
+                { "شمال سيناء", "34" },
+                { "جنوب سيناء", "35" }
             };
 
 
-        private DateTime GetRandomDate()
+        public DateTime GetRandomDate()
         {
             Random random = new Random();
             int startYear = 1960;
@@ -111,7 +112,7 @@ namespace HSS.DataAccess.Repositories
             return new DateTime(year, month, day);
         }
 
-        private string GenerateFullNameMale()
+        public string GenerateFullNameMale()
         {
             Random random = new Random();
             List<string> fullName = new List<string>();
@@ -133,7 +134,7 @@ namespace HSS.DataAccess.Repositories
             return string.Join(" ", fullName);
         }
 
-        private string GenerateFullNameFemale()
+        public string GenerateFullNameFemale()
         {
             Random random = new Random();
             var firstName = femaleNames[random.Next(femaleNames.Count)];
@@ -155,7 +156,7 @@ namespace HSS.DataAccess.Repositories
 
             return string.Join(" ", fullName);
         }
-        private string GenerateStreetName()
+        public string GenerateStreetName()
         {
             if (maleNames.Count < 2)
             {
@@ -177,7 +178,7 @@ namespace HSS.DataAccess.Repositories
 
             return streetName;
         }
-        private AgeGroup GetAgeGroup(DateTime birthDate)
+        public AgeGroup GetAgeGroup(DateTime birthDate)
         {
             var today = DateTime.Today;
             var ageInDays = (today - birthDate).TotalDays;
@@ -212,7 +213,7 @@ namespace HSS.DataAccess.Repositories
                 return AgeGroup.Senior;
             }
         }
-        private Gender GenerateRandomGender()
+        public Gender GenerateRandomGender()
         {
             Random random = new Random();
             int randomNumber = random.Next(1, 101); // Generates a number between 1 and 100
@@ -226,6 +227,45 @@ namespace HSS.DataAccess.Repositories
 
         public static string GenerateNationalID(DateTime birthDate, string governorateCode, bool isMale)
         {
+            // Step 1: Determine the century code
+            int centuryCode = birthDate.Year >= 2000 ? 3 : 2;
+
+            // Step 2: Extract year, month, and day of birth
+            string yearOfBirth = birthDate.Year.ToString().Substring(2, 2); // Last 2 digits of the year
+            string monthOfBirth = birthDate.Month.ToString("D2"); // Month as 2 digits
+            string dayOfBirth = birthDate.Day.ToString("D2"); // Day as 2 digits
+
+            // Step 3: Validate governorate code
+            if (!IsValidGovernorateCode(governorateCode))
+            {
+                throw new ArgumentException("Invalid governorate code.");
+            }
+
+            // Step 4: Generate a serial number
+            Random random = new Random();
+            int serialNumber = random.Next(1, 10_000); // Random number between 1 and 999
+            string serialNumberString = serialNumber.ToString("D3");
+
+            // Adjust gender based on serial number's last digit
+            if (isMale && serialNumber % 2 == 0) serialNumber++; // Make it odd for male
+            if (!isMale && serialNumber % 2 != 0) serialNumber--; // Make it even for female
+            serialNumberString = serialNumber.ToString("D3");
+
+            // Step 5: Concatenate the parts
+            string partialID = $"{centuryCode}{yearOfBirth}{monthOfBirth}{dayOfBirth}{governorateCode}{serialNumberString}";
+
+            // Step 6: Calculate the checksum
+            int checksum = CalculateChecksum(partialID);
+
+            // Combine everything into the full ID
+            return $"{partialID}{checksum}";
+        }
+
+        public string GenerateNationalID(bool isMale)
+        {
+            DateTime birthDate = GetRandomDate();
+            string governorateCode = GetRandomElement(governorates).Value;
+
             // Step 1: Determine the century code
             int centuryCode = birthDate.Year >= 2000 ? 3 : 2;
 
@@ -294,9 +334,10 @@ namespace HSS.DataAccess.Repositories
             return (10 - (sum % 10)) % 10;
         }
 
-        public async Task Seed()
+        public List<Patient> SeedPatients()
         {
-            for (int i = 0; i < 100_000; i++)
+            var patients = new List<Patient>();
+            for (int i = 200; i < 5_000; i++)
             {
                 var state = GetRandomElement(governorates);
                 var customDate = GetRandomDate();
@@ -307,6 +348,7 @@ namespace HSS.DataAccess.Repositories
 
                 var user = new Patient()
                 {
+                    Id = i,
                     Address = new Domain.ObjectValues.PatientAddress()
                     {
                         StreetName = GenerateStreetName(),
@@ -322,9 +364,24 @@ namespace HSS.DataAccess.Repositories
                     Sex = gender,
                     NationalId = GenerateNationalID(customDate, state.Value, gender == Gender.Male),
                 };
-                await context.Patients.AddAsync(user);
-                await context.SaveChangesAsync();
+                patients.Add(user);
             }
+            return patients;
+        }
+   
+        public List<UserRole> SeedRolesForPatients()
+        {
+            var roles = new List<UserRole>();
+            for (int i = 200; i < 5_000; i++)
+            {
+                var role = new UserRole()
+                {
+                    UserId = i,
+                    RoleId = 1
+                };
+                roles.Add(role);
+            }
+            return roles;
         }
     }
 }

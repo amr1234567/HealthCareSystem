@@ -13,8 +13,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HSS.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241221072016_EditProblems")]
-    partial class EditProblems
+    [Migration("20241221174339_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,10 +29,7 @@ namespace HSS.DataAccess.Migrations
             modelBuilder.Entity("HSS.Domain.BaseModels.IdentityUser", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ContactNumber")
                         .HasColumnType("nvarchar(max)");
@@ -169,17 +166,19 @@ namespace HSS.DataAccess.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Location")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("SpecializationId")
+                    b.Property<int>("MedicalDepartment")
                         .HasColumnType("int");
 
-                    b.Property<string>("SpecializationName")
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("SpecializationId")
+                        .HasColumnType("int");
 
                     b.Property<TimeSpan>("StartAt")
                         .HasColumnType("time");
@@ -196,14 +195,122 @@ namespace HSS.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            AppointmentDurationInMinutes = 30,
+                            AppointmentDurationInMinutes = 0,
+                            FinishAt = new TimeSpan(0, 16, 0, 0, 0),
+                            HospitalId = 1,
+                            IsDeleted = false,
+                            MedicalDepartment = 0,
+                            Name = "عيادة القلب",
+                            SpecializationId = 1,
+                            StartAt = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AppointmentDurationInMinutes = 0,
                             FinishAt = new TimeSpan(0, 17, 0, 0, 0),
                             HospitalId = 1,
                             IsDeleted = false,
-                            Location = "First Floor, Room 101",
-                            SpecializationId = 1,
-                            SpecializationName = "Cardiology",
+                            MedicalDepartment = 0,
+                            Name = "عيادة العظام",
+                            SpecializationId = 2,
                             StartAt = new TimeSpan(0, 9, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AppointmentDurationInMinutes = 0,
+                            FinishAt = new TimeSpan(0, 16, 0, 0, 0),
+                            HospitalId = 1,
+                            IsDeleted = false,
+                            MedicalDepartment = 0,
+                            Name = "عيادة الأطفال",
+                            SpecializationId = 3,
+                            StartAt = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AppointmentDurationInMinutes = 0,
+                            FinishAt = new TimeSpan(0, 18, 0, 0, 0),
+                            HospitalId = 1,
+                            IsDeleted = false,
+                            MedicalDepartment = 0,
+                            Name = "عيادة المخ والأعصاب",
+                            SpecializationId = 4,
+                            StartAt = new TimeSpan(0, 10, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AppointmentDurationInMinutes = 0,
+                            FinishAt = new TimeSpan(0, 17, 0, 0, 0),
+                            HospitalId = 1,
+                            IsDeleted = false,
+                            MedicalDepartment = 0,
+                            Name = "عيادة الجلدية",
+                            SpecializationId = 5,
+                            StartAt = new TimeSpan(0, 9, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AppointmentDurationInMinutes = 0,
+                            FinishAt = new TimeSpan(0, 16, 0, 0, 0),
+                            HospitalId = 1,
+                            IsDeleted = false,
+                            MedicalDepartment = 0,
+                            Name = "عيادة الأنف والأذن والحنجرة",
+                            SpecializationId = 6,
+                            StartAt = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AppointmentDurationInMinutes = 0,
+                            FinishAt = new TimeSpan(0, 17, 0, 0, 0),
+                            HospitalId = 1,
+                            IsDeleted = false,
+                            MedicalDepartment = 0,
+                            Name = "عيادة العيون",
+                            SpecializationId = 7,
+                            StartAt = new TimeSpan(0, 9, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AppointmentDurationInMinutes = 0,
+                            FinishAt = new TimeSpan(0, 16, 0, 0, 0),
+                            HospitalId = 1,
+                            IsDeleted = false,
+                            MedicalDepartment = 0,
+                            Name = "عيادة الأسنان",
+                            SpecializationId = 8,
+                            StartAt = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 9,
+                            AppointmentDurationInMinutes = 0,
+                            FinishAt = new TimeSpan(0, 18, 0, 0, 0),
+                            HospitalId = 1,
+                            IsDeleted = false,
+                            MedicalDepartment = 0,
+                            Name = "عيادة الطب النفسي",
+                            SpecializationId = 9,
+                            StartAt = new TimeSpan(0, 10, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 10,
+                            AppointmentDurationInMinutes = 0,
+                            FinishAt = new TimeSpan(0, 16, 0, 0, 0),
+                            HospitalId = 1,
+                            IsDeleted = false,
+                            MedicalDepartment = 0,
+                            Name = "عيادة الطب العام",
+                            SpecializationId = 10,
+                            StartAt = new TimeSpan(0, 8, 0, 0, 0)
                         });
                 });
 
@@ -904,13 +1011,108 @@ namespace HSS.DataAccess.Migrations
                         },
                         new
                         {
-                            UserId = 3,
+                            UserId = 10,
                             RoleId = 3
                         },
                         new
                         {
-                            UserId = 4,
-                            RoleId = 4
+                            UserId = 11,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 12,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 13,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 14,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 15,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 16,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 17,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 18,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 19,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 20,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 21,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 22,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 23,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 24,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 25,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 26,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 27,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 28,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 29,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 30,
+                            RoleId = 3
                         });
                 });
 
@@ -1185,6 +1387,9 @@ namespace HSS.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("TreatmentId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClinicAppointmentId");
@@ -1192,6 +1397,8 @@ namespace HSS.DataAccess.Migrations
                     b.HasIndex("MedicineId");
 
                     b.HasIndex("PrescriptionRecordId");
+
+                    b.HasIndex("TreatmentId");
 
                     b.ToTable("PrescriptionRecords");
                 });
@@ -1442,6 +1649,19 @@ namespace HSS.DataAccess.Migrations
                     b.ToTable("Symptoms");
                 });
 
+            modelBuilder.Entity("HSS.Domain.Models.Treatment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Treatment");
+                });
+
             modelBuilder.Entity("HSS.Domain.Models.UserLog", b =>
                 {
                     b.Property<int>("Id")
@@ -1511,6 +1731,9 @@ namespace HSS.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<TimeSpan>("StartAt")
+                        .HasColumnType("time");
+
                     b.Property<TimeSpan>("WorkingTime")
                         .HasColumnType("time");
 
@@ -1523,19 +1746,380 @@ namespace HSS.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 3,
+                            Id = 10,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "john.doe@hospital.com",
+                            Email = "doctor10@hospital.com",
                             IsDeleted = false,
-                            Name = "Dr. John Doe",
-                            NationalId = "22222222222222",
+                            Name = "هدى مصطفى إبراهيم خالد خالد",
+                            NationalId = "00000000000010",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 7,
+                            ExperienceYears = 15,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "العيون",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor11@hospital.com",
+                            IsDeleted = false,
+                            Name = "نورهان عبدالله وليد عبدالله رامي",
+                            NationalId = "00000000000011",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 8,
+                            ExperienceYears = 16,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "الأسنان",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor12@hospital.com",
+                            IsDeleted = false,
+                            Name = "هبة أحمد رامي حسن وليد",
+                            NationalId = "00000000000012",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 9,
+                            ExperienceYears = 17,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "الطب النفسي",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor13@hospital.com",
+                            IsDeleted = false,
+                            Name = "فاطمة سيد إبراهيم أحمد خالد",
+                            NationalId = "00000000000013",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 10,
+                            ExperienceYears = 18,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "الطب العام",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor14@hospital.com",
+                            IsDeleted = false,
+                            Name = "سامح علي سامح محمود حسن",
+                            NationalId = "00000000000014",
                             Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
                             Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
                             ClinicId = 1,
+                            ExperienceYears = 19,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "القلب",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor15@hospital.com",
+                            IsDeleted = false,
+                            Name = "حسن أحمد حسن كريم أحمد",
+                            NationalId = "00000000000015",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 2,
+                            ExperienceYears = 5,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "العظام",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor16@hospital.com",
+                            IsDeleted = false,
+                            Name = "إبراهيم خالد رامي محمد يوسف",
+                            NationalId = "00000000000016",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 3,
+                            ExperienceYears = 6,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "الأطفال",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor17@hospital.com",
+                            IsDeleted = false,
+                            Name = "عبدالله وليد رامي عبدالله مصطفى",
+                            NationalId = "00000000000017",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 4,
+                            ExperienceYears = 7,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "المخ والأعصاب",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor18@hospital.com",
+                            IsDeleted = false,
+                            Name = "رامي رامي سامح خالد عبدالرحمن",
+                            NationalId = "00000000000018",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 5,
+                            ExperienceYears = 8,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "الجلدية",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor19@hospital.com",
+                            IsDeleted = false,
+                            Name = "خالد أحمد أحمد محمد محمود",
+                            NationalId = "00000000000019",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 6,
+                            ExperienceYears = 9,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "الأنف والأذن والحنجرة",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 20,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor20@hospital.com",
+                            IsDeleted = false,
+                            Name = "سامح كريم كريم سيد وليد",
+                            NationalId = "00000000000020",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 7,
                             ExperienceYears = 10,
                             HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
                             HospitalId = 1,
-                            Specialization = "Cardiology",
+                            Specialization = "العيون",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 21,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor21@hospital.com",
+                            IsDeleted = false,
+                            Name = "محمد مصطفى عبدالله أحمد سامح",
+                            NationalId = "00000000000021",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 8,
+                            ExperienceYears = 11,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "الأسنان",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 22,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor22@hospital.com",
+                            IsDeleted = false,
+                            Name = "سامح حسن محمد وليد يوسف",
+                            NationalId = "00000000000022",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 9,
+                            ExperienceYears = 12,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "الطب النفسي",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 23,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor23@hospital.com",
+                            IsDeleted = false,
+                            Name = "كريم سيد مصطفى هشام محمد",
+                            NationalId = "00000000000023",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 10,
+                            ExperienceYears = 13,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "الطب العام",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 24,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor24@hospital.com",
+                            IsDeleted = false,
+                            Name = "سامح عبدالرحمن سامح خالد يوسف",
+                            NationalId = "00000000000024",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 1,
+                            ExperienceYears = 14,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "القلب",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 25,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor25@hospital.com",
+                            IsDeleted = false,
+                            Name = "إبراهيم طارق سامح مصطفى رامي",
+                            NationalId = "00000000000025",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 2,
+                            ExperienceYears = 15,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "العظام",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 26,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor26@hospital.com",
+                            IsDeleted = false,
+                            Name = "إبراهيم هشام خالد أحمد طارق",
+                            NationalId = "00000000000026",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 3,
+                            ExperienceYears = 16,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "الأطفال",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 27,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor27@hospital.com",
+                            IsDeleted = false,
+                            Name = "عبدالله هشام هشام عمر أحمد",
+                            NationalId = "00000000000027",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 4,
+                            ExperienceYears = 17,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "المخ والأعصاب",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 28,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor28@hospital.com",
+                            IsDeleted = false,
+                            Name = "مصطفى يوسف وليد مصطفى مصطفى",
+                            NationalId = "00000000000028",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 5,
+                            ExperienceYears = 18,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "الجلدية",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 29,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor29@hospital.com",
+                            IsDeleted = false,
+                            Name = "علي كريم مصطفى علي سيد",
+                            NationalId = "00000000000029",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 6,
+                            ExperienceYears = 19,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "الأنف والأذن والحنجرة",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
+                            WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 30,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "doctor30@hospital.com",
+                            IsDeleted = false,
+                            Name = "محمد مصطفى حسن إبراهيم هشام",
+                            NationalId = "00000000000030",
+                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
+                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
+                            ClinicId = 7,
+                            ExperienceYears = 5,
+                            HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                            HospitalId = 1,
+                            Specialization = "العيون",
+                            StartAt = new TimeSpan(0, 0, 0, 0, 0),
                             WorkingTime = new TimeSpan(0, 8, 0, 0, 0)
                         });
                 });
@@ -1563,8 +2147,8 @@ namespace HSS.DataAccess.Migrations
                             CreatedAt = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
                             Email = "admin@hospital.com",
                             IsDeleted = false,
-                            Name = "Admin User",
-                            NationalId = "12345678901234",
+                            Name = "ادمن 1 لمستشفي 1",
+                            NationalId = "2930322178258",
                             Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
                             Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
                             HospitalId = 1
@@ -1660,22 +2244,6 @@ namespace HSS.DataAccess.Migrations
                         .HasFilter("[PatientMediacalDetailsId] IS NOT NULL");
 
                     b.HasDiscriminator().HasValue("Patient");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 4,
-                            ContactNumber = "123-456-7890",
-                            CreatedAt = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
-                            Email = "jane.doe@hospital.com",
-                            IsDeleted = false,
-                            Name = "Jane Doe",
-                            NationalId = "33333333333333",
-                            Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
-                            Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
-                            DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Sex = "Male"
-                        });
                 });
 
             modelBuilder.Entity("HSS.Domain.IdentityModels.Pharmacist", b =>
@@ -1763,8 +2331,8 @@ namespace HSS.DataAccess.Migrations
                             Id = 2,
                             CreatedAt = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
                             IsDeleted = false,
-                            Name = "receptionist1",
-                            NationalId = "11111111111111",
+                            Name = "احمد محمود خالد عبد المجيد",
+                            NationalId = "26711153195112",
                             Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",
                             Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
                             ReceptionId = 1,
@@ -1790,6 +2358,9 @@ namespace HSS.DataAccess.Migrations
                         .HasColumnType("time");
 
                     b.Property<bool>("FollowUpNeeded")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsConfirmed")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsStarted")
@@ -1819,6 +2390,9 @@ namespace HSS.DataAccess.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<int>("TreatmentId")
+                        .HasColumnType("int");
+
                     b.HasIndex("ClinicAppointmentIdRelatedTo")
                         .IsUnique()
                         .HasFilter("[ClinicAppointmentIdRelatedTo] IS NOT NULL");
@@ -1828,6 +2402,8 @@ namespace HSS.DataAccess.Migrations
                     b.HasIndex("DoctorId");
 
                     b.HasIndex("PatientId");
+
+                    b.HasIndex("TreatmentId");
 
                     b.HasDiscriminator().HasValue("ClinicAppointment");
                 });
@@ -2187,6 +2763,10 @@ namespace HSS.DataAccess.Migrations
                         .WithMany("PrescriptionRecords")
                         .HasForeignKey("PrescriptionRecordId");
 
+                    b.HasOne("HSS.Domain.Models.Treatment", null)
+                        .WithMany("PrescriptionRecords")
+                        .HasForeignKey("TreatmentId");
+
                     b.Navigation("ClinicAppointment");
 
                     b.Navigation("Medicine");
@@ -2334,6 +2914,12 @@ namespace HSS.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("HSS.Domain.Models.Treatment", "Treatment")
+                        .WithMany()
+                        .HasForeignKey("TreatmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Clinic");
 
                     b.Navigation("ClinicAppointmentRelatedTo");
@@ -2341,6 +2927,8 @@ namespace HSS.DataAccess.Migrations
                     b.Navigation("Doctor");
 
                     b.Navigation("Patient");
+
+                    b.Navigation("Treatment");
                 });
 
             modelBuilder.Entity("HSS.Domain.Models.Aggregates.LabAppointment", b =>
@@ -2483,6 +3071,11 @@ namespace HSS.DataAccess.Migrations
             modelBuilder.Entity("HSS.Domain.Models.Reception", b =>
                 {
                     b.Navigation("Receptionists");
+                });
+
+            modelBuilder.Entity("HSS.Domain.Models.Treatment", b =>
+                {
+                    b.Navigation("PrescriptionRecords");
                 });
 
             modelBuilder.Entity("HSS.Domain.IdentityModels.HospitalAdmin", b =>

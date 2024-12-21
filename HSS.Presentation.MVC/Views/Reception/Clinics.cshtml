@@ -8,7 +8,6 @@
 
 
     <div class="clinics-container">
-        <h2>جميع الحالات</h2>
         <header>
             <p class="type">اسم العيادة</p>
             <p class="date">اسم الطبيب</p>
@@ -16,25 +15,26 @@
             <p class="patient-info">مواعيد العمل</p>
         </header>
         <main>
-            @foreach(var clinic in Model.Clinics)
+            @foreach (var clinic in Model.Clinics)
             {
-                <div class="row">
-                    <div class="type">
-                        <span class="type">@clinic.ClinicName</span>
-                        <span class="icon">
+                <div class="clinic-card" role="link" onclick="()=> window.location.href = '@(Url.Action("","Reception"))'">
+                    <div class="type clinic-type">
+                        <span class="type-name">@clinic.ClinicName</span>
+                        <span class="type-icon">
                             @Html.Raw(clinic.SpecializationIcon)
                         </span>
                     </div>
-                    <div class="date">
-                        <span class="time">@clinic.StartAt</span>
-                        <span>@(" <--> ")</span>
-                        <span class="time">@clinic.FinishAt</span>
+                    <div class="doctor-info">
+                        <span class="doctor-name">@clinic.DoctorName</span>
                     </div>
-                    <div class="id">
-                        @(clinic.IsOpen ? "مفتوح": "مغلق")
+                    <div class="status @(clinic.IsOpen ? "open" : "closed")">
+                        <span class="status-text">@(clinic.IsOpen ? "مفتوح" : "مغلق")</span>
                     </div>
-                    <div class="name-info">
-                        <span class="name">@clinic.DoctorName</span>
+
+                    <div class="working-hours">
+                        <span class="time">@((clinic.StartAt.Hours > 12 ? (clinic.StartAt.Hours - 12) : clinic.StartAt.Hours).ToString("00") + ":" + clinic.StartAt.Minutes.ToString("00") + (clinic.StartAt.Hours >= 12 ? " مساءً" : " صباحاً"))</span>
+                        <span class="separator">إلى</span>
+                        <span class="time">@((clinic.FinishAt.Hours > 12 ? (clinic.FinishAt.Hours - 12) : clinic.FinishAt.Hours).ToString("00") + ":" + clinic.FinishAt.Minutes.ToString("00") + (clinic.FinishAt.Hours >= 12 ? " مساءً" : " صباحاً"))</span>
                     </div>
                 </div>
 

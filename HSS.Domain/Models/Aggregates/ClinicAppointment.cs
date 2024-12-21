@@ -9,6 +9,8 @@ namespace HSS.Domain.Models.Aggregates
         public int PatientId { get; set; }
         public Patient? Patient { get; set; }
 
+        public AppointmentType AppointmentType { get; set; }
+
         [Required]  // Ensures this field cannot be null
         [Range(1, int.MaxValue, ErrorMessage = "ClinicId must be a positive integer.")]
         public int ClinicId { get; set; }
@@ -67,7 +69,9 @@ namespace HSS.Domain.Models.Aggregates
                 var timeOut = FollowUpExpectedPeriod != null && DateTime.UtcNow < rangeTime;
                 return needMore || timeOut;
             }
-        } 
+        }
+
+        public List<PrescriptionRecord> PrescriptionRecords { get; set; }
     }
 
 

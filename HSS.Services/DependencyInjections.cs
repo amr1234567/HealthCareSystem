@@ -1,10 +1,12 @@
-﻿using HSS.Domain.Helpers;
+﻿using HSS.DataAccess.Contexts;
+using HSS.Domain.Helpers;
 using HSS.Services.Abstractions;
 using HSS.Services.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -39,14 +41,21 @@ namespace HSS.Services
         }
 
         
-        public static WebApplication UseApiAuth(this WebApplication app)
+        public static async Task<WebApplication> UseApiAuth(this WebApplication app)
         {
             app.UseAuthentication();
             app.UseAuthorization();
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                await context.Database.MigrateAsync();
+                await context.SeedPatients();
+            }
+
             return app;
         }
 
-        public static WebApplication UseMvcAuth(this WebApplication app)
+        public static async Task<WebApplication> UseMvcAuth(this WebApplication app)
         {
             app.UseAuthentication();
             app.UseAuthorization();
@@ -56,6 +65,15 @@ namespace HSS.Services
                 Secure = CookieSecurePolicy.SameAsRequest
             };
             app.UseCookiePolicy(cookiePolicyOptions);
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                if (!context.Database.CanConnect() || !context.IdentityUsers.Any())
+                {
+                    await context.Database.MigrateAsync();
+                    await context.SeedPatients();
+                }
+            }
             return app;
         }
 

@@ -1,15 +1,29 @@
-﻿.clinics-page {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-    direction: rtl;
+﻿.appointments-page{
+
 }
+    .appointments-page > header {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 1rem;
+        width:100%;
+    }
+        .appointments-page > header > div {
+            display: flex;
+            width: 50%;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.1s ease-in-out;
+            border: 1px solid #0E88AD;
+        }
 
+            .appointments-page > header > div.active {
+                border-bottom: none;
+                opacity: 0.7;
+            }
 
-.clinics-container {
+.appointments-table-as-grid {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -20,26 +34,22 @@
     width: 100%;
     gap: 1rem;
     text-align: center;
-    padding: 0 1rem;
 }
 
-    .clinics-container header {
+    .appointments-table-as-grid header {
         display: -ms-grid;
-        width: 100%;
         display: grid;
-        align-items: center;
         grid-template-columns: repeat(4, 1fr);
         gap: 1%;
         background-color: #0E88AD;
         color: #ffffff;
     }
 
-        .clinics-container header > * {
-            padding: 1rem;
-            margin: 0;
+        .appointments-table-as-grid header > * {
+            padding: 0.5rem;
         }
 
-    .clinics-container main {
+    .appointments-table-as-grid main {
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -50,7 +60,7 @@
         gap: 0.5rem;
     }
 
-        .clinics-container main .clinic-card {
+        .appointments-table-as-grid main .row {
             display: -ms-grid;
             display: grid;
             -webkit-box-align: center;
@@ -59,21 +69,13 @@
             grid-template-columns: repeat(4, 1fr);
             gap: 1%;
             border: 1px solid #0E88AD;
-            transition: 0.1s ease-in-out;
         }
 
-            .clinics-container main .clinic-card:hover{
-                border-width: 3px;
-                transform: scale(1.01) translate(3px,-3px);
-                cursor: pointer;
+            .appointments-table-as-grid main .row > * {
+                padding: 0.6rem;
             }
 
-            .clinics-container main .clinic-card > * {
-                padding: 1rem;
-                margin: 0;
-            }
-
-            .clinics-container main .clinic-card .type {
+            .appointments-table-as-grid main .row .type {
                 display: -webkit-box;
                 display: -ms-flexbox;
                 display: flex;
@@ -86,7 +88,7 @@
                 gap: 0.7rem;
             }
 
-                .clinics-container main .clinic-card .type .show-details-icon {
+                .appointments-table-as-grid main .row .type .show-details-icon {
                     margin-left: 0.5rem;
                     display: -webkit-box;
                     display: -ms-flexbox;
@@ -100,7 +102,7 @@
                     cursor: pointer;
                 }
 
-                .clinics-container main .clinic-card .type .icon {
+                .appointments-table-as-grid main .row .type .icon {
                     width: 20px;
                     display: -webkit-box;
                     display: -ms-flexbox;
@@ -114,11 +116,11 @@
                     cursor: pointer;
                 }
 
-                    .clinics-container main .clinic-card .type .icon img {
+                    .appointments-table-as-grid main .row .type .icon img {
                         width: 100%;
                     }
 
-            .clinics-container main .clinic-card .date {
+            .appointments-table-as-grid main .row .date {
                 display: -webkit-box;
                 display: -ms-flexbox;
                 display: flex;
@@ -128,19 +130,19 @@
                 flex-direction: column;
             }
 
-                .clinics-container main .clinic-card .date .time {
+                .appointments-table-as-grid main .row .date .time {
                     color: #007AFF;
                     text-decoration: underline;
                     font-weight: bold;
                     letter-spacing: 1px;
                 }
 
-                .clinics-container main .clinic-card .date .day {
+                .appointments-table-as-grid main .row .date .day {
                     font-size: 12px;
                     color: #9A9EA5;
                 }
 
-            .clinics-container main .clinic-card .name-info {
+            .appointments-table-as-grid main .row .name-info {
                 display: -webkit-box;
                 display: -ms-flexbox;
                 display: flex;
@@ -153,11 +155,11 @@
                 justify-content: start;
             }
 
-                .clinics-container main .clinic-card .name-info .name {
+                .appointments-table-as-grid main .row .name-info .name {
                     font-weight: bold;
                 }
 
-                .clinics-container main .clinic-card .name-info .age {
+                .appointments-table-as-grid main .row .name-info .age {
                     color: #9A9EA5;
                     font-size: 12px;
                 }

@@ -1,4 +1,5 @@
-﻿using HSS.Domain.BaseModels;
+﻿using HSS.Domain;
+using HSS.Domain.BaseModels;
 using HSS.Domain.Enums;
 using HSS.Presentation.MVC.Models;
 using HSS.Services.Abstractions;
@@ -57,11 +58,8 @@ namespace HSS.Presentation.MVC.Controllers
 
         private IActionResult CheckRole()
         {
-            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
-            if (!roles.Any())
-                return RedirectToAction(nameof(Logout));
 
-            if (roles.Contains(ApplicationRole.Receptionist.ToString()))
+            if (User.IsInRole(RolesConstants.Receptionist))
                 return RedirectToAction("Index", "Reception");
             return RedirectToAction(nameof(Logout));
         }

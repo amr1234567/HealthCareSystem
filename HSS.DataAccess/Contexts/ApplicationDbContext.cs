@@ -1,5 +1,6 @@
 ﻿using HSS.DataAccess.Configurations;
 using HSS.DataAccess.Helpers;
+using HSS.DataAccess.Repositories;
 using HSS.Domain.BaseModels;
 using HSS.Domain.Enums;
 using HSS.Domain.IdentityModels;
@@ -10,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HSS.DataAccess.Contexts
 {
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,AccountServicesHelpers accountServices) : DbContext(options)
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,AccountServicesHelpers accountServices, Helper helper) : DbContext(options)
     {
         public DbSet<IdentityUser> IdentityUsers { get; set; }
         public DbSet<AdministrationAdmin> AdministrationAdmins { get; set; }
@@ -77,10 +78,21 @@ namespace HSS.DataAccess.Contexts
 
         private void SeedData(ModelBuilder modelBuilder)
         {
-            modelBuilder.SeedAccounts(accountServices);
+            modelBuilder.SeedAccounts(accountServices, helper);
             modelBuilder.SeedRoles();
             modelBuilder.SeedHospitalDetails();
             modelBuilder.SeedSystemDetails();
+            modelBuilder.SeedDoctorsAndClinics();
+        }
+
+        public async Task SeedPatients()
+        {
+            if (!Patients.Any())
+            {
+                await Patients.AddRangeAsync(helper.SeedPatients());
+                await UserRoles.AddRangeAsync(helper.SeedRolesForPatients());
+                await SaveChangesAsync();
+            }
         }
 
         private static void ApplySoftDeleteFilter<TEntity>(ModelBuilder modelBuilder) where TEntity : BaseClass<int> 

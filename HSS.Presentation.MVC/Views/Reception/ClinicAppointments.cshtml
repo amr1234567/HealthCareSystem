@@ -1,0 +1,73 @@
+﻿@model ClinicAppointmentsModelView
+@{
+    ViewData["Title"] = "ClinicAppointments";
+    Layout = "_MainPagesLayout";
+}
+
+<div class="appointments-page">
+    <h2>الحجوزات الطبية بالعيادة</h2>
+
+    <header>
+        <div id="appointments-button">
+            كل الحجوزات
+        </div>
+        <div id="queue-button">
+            الطابور الحالي
+        </div>
+    </header>
+    <div class="appointments-table-as-grid">
+        <h2>جميع الحجوزات</h2>
+        <header>
+            <p class="type">نوع الحالة</p>
+            <p class="date">التاريخ</p>
+            <p class="time">الرقم القومي</p>
+            <p class="patient-info">معلومات المريض</p>
+        </header>
+        <main id="main-list-appointment">
+            @await Html.PartialAsync("/Components/_AppointmentsList", Model)
+        </main>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            let queueButton = document.getElementById("queue-button");
+            let appointmentButton = document.getElementById("appointments-button");
+            let mainListAppointment = document.getElementById("main-list-appointment");
+
+            appointmentButton.click(function () {
+                if(appointmentButton.classList.contains("active")) return;
+                appointmentButton.classList.add("active")
+                queueButton.classList.remove("active")
+                $.ajax({
+                    url: '@Url.Action("ClinicAppointmentsAsPartial", "Reception")',
+                    type: 'POST',
+                    data: {clinicId: parseInt('@Model.ClinicId') },
+                    success: function (response) {
+                        mainListAppointment.html(response);
+                    },
+                    error: function (error) {
+                        showErrorMessage(error.responseText);
+                    }
+                })
+            });
+            queueButton.click(function () {
+                if(queueButton.classList.contains("active")) return;
+                appointmentButton.classList.add("active")
+                queueButton.classList.remove("active")
+                $.ajax({
+                    url: '@Url.Action("QueueAppointmentsAsPartial", "Reception")',
+                    type: 'POST',
+                    data: {clinicId: parseInt('@Model.ClinicId') },
+                    success: function (response) {
+                        mainListAppointment.html(response);
+                    },
+                    error: function (error) {
+                        showErrorMessage(error.responseText);
+                    }
+                })
+            });
+        });
+    </script>
+}

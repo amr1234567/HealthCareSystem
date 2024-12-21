@@ -38,7 +38,7 @@ namespace HSS.Presentation.MVC.Controllers
                 var userId = GetUserId();
                 if (string.IsNullOrEmpty(userId) || !Int32.TryParse(userId, out int userIdAsInt))
                     return RedirectToAction("UnAuthAccess", "Home");
-                var clinics = await _receptionServices.GetClinicsByReceptionistIdAsync(id, userIdAsInt);
+                var clinics = await _receptionServices.GetClinicsByReceptionistIdAsync(userIdAsInt,id);
                 return View(new ListClinicsViewModel(clinics));
             }
             catch (Exception ex)
@@ -49,6 +49,26 @@ namespace HSS.Presentation.MVC.Controllers
                     ex.Message
                 });
             }
+        }
+
+        public async Task<IActionResult> ClinicAppointments(int clinicId)
+        {
+            var appointments = await _receptionServices.AllClinicAppointments(clinicId);
+            return View(new ClinicAppointmentsModelView(appointments, clinicId));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ClinicAppointmentsAsPartial(int clinicId)
+        {
+            var appointments = await _receptionServices.AllClinicAppointments(clinicId);
+            return PartialView("/Components/_ClinicAppointments", new ClinicAppointmentsModelView(appointments, clinicId));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> QueueAppointmentsAsPartial(int clinicId)
+        {
+            var appointments = await _receptionServices.ClinicAppointmentsQueue(clinicId);
+            return PartialView("/Components/_QueueAppointments", new ClinicAppointmentsModelView(appointments, clinicId));
         }
 
         private string GetUserId()

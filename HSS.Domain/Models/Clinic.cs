@@ -21,7 +21,7 @@ namespace HSS.Domain.Models
         public int SpecializationId { get; set; }
 
         [AllowNull, MaxLength(200)]
-        public string Location { get; set; } // وصف للمكان بالمستشفي
+        public string? Location { get; set; } // وصف للمكان بالمستشفي
 
         public MedicalDepartment MedicalDepartment { get; set; }
         

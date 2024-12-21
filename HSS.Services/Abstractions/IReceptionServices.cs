@@ -14,8 +14,9 @@ namespace HSS.Services.Abstractions
         Task<IEnumerable<SpecializationDto>> GetSpecializationsByReceptionistIdAsync(int receptionistId);
         Task<bool> CreateAppointment(CreateAppointmentDto dto);
         Task<bool> ConfirmAppointment(string NationalId);
-        Task<bool> CancelAppointemen(string NationalId);
+        Task<bool> CancelAppointment(string NationalId);
         Task<bool> DelayAppointment(string NationalId, DateTime dateTimeDelayTo);
-        Task<List<AppointmentDto>> clinicAppointments(int clinicId);
+        Task<List<AppointmentDto>> ClinicAppointmentsQueue(int clinicId);
+        Task<List<AppointmentDto>> AllClinicAppointments(int clinicId);
     }
 }

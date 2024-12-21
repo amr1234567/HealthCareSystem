@@ -10,8 +10,8 @@ namespace HSS.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<IdentityUser> builder)
         {
-            builder.Property(b => b.Id).IsRequired();
             builder.HasKey(b => b.Id);
+            builder.Property(b => b.Id).ValueGeneratedNever();
 
             builder.HasMany<Role>(u => u.Roles)
                 .WithMany(r => r.Users)

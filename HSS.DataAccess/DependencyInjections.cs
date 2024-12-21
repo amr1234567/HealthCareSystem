@@ -24,6 +24,8 @@ namespace HSS.DataAccess
                 var softDeleteInterceptor = serviceProvider.GetRequiredService<SoftDeleteInterceptor>();
                 options.UseSqlServer(connectionString).AddInterceptors(softDeleteInterceptor);
             });
+
+            
             return services;
         }
     }

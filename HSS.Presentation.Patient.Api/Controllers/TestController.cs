@@ -15,7 +15,7 @@ namespace HSS.Presentation.Patient.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Test()
         {
-            await helper.Seed();
+            //await helper.Seed();
             return Ok();
         }
 

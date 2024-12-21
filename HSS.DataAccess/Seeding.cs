@@ -1,4 +1,5 @@
 ﻿using HSS.DataAccess.Helpers;
+using HSS.DataAccess.Repositories;
 using HSS.Domain.Enums;
 using HSS.Domain.IdentityModels;
 using HSS.Domain.Models;
@@ -15,7 +16,7 @@ namespace HSS.DataAccess
 {
     public static class Seeding
     {
-        public static void SeedAccounts(this ModelBuilder modelBuilder,AccountServicesHelpers accountServices)
+        public static void SeedAccounts(this ModelBuilder modelBuilder, AccountServicesHelpers accountServices, Helper helper)
         {
             var salt = accountServices.CreateSalt();
             var hashedPassword = accountServices.HashPasswordWithSalt(salt, "@Aa123456789");
@@ -25,8 +26,8 @@ namespace HSS.DataAccess
                 new HospitalAdmin
                 {
                     Id = 1,
-                    Name = "Admin User",
-                    NationalId = "12345678901234",
+                    Name = "ادمن 1 لمستشفي 1",
+                    NationalId = helper.GenerateNationalID(true),
                     Email = "admin@hospital.com",
                     Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
                     Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",//@Aa123456789
@@ -39,48 +40,93 @@ namespace HSS.DataAccess
                new Receptionist
                {
                    Id = 2,
-                   Name = "receptionist1",
+                   Name = "احمد محمود خالد عبد المجيد",
                    WorkingTime = new TimeSpan(9, 0, 0),
                    ReceptionId = 1,
-                   NationalId = "11111111111111",
+                   NationalId = helper.GenerateNationalID(true),
                    CreatedAt = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
                    Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",//@Aa123456789
                    Salt = "yCO+h7P4PiwQp7rKKiy3mQ=="
                }
            );
 
-            modelBuilder.Entity<Doctor>().HasData(
-               new Doctor
-               {
-                   Id = 3,
-                   Name = "Dr. John Doe",
-                   NationalId = "22222222222222",
-                   Email = "john.doe@hospital.com",
-                   Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",//@Aa123456789
-                   HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
-                   WorkingTime = new TimeSpan(8, 0, 0),
-                   HospitalId = 1,
-                   ExperienceYears = 10,
-                   Specialization = "Cardiology",
-                   ClinicId = 1,
-                   Salt = "yCO+h7P4PiwQp7rKKiy3mQ=="
-               }
-           );
-
-            modelBuilder.Entity<Patient>().HasData(
-             new Patient
-             {
-                 Id = 4,
-                 Name = "Jane Doe",
-                 NationalId = "33333333333333",
-                 Email = "jane.doe@hospital.com",
-                 Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=", //@Aa123456789
-                 ContactNumber = "123-456-7890",
-                 Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
-                 CreatedAt = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
-             }
-            );
+            
         }
+        public static void SeedDoctorsAndClinics(this ModelBuilder modelBuilder)
+        {
+            // Seed 10 Clinics
+            var clinics = new List<Clinic>
+            {
+                new Clinic { Id = 1, Name = "عيادة القلب", HospitalId = 1, SpecializationId = 1, StartAt = new TimeSpan(8,0,0), FinishAt = new TimeSpan(16,0,0) },
+                new Clinic { Id = 2, Name = "عيادة العظام", HospitalId = 1, SpecializationId = 2, StartAt = new TimeSpan(9,0,0), FinishAt = new TimeSpan(17,0,0) },
+                new Clinic { Id = 3, Name = "عيادة الأطفال", HospitalId = 1, SpecializationId = 3, StartAt = new TimeSpan(8,0,0), FinishAt = new TimeSpan(16,0,0) },
+                new Clinic { Id = 4, Name = "عيادة المخ والأعصاب", HospitalId = 1, SpecializationId = 4, StartAt = new TimeSpan(10,0,0), FinishAt = new TimeSpan(18,0,0) },
+                new Clinic { Id = 5, Name = "عيادة الجلدية", HospitalId = 1, SpecializationId = 5, StartAt = new TimeSpan(9,0,0), FinishAt = new TimeSpan(17,0,0) },
+                new Clinic { Id = 6, Name = "عيادة الأنف والأذن والحنجرة", HospitalId = 1, SpecializationId = 6, StartAt = new TimeSpan(8,0,0), FinishAt = new TimeSpan(16,0,0) },
+                new Clinic { Id = 7, Name = "عيادة العيون", HospitalId = 1, SpecializationId = 7, StartAt = new TimeSpan(9,0,0), FinishAt = new TimeSpan(17,0,0) },
+                new Clinic { Id = 8, Name = "عيادة الأسنان", HospitalId = 1, SpecializationId = 8, StartAt = new TimeSpan(8,0,0), FinishAt = new TimeSpan(16,0,0) },
+                new Clinic { Id = 9, Name = "عيادة الطب النفسي", HospitalId = 1, SpecializationId = 9, StartAt = new TimeSpan(10,0,0), FinishAt = new TimeSpan(18,0,0) },
+                new Clinic { Id = 10, Name = "عيادة الطب العام", HospitalId = 1, SpecializationId = 10, StartAt = new TimeSpan(8,0,0), FinishAt = new TimeSpan(16,0,0) }
+            };
+
+            modelBuilder.Entity<Clinic>().HasData(clinics);
+
+            // Egyptian Names Lists
+            var maleNames = new[] { "محمد", "أحمد", "مصطفى", "إبراهيم", "عبدالرحمن", "عبدالله", "حسن", "علي", "عمر", "يوسف", 
+                                    "كريم", "محمود", "طارق", "خالد", "سيد", "هشام", "عادل", "رامي", "سامح", "وليد" };
+            
+            var femaleNames = new[] { "فاطمة", "نور", "سارة", "مريم", "رنا", "هدى", "أمل", "سلمى", "منى", "ريم",
+                                    "دينا", "هبة", "رانيا", "ياسمين", "نورهان", "إيمان", "سمر", "ليلى", "عبير", "دعاء" };
+
+            // Seed 20 Doctors (10 male, 10 female)
+            var doctors = new List<Doctor>();
+            var userRoles = new List<UserRole>();
+            var random = new Random();
+
+            for(int i = 10; i <= 30; i++)
+            {
+                var clinicId = ((i-4) % 10) + 1;
+                var isFemale = i <= 13; // First 10 doctors are female
+                
+                string fullName;
+                if(isFemale)
+                {
+                    // Female doctor (female first name + 4 male names)
+                    fullName = $"{femaleNames[random.Next(femaleNames.Length)]} {maleNames[random.Next(maleNames.Length)]} " +
+                                $"{maleNames[random.Next(maleNames.Length)]} {maleNames[random.Next(maleNames.Length)]} " +
+                                $"{maleNames[random.Next(maleNames.Length)]}";
+                }
+                else
+                {
+                    // Male doctor (5 male names)
+                    fullName = $"{maleNames[random.Next(maleNames.Length)]} {maleNames[random.Next(maleNames.Length)]} " +
+                                $"{maleNames[random.Next(maleNames.Length)]} {maleNames[random.Next(maleNames.Length)]} " +
+                                $"{maleNames[random.Next(maleNames.Length)]}";
+                }
+
+                doctors.Add(new Doctor
+                {
+                    Id = i,
+                    Name = fullName,
+                    NationalId = $"{i}".PadLeft(14, '0'),
+                    Email = $"doctor{i}@hospital.com",
+                    Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=", //@Aa123456789
+                    HireDate = new DateTime(2024, 12, 21, 6, 20, 9, 796, DateTimeKind.Utc).AddTicks(3193),
+                    WorkingTime = new TimeSpan(8, 0, 0),
+                    HospitalId = 1,
+                    ExperienceYears = 5 + (i % 15), // 5-20 years experience
+                    Specialization = clinics[clinicId-1].Name.Replace("عيادة ", ""),
+                    ClinicId = clinicId,
+                    Salt = "yCO+h7P4PiwQp7rKKiy3mQ=="
+                });
+
+                userRoles.Add(new UserRole { RoleId = 3, UserId = i });
+            }
+
+            modelBuilder.Entity<Doctor>().HasData(doctors);
+            modelBuilder.Entity<UserRole>().HasData(userRoles);
+        }
+
 
         public static void SeedRoles(this ModelBuilder modelBuilder)
         {
@@ -108,9 +154,7 @@ namespace HSS.DataAccess
             );
             modelBuilder.Entity<UserRole>().HasData(
                 new UserRole() { RoleId = 1, UserId = 1 },
-                new UserRole() { RoleId = 2, UserId = 2 },
-                new UserRole() { RoleId = 3, UserId = 3 },
-                new UserRole() { RoleId = 4, UserId = 4 }
+                new UserRole() { RoleId = 2, UserId = 2 }
                 );
         }
     
@@ -197,19 +241,7 @@ namespace HSS.DataAccess
                 }
             );
 
-            modelBuilder.Entity<Clinic>().HasData(
-                new Clinic
-                {
-                    Id = 1,
-                    HospitalId = 1,
-                    SpecializationId = 1,
-                    SpecializationName = "Cardiology",
-                    Location = "First Floor, Room 101",
-                    StartAt = new TimeSpan(9, 0, 0),
-                    FinishAt = new TimeSpan(17, 0, 0),
-                    AppointmentDurationInMinutes = 30,
-                }
-            );
+           
         }
     
         public static void SeedSystemDetails(this ModelBuilder modelBuilder)

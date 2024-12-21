@@ -73,12 +73,12 @@ namespace HSS.Services.Services
         public async Task<IEnumerable<SpecializationDto>> GetSpecializationsByReceptionistIdAsync(int receptionistId)
         {
             var hospital = await _context.Set<Receptionist>()
-               .Where(rs => rs.Id == receptionistId)
-               .Include(rs => rs.Reception)
+                .Where(rs => rs.Id == receptionistId)
+                .Include(rs => rs.Reception)
                     .ThenInclude(r => r.Hospital)
                         .ThenInclude(h => h.ClinicSpecializations)
-               .Select(rs => rs.Reception.Hospital)
-               .FirstOrDefaultAsync();
+                .Select(rs => rs.Reception.Hospital)
+                .FirstOrDefaultAsync();
 
             if (hospital == null)
                 return [];
@@ -90,25 +90,25 @@ namespace HSS.Services.Services
         public async Task<IEnumerable<ClinicDto>> GetClinicsByReceptionistIdAsync(int receptionistId, int specializationId)
         {
             var receptionist = await _context.Set<Receptionist>()
-               .Where(rs => rs.Id == receptionistId)
-               .Include(rs => rs.Reception)
-               .FirstOrDefaultAsync();
+                .Where(rs => rs.Id == receptionistId)
+                .Include(rs => rs.Reception)
+                .FirstOrDefaultAsync();
 
             if (receptionist == null)
                 return [];
 
             var clinics = await _context.Clinics
-              .Where(c => c.HospitalId == receptionist.Reception.HospitalId && c.SpecializationId == specializationId)
-              .Include(c => c.Specialization)
-              .Include(c => c.Hospital)
-              .Include(c => c.Doctors)
-              .ToListAsync();
+                .Where(c => c.HospitalId == receptionist.Reception.HospitalId && c.SpecializationId == specializationId)
+                .Include(c => c.Specialization)
+                .Include(c => c.Hospital)
+                .Include(c => c.Doctors)
+                .ToListAsync();
 
             var clinicDtos = new List<ClinicDto>();
             foreach (var clinic in clinics)
             {
                 var activeDoctor = await GetCurrentlyWorkingDoctorAsync(clinic.Id);
-                var doctorName = activeDoctor?.Name ?? "No doctor available";
+                var doctorName = activeDoctor?.Name ?? "لا يوجد طبيب متاح الان";
                 clinicDtos.Add(new ClinicDto(clinic, doctorName));
             }
 
@@ -118,15 +118,31 @@ namespace HSS.Services.Services
         public async Task<DoctorDto> GetCurrentlyWorkingDoctorAsync(int clinicId)
         {
             var currentTime = DateTime.UtcNow.TimeOfDay;
-            var doctor = await _context.Set<Doctor>()
-                .Where(d => d.ClinicId == clinicId && d.StartAt <= currentTime && d.StartAt.Add(d.WorkingTime) >= currentTime)
-                .FirstOrDefaultAsync();
 
-            if (doctor == null)
+            var doctors = await _context.Set<Doctor>()
+                .Where(d => d.ClinicId == clinicId)
+                .ToListAsync();
+
+            var workingDoctor = doctors.FirstOrDefault(d => 
+            {
+                var endTime = d.StartAt.Add(d.WorkingTime);
+                
+                // Handle case where shift crosses midnight
+                if (endTime < d.StartAt)
+                {
+                    return (currentTime >= d.StartAt) || (currentTime <= endTime);
+                }
+                
+                return currentTime >= d.StartAt && currentTime <= endTime;
+            });
+
+            if (workingDoctor == null)
                 return null;
 
-            return new DoctorDto(doctor);
+            return new DoctorDto(workingDoctor);
         }
+
+
 
         public async Task<bool> CreateAppointment(CreateAppointmentDto dto)
         {
@@ -146,17 +162,19 @@ namespace HSS.Services.Services
             return await _context.SaveChangesAsync()>0;
         }
 
-        public async Task<bool> CancelAppointemen(string NationalId)
+        public async Task<bool> CancelAppointment(string NationalId)
         {
-            return await _context.ClinicAppointment.Include(x=>x.Patient).Where(x=>x.Patient.NationalId==NationalId).ExecuteDeleteAsync()>0;
+            return await _context.ClinicAppointment.Include(x => x.Patient)
+                .Where(x => x.Patient.NationalId == NationalId).ExecuteDeleteAsync() > 0;
         }
         public async Task<bool> ConfirmAppointment(string NationalId)
         {
             return await _context.ClinicAppointment
                 .Include(x => x.Patient)
                 .Where(x => x.Patient.NationalId == NationalId)
-                .ExecuteUpdateAsync(x=>x.SetProperty(x=>x.IsConfirmed,true)) >0;
+                .ExecuteUpdateAsync(x => x.SetProperty(x => x.IsConfirmed, true)) > 0;
         }
+
         public async Task<bool> DelayAppointment(string NationalId,DateTime dateTimeDelayTo)
         {
             var appointment = await _context.ClinicAppointment
@@ -168,28 +186,23 @@ namespace HSS.Services.Services
             appointment.AppointmentDate = dateTimeDelayTo;
             return await _context.SaveChangesAsync()>0;
         }
-        public async Task<List<AppointmentDto>> clinicAppointments(int clinicId)
+
+        public async Task<List<AppointmentDto>> ClinicAppointmentsQueue(int clinicId)
         {
-            var result =await _context
+            var result = await _context
                 .ClinicAppointment
-                .Include(x => x.Patient)
                 .Where(x => x.IsConfirmed == true && x.ClinicId == clinicId)
-                .Select(x=>new AppointmentDto
-                {
-                    NationalId=x.Patient.NationalId,
-                    ClinicName=x.Clinic.SpecializationName,
-                    PatientName=x.Patient.Name,
-                    Reserved=x.AppointmentDate,
-                    EndAt=x.Clinic.FinishAt,
-                    StartAt=x.Clinic.StartAt,
-                    Duration=x.Duration
-                })
+                .Include(x => x.Patient)
+                .Include(x => x.Clinic)
+                .Include(x => x.Doctor)
+                .Include(x => x.Hospital)
+                .Select(x => new AppointmentDto(x))
                 .ToListAsync();
 
             var queue = new PriorityQueue<AppointmentDto, double>();
             foreach(var item in result)
             {
-                queue.Enqueue(item, Priority(item.StartAt, item.EndAt,item.Reserved,item.Duration));
+                queue.Enqueue(item, Priority(item.ClinicStartAt, item.ClinicEndAt, item.AppointmentDate.Value, item.Duration));
             }
             var list = new List<AppointmentDto>();
             while (queue.Count > 0) { 
@@ -197,6 +210,21 @@ namespace HSS.Services.Services
             }
             return list;
         }
+
+        public async Task<List<AppointmentDto>> AllClinicAppointments(int clinicId)
+        {
+            var result = await _context.ClinicAppointment
+                .Where(x => x.ClinicId == clinicId)
+                .Include(x => x.Patient)
+                .Include(x => x.Clinic)
+                .Include(x => x.Doctor)
+                .Include(x => x.Hospital)
+                .Select(x => new AppointmentDto(x))
+                .ToListAsync();
+            return result;
+        }
+
+
         private double Priority(TimeSpan from, TimeSpan to, DateTime reserved, TimeSpan Duration)
         {
             var total = to - from;

@@ -1,0 +1,31 @@
+﻿@using HSS.Presentation.MVC.Controllers
+@model ClinicAppointmentsModelView
+
+
+@foreach(var app in Model.Appointments)
+{
+    <div class="appointment-row">
+        <div class="type">
+            <span class="show-details-icon">
+                <img src="/icons/options-icon.svg" alt="">
+            </span>
+            <span class="type">@app.AppointmentType</span>
+            <span class="icon">
+                <img src="/icons/retry-icon.svg" alt="">
+            </span>
+        </div>
+        <div class="date">
+            <span class="time">
+                @((app.AppointmentDate.Value.Hour > 12 ? (app.AppointmentDate.Value.Hour - 12) : app.AppointmentDate.Value.Hour).ToString("00") + ":" + app.AppointmentDate.Value.Minute.ToString("00") + (app.AppointmentDate.Value.Hour >= 12 ? " مساءً" : " صباحاً"))
+            </span>
+            <span class="day">@app.AppointmentDate.Value.ToString("dd/MM/yyyy")</span>
+        </div>
+        <div class="id">
+            @app.PatientNationalId
+        </div>
+        <div class="name-info">
+            <span class="name">@app.PatientName</span>
+            <span class="age">@app.PatientBirthDate.Year عاما</span>
+        </div>
+    </div>
+}

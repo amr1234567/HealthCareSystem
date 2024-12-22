@@ -30,9 +30,6 @@ namespace HSS.Domain.Models.Aggregates
         [Required,Range(0, int.MaxValue, ErrorMessage = "Radiology appointments number done must be a non-negative integer.")]
         public int RadiologyAppointmentsNumberDone { get; set; }
 
-        [AllowNull]
-        public Treatment Treatment { get; set; }
-
         [Required]  // Ensures this field cannot be null
         public bool FollowUpNeeded { get; set; }
 
@@ -53,7 +50,7 @@ namespace HSS.Domain.Models.Aggregates
         public List<LabAppointment> LabAppointments { get; set; }
 
         [AllowNull]
-        public int ClinicAppointmentIdRelatedTo { get; set; }
+        public int? ClinicAppointmentIdRelatedTo { get; set; }
         public ClinicAppointment? ClinicAppointmentRelatedTo { get; set; }
 
         public bool IsStarted { get; set; } = false;
@@ -65,9 +62,13 @@ namespace HSS.Domain.Models.Aggregates
                 var needMore = !FollowUpNeeded &&
                     !RadiologyAppointmentNeeded &&
                     !LabAppointmentNeeded;
+                if (needMore)
+                {
+                    return true;
+                }
                 var rangeTime = CreatedAt.Add(FollowUpExpectedPeriod ?? TimeSpan.MinValue).AddDays(4);
                 var timeOut = FollowUpExpectedPeriod != null && DateTime.UtcNow < rangeTime;
-                return needMore || timeOut;
+                return timeOut;
             }
         }
 

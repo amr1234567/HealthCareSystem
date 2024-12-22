@@ -11,7 +11,7 @@ namespace HSS.DataAccess.Configurations
         public void Configure(EntityTypeBuilder<IdentityUser> builder)
         {
             builder.HasKey(b => b.Id);
-            builder.Property(b => b.Id).ValueGeneratedNever();
+            builder.Property(b => b.Id).ValueGeneratedOnAdd();
 
             builder.HasMany<Role>(u => u.Roles)
                 .WithMany(r => r.Users)

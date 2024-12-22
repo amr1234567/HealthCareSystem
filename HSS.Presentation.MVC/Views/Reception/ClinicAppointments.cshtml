@@ -7,8 +7,8 @@
 <div class="appointments-page">
     <h2>الحجوزات الطبية بالعيادة</h2>
 
-    <header>
-        <div id="appointments-button">
+    <header class="page-header">
+        <div id="appointments-button" class="active-button">
             كل الحجوزات
         </div>
         <div id="queue-button">
@@ -24,49 +24,100 @@
             <p class="patient-info">معلومات المريض</p>
         </header>
         <main id="main-list-appointment">
-            @await Html.PartialAsync("/Components/_AppointmentsList", Model)
+            @await Html.PartialAsync("~/Views/Reception/Components/_AppointmentsList.cshtml", Model)
         </main>
+    </div>
+
+    <div id="add-appointment-button" title="Add appointment" class="add-appointment-button">
+        <img src="/icons/medical-icons/plus-icon.svg" />
     </div>
 </div>
 
 @section Scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
-            let queueButton = document.getElementById("queue-button");
-            let appointmentButton = document.getElementById("appointments-button");
-            let mainListAppointment = document.getElementById("main-list-appointment");
+            const queueButton = document.getElementById("queue-button");
+            const appointmentButton = document.getElementById("appointments-button");
+            const mainListAppointment = document.getElementById("main-list-appointment");
+            const addButton = document.getElementById("add-appointment-button");
+            const showDetailsButton = document.querySelector(".show-details-icon");
 
-            appointmentButton.click(function () {
-                if(appointmentButton.classList.contains("active")) return;
-                appointmentButton.classList.add("active")
-                queueButton.classList.remove("active")
+
+
+            appointmentButton.addEventListener("click", function () {
+                if (appointmentButton.classList.contains("active-button")) {
+                    return;
+                }
+
+                addButton.classList.remove("not-active");
+
+                appointmentButton.classList.add("active-button");
+                queueButton.classList.remove("active-button");
+
                 $.ajax({
                     url: '@Url.Action("ClinicAppointmentsAsPartial", "Reception")',
                     type: 'POST',
-                    data: {clinicId: parseInt('@Model.ClinicId') },
-                    success: function (response) {
-                        mainListAppointment.html(response);
+                    data: {
+                        clinicId: parseInt('@Model.ClinicId')
                     },
-                    error: function (error) {
-                        showErrorMessage(error.responseText);
+                    success: function (response) {
+                        $(mainListAppointment).html(response);
+                    },
+                    error: function (xhr) {
+                        showErrorMessage(xhr.responseText || "حدث خطأ أثناء تحميل البيانات");
                     }
-                })
+                });
             });
-            queueButton.click(function () {
-                if(queueButton.classList.contains("active")) return;
-                appointmentButton.classList.add("active")
-                queueButton.classList.remove("active")
+            queueButton.addEventListener("click", function () {
+                if (queueButton.classList.contains("active-button")) {
+                    return;
+                }
+                addButton.classList.add("not-active");
+
+                queueButton.classList.add("active-button");
+                appointmentButton.classList.remove("active-button");
+
                 $.ajax({
                     url: '@Url.Action("QueueAppointmentsAsPartial", "Reception")',
                     type: 'POST',
-                    data: {clinicId: parseInt('@Model.ClinicId') },
-                    success: function (response) {
-                        mainListAppointment.html(response);
+                    data: {
+                        clinicId: parseInt('@Model.ClinicId')
                     },
-                    error: function (error) {
-                        showErrorMessage(error.responseText);
+                    success: function (response) {
+                        $(mainListAppointment).html(response);
+                    },
+                    error: function (xhr) {
+                        showErrorMessage(xhr.responseText || "حدث خطأ أثناء تحميل البيانات");
                     }
-                })
+                });
+            });
+
+            $(document).on('click', '.show-details-icon', function (e) {
+                e.stopPropagation(); // منع انتشار الحدث
+                const buttons = $(this).siblings('.buttons');
+                const appointmentRow = $(this).closest('.appointment-row');
+
+                // إغلاق جميع القوائم المفتوحة الأخرى
+                $('.buttons.show').not(buttons).removeClass('show');
+                $('.appointment-row.active').not(appointmentRow).removeClass('active');
+
+                // تبديل حالة القائمة الحالية
+                buttons.toggleClass('show');
+                appointmentRow.toggleClass('active');
+            });
+
+            // إغلاق القائمة عند النقر في أي مكان خارجها
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('.buttons').length &&
+                    !$(e.target).closest('.show-details-icon').length) {
+                    $('.buttons.show').removeClass('show');
+                    $('.appointment-row.active').removeClass('active');
+                }
+            });
+            // منع إغلاق القائمة عند النقر داخلها
+            $(document).on('click', '.buttons', function (e) {
+                e.stopPropagation();
             });
         });
     </script>

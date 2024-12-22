@@ -34,7 +34,7 @@ namespace HSS.Presentation.Patient.Api.Controllers
                 [
                     new Role
                     {
-                        RoleName = Domain.Enums.ApplicationRole.Admin
+                        RoleName = Domain.Enums.ApplicationRole.AdminstrationAdmin
                     }
                 ],
                 Password = accountServices.HashPasswordWithSalt(salt, "123456"),

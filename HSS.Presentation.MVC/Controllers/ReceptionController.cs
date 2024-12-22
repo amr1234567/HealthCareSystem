@@ -54,21 +54,23 @@ namespace HSS.Presentation.MVC.Controllers
         public async Task<IActionResult> ClinicAppointments(int clinicId)
         {
             var appointments = await _receptionServices.AllClinicAppointments(clinicId);
-            return View(new ClinicAppointmentsModelView(appointments, clinicId));
+            return View(new ClinicAppointmentsModelView(appointments, clinicId, false));
         }
 
         [HttpPost]
         public async Task<IActionResult> ClinicAppointmentsAsPartial(int clinicId)
         {
             var appointments = await _receptionServices.AllClinicAppointments(clinicId);
-            return PartialView("/Components/_ClinicAppointments", new ClinicAppointmentsModelView(appointments, clinicId));
+            return PartialView("~/Views/Reception/Components/_AppointmentsList.cshtml",
+                new ClinicAppointmentsModelView(appointments, clinicId, false));
         }
 
         [HttpPost]
         public async Task<IActionResult> QueueAppointmentsAsPartial(int clinicId)
         {
             var appointments = await _receptionServices.ClinicAppointmentsQueue(clinicId);
-            return PartialView("/Components/_QueueAppointments", new ClinicAppointmentsModelView(appointments, clinicId));
+            return PartialView("~/Views/Reception/Components/_AppointmentsList.cshtml",
+                new ClinicAppointmentsModelView(appointments, clinicId, true));
         }
 
         private string GetUserId()

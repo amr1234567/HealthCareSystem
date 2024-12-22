@@ -71,29 +71,11 @@ namespace HSS.DataAccess.Contexts
                 }
             }
 
-            SeedData(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }
 
-        private void SeedData(ModelBuilder modelBuilder)
-        {
-            modelBuilder.SeedAccounts(accountServices, helper);
-            modelBuilder.SeedRoles();
-            modelBuilder.SeedHospitalDetails();
-            modelBuilder.SeedSystemDetails();
-            modelBuilder.SeedDoctorsAndClinics();
-        }
-
-        public async Task SeedPatients()
-        {
-            if (!Patients.Any())
-            {
-                await Patients.AddRangeAsync(helper.SeedPatients());
-                await UserRoles.AddRangeAsync(helper.SeedRolesForPatients());
-                await SaveChangesAsync();
-            }
-        }
+       
 
         private static void ApplySoftDeleteFilter<TEntity>(ModelBuilder modelBuilder) where TEntity : BaseClass<int> 
         {

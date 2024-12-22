@@ -4,6 +4,7 @@ using HSS.Domain.Enums;
 using HSS.Domain.IdentityModels;
 using HSS.Domain.Models.ManyToManyRelationEntitys;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,7 +37,7 @@ namespace HSS.DataAccess.Repositories
             // This line should never be reached
             throw new InvalidOperationException("Failed to get a random element from the dictionary.");
         }
-        private List<string> maleNames = new List<string>
+        public static List<string> maleNames = new List<string>
             {
                 "أحمد", "علي", "عمر", "خالد", "حسن", "فيصل", "يوسف", "محمد", "سامي", "زيد",
                 "عبدالله", "طارق", "ناصر", "مصطفى", "إبراهيم", "عادل", "هادي", "سيف", "بلال", "سليم",
@@ -49,7 +50,7 @@ namespace HSS.DataAccess.Repositories
                 "سامي", "عمر", "نور", "براء", "راكان", "أمين", "مجاهد", "عز", "طلال", "ياسر",
                 "عبدالرحمن", "قيس", "حمد", "أنس", "رائد", "خير", "هادي", "نبيل", "زهير", "سميح"
             };
-        private List<string> femaleNames = new List<string>
+        public static List<string> femaleNames = new List<string>
             {
                 "عائشة", "فاطمة", "ليلى", "نورة", "أميرة", "مريم", "هدى", "رانيا", "سلمى", "ياسمين",
                 "نادية", "سميرة", "سحر", "دينا", "هالة", "ريم", "زينب", "نور", "لبنى", "سناء",
@@ -93,7 +94,7 @@ namespace HSS.DataAccess.Repositories
             };
 
 
-        public DateTime GetRandomDate()
+        public static DateTime GetRandomDate()
         {
             Random random = new Random();
             int startYear = 1960;
@@ -112,7 +113,26 @@ namespace HSS.DataAccess.Repositories
             return new DateTime(year, month, day);
         }
 
-        public string GenerateFullNameMale()
+        public static DateTime GetRandomDate(DateTime? date = null)
+        {
+            Random random = new Random();
+            int startYear = 1960;
+            int endYear = 2005;
+
+            // Generate a random year between 1960 and 2005
+            int year = random.Next(startYear, endYear + 1);
+
+            // Generate a random month (1 to 12)
+            int month = random.Next(1, 13);
+
+            // Generate a random day based on the month and year
+            int daysInMonth = DateTime.DaysInMonth(year, month);
+            int day = random.Next(1, daysInMonth + 1);
+
+            return new DateTime(year, month, day);
+        }
+
+        public static string GenerateFullNameMale()
         {
             Random random = new Random();
             List<string> fullName = new List<string>();
@@ -134,7 +154,7 @@ namespace HSS.DataAccess.Repositories
             return string.Join(" ", fullName);
         }
 
-        public string GenerateFullNameFemale()
+        public static string GenerateFullNameFemale()
         {
             Random random = new Random();
             var firstName = femaleNames[random.Next(femaleNames.Count)];
@@ -156,7 +176,7 @@ namespace HSS.DataAccess.Repositories
 
             return string.Join(" ", fullName);
         }
-        public string GenerateStreetName()
+        public static string GenerateStreetName()
         {
             if (maleNames.Count < 2)
             {
@@ -178,7 +198,7 @@ namespace HSS.DataAccess.Repositories
 
             return streetName;
         }
-        public AgeGroup GetAgeGroup(DateTime birthDate)
+        public static AgeGroup GetAgeGroup(DateTime birthDate)
         {
             var today = DateTime.Today;
             var ageInDays = (today - birthDate).TotalDays;
@@ -213,7 +233,7 @@ namespace HSS.DataAccess.Repositories
                 return AgeGroup.Senior;
             }
         }
-        public Gender GenerateRandomGender()
+        public static Gender GenerateRandomGender()
         {
             Random random = new Random();
             int randomNumber = random.Next(1, 101); // Generates a number between 1 and 100
@@ -225,8 +245,70 @@ namespace HSS.DataAccess.Repositories
 
 
 
-        public static string GenerateNationalID(DateTime birthDate, string governorateCode, bool isMale)
+        public static string GenerateNationalID(bool isMale, bool test = false)
         {
+            #region Random Date
+            Random random = new Random();
+            int startYear = 1960;
+            int endYear = 2005;
+
+            // Generate a random year between 1960 and 2005
+            int year = random.Next(startYear, endYear + 1);
+
+            // Generate a random month (1 to 12)
+            int month = random.Next(1, 13);
+
+            // Generate a random day based on the month and year
+            int daysInMonth = DateTime.DaysInMonth(year, month);
+            int day = random.Next(1, daysInMonth + 1);
+
+            DateTime birthDate = new DateTime(year, month, day);
+            #endregion
+
+            #region GovernmentCode
+            Dictionary<string, string> governorates = new Dictionary<string, string>
+            {
+                { "القاهرة", "01" },
+                { "الإسكندرية", "02" },
+                { "بورسعيد", "03" },
+                { "السويس", "04" },
+                { "دمياط", "11" },
+                { "الدقهلية", "12" },
+                { "الشرقية", "13" },
+                { "كفر الشيخ", "14" },
+                { "الغربية", "15" },
+                { "المنوفية", "16" },
+                { "البحيرة", "17" },
+                { "الإسماعيلية", "18" },
+                { "الجيزة", "19" },
+                { "بني سويف", "22" },
+                { "الفيوم", "23" },
+                { "المنيا", "24" },
+                { "أسيوط", "25" },
+                { "سوهاج", "26" },
+                { "قنا", "27" },
+                { "أسوان", "28" },
+                { "الأقصر", "29" },
+                { "البحر الأحمر", "31" },
+                { "الوادي الجديد", "32" },
+                { "مطروح", "33" },
+                { "شمال سيناء", "34" },
+                { "جنوب سيناء", "35" }
+            };
+
+            int randomIndex = random.Next(governorates.Count);
+            var governorateCode = "";
+            // Get the element at the random index
+            foreach (var kvp in governorates)
+            {
+                if (randomIndex == 0)
+                {
+                    governorateCode = kvp.Value;
+                }
+                randomIndex--;
+            } 
+            #endregion
+
             // Step 1: Determine the century code
             int centuryCode = birthDate.Year >= 2000 ? 3 : 2;
 
@@ -242,7 +324,6 @@ namespace HSS.DataAccess.Repositories
             }
 
             // Step 4: Generate a serial number
-            Random random = new Random();
             int serialNumber = random.Next(1, 10_000); // Random number between 1 and 999
             string serialNumberString = serialNumber.ToString("D3");
 
@@ -261,10 +342,47 @@ namespace HSS.DataAccess.Repositories
             return $"{partialID}{checksum}";
         }
 
-        public string GenerateNationalID(bool isMale)
+        //public static string GenerateNationalID(bool isMale)
+        //{
+        //    DateTime birthDate = GetRandomDate();
+        //    string governorateCode = GetRandomElement(Helper.governorates).Value;
+
+        //    // Step 1: Determine the century code
+        //    int centuryCode = birthDate.Year >= 2000 ? 3 : 2;
+
+        //    // Step 2: Extract year, month, and day of birth
+        //    string yearOfBirth = birthDate.Year.ToString().Substring(2, 2); // Last 2 digits of the year
+        //    string monthOfBirth = birthDate.Month.ToString("D2"); // Month as 2 digits
+        //    string dayOfBirth = birthDate.Day.ToString("D2"); // Day as 2 digits
+
+        //    // Step 3: Validate governorate code
+        //    if (!IsValidGovernorateCode(governorateCode))
+        //    {
+        //        throw new ArgumentException("Invalid governorate code.");
+        //    }
+
+        //    // Step 4: Generate a serial number
+        //    Random random = new Random();
+        //    int serialNumber = random.Next(1, 10_000); // Random number between 1 and 999
+        //    string serialNumberString = serialNumber.ToString("D3");
+
+        //    // Adjust gender based on serial number's last digit
+        //    if (isMale && serialNumber % 2 == 0) serialNumber++; // Make it odd for male
+        //    if (!isMale && serialNumber % 2 != 0) serialNumber--; // Make it even for female
+        //    serialNumberString = serialNumber.ToString("D3");
+
+        //    // Step 5: Concatenate the parts
+        //    string partialID = $"{centuryCode}{yearOfBirth}{monthOfBirth}{dayOfBirth}{governorateCode}{serialNumberString}";
+
+        //    // Step 6: Calculate the checksum
+        //    int checksum = CalculateChecksum(partialID);
+
+        //    // Combine everything into the full ID
+        //    return $"{partialID}{checksum}";
+        //}
+
+        public static string GenerateNationalID(DateTime birthDate, string governorateCode, bool isMale )
         {
-            DateTime birthDate = GetRandomDate();
-            string governorateCode = GetRandomElement(governorates).Value;
 
             // Step 1: Determine the century code
             int centuryCode = birthDate.Year >= 2000 ? 3 : 2;
@@ -334,54 +452,8 @@ namespace HSS.DataAccess.Repositories
             return (10 - (sum % 10)) % 10;
         }
 
-        public List<Patient> SeedPatients()
-        {
-            var patients = new List<Patient>();
-            for (int i = 200; i < 5_000; i++)
-            {
-                var state = GetRandomElement(governorates);
-                var customDate = GetRandomDate();
-                
-                var gender = GenerateRandomGender();
-
-                var random = new Random();
-
-                var user = new Patient()
-                {
-                    Id = i,
-                    Address = new Domain.ObjectValues.PatientAddress()
-                    {
-                        StreetName = GenerateStreetName(),
-                        City = state.Key,
-                        State = "Egypt"
-                    },
-                    AgeCategory = GetAgeGroup(customDate),
-                    DateOfBirth = customDate,
-                    CreatedAt = DateTime.UtcNow,
-                    Name = gender == Gender.Female ?
-                    GenerateFullNameFemale()
-                    : GenerateFullNameMale(),
-                    Sex = gender,
-                    NationalId = GenerateNationalID(customDate, state.Value, gender == Gender.Male),
-                };
-                patients.Add(user);
-            }
-            return patients;
-        }
+        
    
-        public List<UserRole> SeedRolesForPatients()
-        {
-            var roles = new List<UserRole>();
-            for (int i = 200; i < 5_000; i++)
-            {
-                var role = new UserRole()
-                {
-                    UserId = i,
-                    RoleId = 1
-                };
-                roles.Add(role);
-            }
-            return roles;
-        }
+       
     }
 }

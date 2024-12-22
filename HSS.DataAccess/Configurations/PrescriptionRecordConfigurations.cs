@@ -10,6 +10,7 @@ namespace HSS.DataAccess.Configurations
         public void Configure(EntityTypeBuilder<PrescriptionRecord> builder)
         {
             builder.HasKey(b => b.Id);
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.HasOne(b => b.Medicine)
                 .WithMany(m => m.PrescriptionRecords)
                 .HasForeignKey(a => a.MedicineId)

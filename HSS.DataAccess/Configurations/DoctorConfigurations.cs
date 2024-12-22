@@ -8,6 +8,7 @@ namespace HSS.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<Doctor> builder)
         {
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.HasOne(b => b.Hospital)
                 .WithMany(h => h.Doctors)
                 .HasForeignKey(a => a.HospitalId)

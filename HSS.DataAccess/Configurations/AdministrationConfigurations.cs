@@ -9,7 +9,7 @@ namespace HSS.DataAccess.Configurations
         public void Configure(EntityTypeBuilder<Administration> builder)
         {
             builder.HasKey(x => x.Id);
-
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
         }
     }
 }

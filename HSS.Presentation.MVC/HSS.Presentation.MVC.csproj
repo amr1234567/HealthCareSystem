@@ -22,8 +22,4 @@
     <ProjectReference Include="..\HSS.Services\HSS.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\icons\medical-icons\" />
-  </ItemGroup>
-
 </Project>

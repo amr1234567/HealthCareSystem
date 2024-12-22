@@ -17,7 +17,7 @@
         <main>
             @foreach (var clinic in Model.Clinics)
             {
-                <div class="clinic-card" role="link" onclick="()=> window.location.href = '@(Url.Action("","Reception"))'">
+                <a class="clinic-card" role="link" href = '@(Url.Action("ClinicAppointments","Reception", new {clinicId = clinic.ClinicId}))'>
                     <div class="type clinic-type">
                         <span class="type-name">@clinic.ClinicName</span>
                         <span class="type-icon">
@@ -36,7 +36,7 @@
                         <span class="separator">إلى</span>
                         <span class="time">@((clinic.FinishAt.Hours > 12 ? (clinic.FinishAt.Hours - 12) : clinic.FinishAt.Hours).ToString("00") + ":" + clinic.FinishAt.Minutes.ToString("00") + (clinic.FinishAt.Hours >= 12 ? " مساءً" : " صباحاً"))</span>
                     </div>
-                </div>
+                </a>
 
             }
         </main>

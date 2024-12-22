@@ -9,6 +9,7 @@ namespace HSS.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<HospitalAdmin> builder)
         {
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.HasOne(b => b.Hospital)
                 .WithOne(b => b.HospitalAdmin)
                 .IsRequired(false)

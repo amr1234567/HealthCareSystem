@@ -1,27 +1,38 @@
 ﻿.appointments-page{
-
+    position: relative;
 }
-    .appointments-page > header {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        padding: 1rem;
-        width:100%;
-    }
-        .appointments-page > header > div {
-            display: flex;
-            width: 50%;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: 0.1s ease-in-out;
-            border: 1px solid #0E88AD;
-        }
 
-            .appointments-page > header > div.active {
-                border-bottom: none;
-                opacity: 0.7;
-            }
+.page-header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1rem;
+    width: 100%;
+}
+h2{
+    text-align: center;
+}
+.page-header > div {
+    display: flex;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.1s ease-in-out;
+    border: 1px solid #0E88AD;
+    padding: 0.5rem 0;
+    font-weight: bold;
+}
+    .page-header > div:not(.active-button):hover {
+        transform: skew(10deg) scale(1.01);
+    }
+
+    .active-button {
+        border-bottom: none;
+        opacity: 0.7;
+        background-color: #0E88AD;
+        color: white;
+    }
 
 .appointments-table-as-grid {
     display: -webkit-box;
@@ -43,6 +54,7 @@
         gap: 1%;
         background-color: #0E88AD;
         color: #ffffff;
+        direction: rtl;
     }
 
         .appointments-table-as-grid header > * {
@@ -60,106 +72,32 @@
         gap: 0.5rem;
     }
 
-        .appointments-table-as-grid main .row {
-            display: -ms-grid;
-            display: grid;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            align-items: center;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1%;
-            border: 1px solid #0E88AD;
-        }
+.add-appointment-button {
+    position: fixed;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    background-color: #0E88AD;
+    color: white;
+    font-weight: bold;
+    bottom: 5%;
+    right: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+.add-appointment-button.not-active{
+    display: none;
+}
 
-            .appointments-table-as-grid main .row > * {
-                padding: 0.6rem;
-            }
+.add-appointment-button img{
+    transition: 0.1s ease-in-out;
+    width:50%;
+    height: fit-content;
+}
 
-            .appointments-table-as-grid main .row .type {
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-box-align: center;
-                -ms-flex-align: center;
-                align-items: center;
-                -webkit-box-pack: center;
-                -ms-flex-pack: center;
-                justify-content: center;
-                gap: 0.7rem;
-            }
-
-                .appointments-table-as-grid main .row .type .show-details-icon {
-                    margin-left: 0.5rem;
-                    display: -webkit-box;
-                    display: -ms-flexbox;
-                    display: flex;
-                    -webkit-box-pack: center;
-                    -ms-flex-pack: center;
-                    justify-content: center;
-                    -webkit-box-align: center;
-                    -ms-flex-align: center;
-                    align-items: center;
-                    cursor: pointer;
-                }
-
-                .appointments-table-as-grid main .row .type .icon {
-                    width: 20px;
-                    display: -webkit-box;
-                    display: -ms-flexbox;
-                    display: flex;
-                    -webkit-box-pack: center;
-                    -ms-flex-pack: center;
-                    justify-content: center;
-                    -webkit-box-align: center;
-                    -ms-flex-align: center;
-                    align-items: center;
-                    cursor: pointer;
-                }
-
-                    .appointments-table-as-grid main .row .type .icon img {
-                        width: 100%;
-                    }
-
-            .appointments-table-as-grid main .row .date {
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-box-orient: vertical;
-                -webkit-box-direction: normal;
-                -ms-flex-direction: column;
-                flex-direction: column;
-            }
-
-                .appointments-table-as-grid main .row .date .time {
-                    color: #007AFF;
-                    text-decoration: underline;
-                    font-weight: bold;
-                    letter-spacing: 1px;
-                }
-
-                .appointments-table-as-grid main .row .date .day {
-                    font-size: 12px;
-                    color: #9A9EA5;
-                }
-
-            .appointments-table-as-grid main .row .name-info {
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-box-orient: vertical;
-                -webkit-box-direction: normal;
-                -ms-flex-direction: column;
-                flex-direction: column;
-                -webkit-box-pack: start;
-                -ms-flex-pack: start;
-                justify-content: start;
-            }
-
-                .appointments-table-as-grid main .row .name-info .name {
-                    font-weight: bold;
-                }
-
-                .appointments-table-as-grid main .row .name-info .age {
-                    color: #9A9EA5;
-                    font-size: 12px;
-                }
+    .add-appointment-button:hover img{
+        transform: scale(1.3);
+    }

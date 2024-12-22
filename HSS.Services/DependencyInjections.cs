@@ -1,4 +1,6 @@
 ﻿using HSS.DataAccess.Contexts;
+using HSS.DataAccess.Helpers;
+using HSS.DataAccess.Repositories;
 using HSS.Domain.Helpers;
 using HSS.Services.Abstractions;
 using HSS.Services.Services;
@@ -12,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using HSS.DataAccess;
 
 namespace HSS.Services
 {
@@ -48,8 +51,15 @@ namespace HSS.Services
             using (var scope = app.Services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                var accountServices = scope.ServiceProvider.GetRequiredService<AccountServicesHelpers>();
+
                 await context.Database.MigrateAsync();
+                await context.SeedRolesAsync();
+                await context.SeedAccountsAsync(accountServices);
+                await context.SeedSystemDetailsAsync();
                 await context.SeedPatients();
+                await context.SeedDoctorsAndClinicsAsync();
+                await context.SeedClinicAppointmentsAsync();
             }
 
             return app;
@@ -65,13 +75,21 @@ namespace HSS.Services
                 Secure = CookieSecurePolicy.SameAsRequest
             };
             app.UseCookiePolicy(cookiePolicyOptions);
+            
             using (var scope = app.Services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                var accountServices = scope.ServiceProvider.GetRequiredService<AccountServicesHelpers>();
+
                 if (!context.Database.CanConnect() || !context.IdentityUsers.Any())
                 {
                     await context.Database.MigrateAsync();
+                    await context.SeedRolesAsync();
+                    await context.SeedAccountsAsync(accountServices);
+                    await context.SeedSystemDetailsAsync();
                     await context.SeedPatients();
+                    await context.SeedDoctorsAndClinicsAsync();
+                    await context.SeedClinicAppointmentsAsync();
                 }
             }
             return app;

@@ -9,7 +9,7 @@ namespace HSS.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<EffectiveSubstance> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.HasKey(x => x.Id); builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.HasMany<SideEffect>(e => e.SideEffects)
                .WithMany(s => s.EffectiveSubstances)
                .UsingEntity<SideEffectEffectiveSubstance>(

@@ -1,11 +1,40 @@
 ﻿@using HSS.Presentation.MVC.Controllers
 @model ClinicAppointmentsModelView
-
+ 
 
 @foreach(var app in Model.Appointments)
 {
-    <div class="appointment-row">
+    <div class="appointment-row @(app.IsStarted ? "started" : (app.IsConfirmed ? "confirmed" : (app.IsEnd ? "ended" : "")))">
         <div class="type">
+            <div class="buttons @(Model.IsQueueList ? "hide-buttons" : "") hide-buttons-for-view">
+                <button class="button" title="تأكيد الحضور">
+                    <span>تأكيد الحضور</span>
+                    <img src="/icons/confirm-icon.svg" alt="">
+                </button>
+                <button class="button" title="تأخير موعد">
+                    <span>تأخير الموعد</span>
+                    <img src="/icons/wait-button.svg" alt="">
+                </button>
+                <div class="seperator"></div>
+                <button class="button" title="الغاء موعد">
+                    <span>الغاء الموعد</span>
+                    <img src="/icons/cancel-button.svg" alt="">
+                </button>
+            </div>
+            <div class="buttons @(Model.IsQueueList ? "" : "hide-buttons") hide-buttons-for-view">
+                <button class="button" title="بدأ الحجز">
+                    <span>بدأ الحجز</span>
+                    <img src="/icons/start-icon.svg" alt="">
+                </button>
+                <button class="button" title="تأخير الموعد">
+                    <span>تأخير الموعد</span>
+                    <img src="/icons/wait-button.svg" alt="">
+                </button>
+                <button class="button" title="الغاء موعد">
+                    <span>الغاء الموعد</span>
+                    <img src="/icons/cancel-button.svg" alt="">
+                </button>
+            </div>
             <span class="show-details-icon">
                 <img src="/icons/options-icon.svg" alt="">
             </span>
@@ -25,7 +54,7 @@
         </div>
         <div class="name-info">
             <span class="name">@app.PatientName</span>
-            <span class="age">@app.PatientBirthDate.Year عاما</span>
+            <span class="age">@(DateTime.UtcNow.Year -  app.PatientBirthDate.Year) عاما</span>
         </div>
     </div>
 }

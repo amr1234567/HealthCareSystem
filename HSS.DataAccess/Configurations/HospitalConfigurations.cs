@@ -11,7 +11,7 @@ namespace HSS.DataAccess.Configurations
         public void Configure(EntityTypeBuilder<Hospital> builder)
         {
             builder.HasKey(x => x.Id);
-
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.HasOne(b => b.HospitalAdmin)
                 .WithOne(b => b.Hospital)
                 .IsRequired(true)

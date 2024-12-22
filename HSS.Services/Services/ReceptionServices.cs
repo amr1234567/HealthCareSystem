@@ -5,6 +5,7 @@ using HSS.Domain.Models.Aggregates;
 using HSS.Services.Abstractions;
 using HSS.Services.Models;
 using HSS.Services.SharedDto;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
@@ -222,6 +223,56 @@ namespace HSS.Services.Services
                 .Select(x => new AppointmentDto(x))
                 .ToListAsync();
             return result;
+        }
+
+        public async Task<List<SelectListItem>> GetAvailableTimeSlots(int clinicId, DateTime date)
+        {
+            // Get clinic working hours and appointment duration
+            var clinic = await _context.Clinics
+                .FirstOrDefaultAsync(c => c.Id == clinicId);
+
+            if (clinic == null)
+                throw new Exception("Clinic not found");
+
+            // Get all appointments for the specified date
+            var existingAppointments = await _context.ClinicAppointment
+                .Where(a => a.ClinicId == clinicId
+                    && a.AppointmentDate.Date == date.Date)
+                .Select(a => new { a.AppointmentDate, a.Duration })
+                .ToListAsync();
+
+            // Generate all possible time slots
+            var availableSlots = new List<SelectListItem>();
+            var currentTime = clinic.StartAt;
+
+            while (currentTime.Add(TimeSpan.FromMinutes(clinic.AppointmentDurationInMinutes)) <= clinic.FinishAt)
+            {
+                var slotEndTime = currentTime.Add(TimeSpan.FromMinutes(clinic.AppointmentDurationInMinutes));
+
+                // Check if the time slot overlaps with any existing appointment
+                var isSlotAvailable = !existingAppointments.Any(a =>
+                    (a.AppointmentDate.TimeOfDay <= currentTime && a.AppointmentDate.TimeOfDay.Add(a.Duration) > currentTime) ||
+                    (a.AppointmentDate.TimeOfDay < slotEndTime && a.AppointmentDate.TimeOfDay.Add(a.Duration) >= slotEndTime));
+
+                if (isSlotAvailable)
+                {
+                    var startTimeText = $"{currentTime.Hours % 12:D2}:{currentTime.Minutes:D2}" + (currentTime.Hours >= 12 ? " مساءً" : " صباحاً");
+                    var endTimeText = $"{slotEndTime.Hours % 12:D2}:{slotEndTime.Minutes:D2}" + (slotEndTime.Hours >= 12 ? " مساءً" : " صباحاً");
+
+
+                    var slotText = $"{startTimeText} - {endTimeText}";
+                    
+                    availableSlots.Add(new SelectListItem
+                    {
+                        Value = currentTime.ToString("HH:mm"), // تنسيق 24 ساعة للقيمة
+                        Text = slotText
+                    });
+                }
+
+                currentTime = currentTime.Add(TimeSpan.FromMinutes(clinic.AppointmentDurationInMinutes));
+            }
+
+            return availableSlots;
         }
 
 

@@ -119,6 +119,120 @@
             $(document).on('click', '.buttons', function (e) {
                 e.stopPropagation();
             });
+
+            $(document).on('click', '.delay-appointment-btn', function(e) {
+                e.stopPropagation();
+                
+                const nationalId = $(this).data('national-id');
+                console.log("clicked " + nationalId);
+                // تعبئة البيانات في النموذج
+                $('#patientNationalId').val(nationalId);
+
+                // تعيين التاريخ الحالي كحد أدنى للتاريخ الجديد
+                const today = new Date().toISOString().split('T')[0];
+                $('#newDate').attr('min', today);
+
+                // عرض النموذج
+                $('#delayAppointmentModal').show();
+            });
+
+            // إغلاق النموذج المنبثق
+            $('.close-modal, .cancel-btn').click(function() {
+                $('#delayAppointmentModal').hide();
+            });
+
+            // إغلاق النموذج عند النقر خارجه
+            $(window).click(function(e) {
+                if ($(e.target).is('.modal-overlay')) {
+                    $('#delayAppointmentModal').hide();
+                }
+            });
+
+            $('#newDate').change(function() {
+                const selectedDate = $(this).val();
+                const clinicId = '@Model.ClinicId';
+                const timeSelect = $('#newTime');
+
+                if (selectedDate) {
+                    $.ajax({
+                        url: '@Url.Action("GetAvailableTimeSlots", "Reception")',
+                        type: 'POST',
+                        data: {
+                            date: selectedDate,
+                            clinicId: clinicId
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                timeSelect.empty();
+                                timeSelect.prop('disabled', false);
+
+                                if (response.timeSlots.length === 0) {
+                                    timeSelect.append($('<option>', {
+                                        value: '',
+                                        text: 'لا توجد مواعيد متاحة'
+                                    }));
+                                } else {
+                                    timeSelect.append($('<option>', {
+                                        value: '',
+                                        text: 'اختر الوقت'
+                                    }));
+
+                                    response.timeSlots.forEach(function(slot) {
+                                        timeSelect.append($('<option>', {
+                                            value: slot,
+                                            text: slot
+                                        }));
+                                    });
+                                }
+                            } else {
+                                alert(response.message || 'حدث خطأ في تحميل المواعيد المتاحة');
+                            }
+                        },
+                        error: function() {
+                            alert('حدث خطأ في تحميل المواعيد المتاحة');
+                        }
+                    });
+                } else {
+                    timeSelect.empty();
+                    timeSelect.prop('disabled', true);
+                    timeSelect.append($('<option>', {
+                        value: '',
+                        text: 'اختر التاريخ أولاً'
+                    }));
+                }
+            });
+
+            // معالجة تقديم النموذج
+            $('#delayAppointmentForm').submit(function(e) {
+                e.preventDefault();
+                const formData = {
+                    patientNationalId: $('#patientNationalId').val(),
+                    newDate: $('#newDate').val(),
+                    newTime: $('#newTime').val()
+                };
+
+                if (!formData.newTime) {
+                    alert('الرجاء اختيار وقت متاح');
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("DelayAppointment", "Reception")',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        if (response.success) {
+                            $('#delayAppointmentModal').hide();
+                            window.location.reload();
+                        } else {
+                            alert(response.message || 'حدث خطأ أثناء تأخير الموعد');
+                        }
+                    },
+                    error: function() {
+                        alert('حدث خطأ أثناء تأخير الموعد');
+                    }
+                });
+            });
         });
     </script>
 }

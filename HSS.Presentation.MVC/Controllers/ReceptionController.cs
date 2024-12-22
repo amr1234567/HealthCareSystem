@@ -73,6 +73,46 @@ namespace HSS.Presentation.MVC.Controllers
                 new ClinicAppointmentsModelView(appointments, clinicId, true));
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> GetAvailableTimeSlots(int clinicId, string date)
+        {
+            try
+            {
+                if (DateTime.TryParse(date, out DateTime selectedDate))
+                {
+                    var timeSlots = await _receptionServices.GetAvailableTimeSlots(clinicId, selectedDate);
+                    return Json(new { success = true,  timeSlots });
+                }
+                return Json(new { success = false, message = "تاريخ غير صالح" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DelayAppointment(DelayAppointmentModel model)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "الرجاء التأكد من صحة البيانات" });
+            }
+            try
+            {
+                var dateTime = DateTime.Parse($"{model.NewDate} {model.NewTime}");
+                var result = await _receptionServices.DelayAppointment(model.PatientNationalId, dateTime);
+                return Json(new { success = result });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
         private string GetUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);

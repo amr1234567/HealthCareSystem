@@ -1,15 +1,22 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+
 namespace HSS.Services.SharedDto
 {
     public class CreateAppointmentDto
     {
-        public int Id { get; set; }
-        public int HospitalId { get; set; }
-        public TimeSpan Duration { get; set; }
-        public DateTime AppointmentDate { get; set; }
-        public string Notes { get; set; }
-        public DateTime CreatedAt { get; set; }
+        [Required]
+        public string AppointmentDate { get; set; }
+        [Required]
+        public string AppointmentTime { get; set; }
+        public string? Notes { get; set; }
+        [Required]
         public string NationalId { get; set; }
+        [Required]
         public int ClinicId { get; set; }
+        [Required]
+        public string AppointmentType { get; set; }
+        public string? ReasonForVisit { get; set; }
+        public bool IsConfirmed { get; set; } = false;
     }
 }

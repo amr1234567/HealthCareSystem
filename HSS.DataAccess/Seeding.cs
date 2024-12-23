@@ -79,7 +79,7 @@ namespace HSS.DataAccess
             {
                 Name = "احمد محمود خالد عبد المجيد",
                 WorkingTime = new TimeSpan(9, 0, 0),
-                NationalId = Helper.GenerateNationalID(true),
+                NationalId = "26204131375238",
                 CreatedAt = DateTime.UtcNow,
                 Password = "QXG1iq/Y6azQChF2Zxu5mahfuWxsi21oXVUWEPfCBm8=",//@Aa123456789
                 Salt = "yCO+h7P4PiwQp7rKKiy3mQ==",
@@ -258,7 +258,7 @@ namespace HSS.DataAccess
                 return;
             var appointments = new List<ClinicAppointment>();
             var random = new Random();
-            var startDate = DateTime.UtcNow.Date;
+            var startDate = DateTime.UtcNow.Date.AddDays(-100);
 
             // الحصول على جميع العيادات والأطباء والمرضى مرة واحدة لتحسين الأداء
             var clinics = await context.Clinics.ToListAsync();
@@ -277,36 +277,40 @@ namespace HSS.DataAccess
                 var workingMinutes = (clinic.FinishAt - clinic.StartAt).TotalMinutes;
                 var appointmentsPerDay = (int)(workingMinutes / appointmentDuration.TotalMinutes);
 
-                for (int day = 0; day < 30; day++)
+                for (int day = 0; day < 150; day++)
                 {
                     var currentDate = startDate.AddDays(day);
 
                     for (int slot = 0; slot < appointmentsPerDay; slot++)
                     {
                         
-                        var appointmentTime = clinic.StartAt.Add(TimeSpan.FromMinutes(slot * appointmentDuration.TotalMinutes));
-                        var appointmentDate = currentDate.Add(appointmentTime);
-                            
-                        var doctor = clinicDoctors[random.Next(clinicDoctors.Count)];
-                        var patient = patients[random.Next(patients.Count)];
-
-                        var appointment = new ClinicAppointment
+                        if(random.NextDouble() > 0.6)
                         {
-                            HospitalId = clinic.HospitalId,
-                            PatientId = patient.Id,
-                            ClinicId = clinic.Id,
-                            DoctorId = doctor.Id,
-                            AppointmentDate = appointmentDate,
-                            Duration = appointmentDuration,
-                            CreatedAt = DateTime.UtcNow.AddDays(-random.Next(1, 30)),
-                            UpdatedAt = DateTime.UtcNow,
-                            Notes = GenerateRandomNotes(random),
-                            ReasonForVisit = GetRandomReason(random),
-                            AppointmentType = GetRandomAppointmentType(random),
-                            IsConfirmed = appointmentDate < DateTime.UtcNow || (appointmentDate > DateTime.UtcNow && appointmentDate <= DateTime.UtcNow.AddHours(2)),
-                            ClinicAppointmentRelatedTo = null
-                        };
-                        appointments.Add(appointment);
+                            var appointmentTime = clinic.StartAt.Add(TimeSpan.FromMinutes(slot * appointmentDuration.TotalMinutes));
+                            var appointmentDate = currentDate.Add(appointmentTime);
+
+                            var doctor = clinicDoctors[random.Next(clinicDoctors.Count)];
+                            var patient = patients[random.Next(patients.Count)];
+
+                            var appointment = new ClinicAppointment
+                            {
+                                HospitalId = clinic.HospitalId,
+                                PatientId = patient.Id,
+                                ClinicId = clinic.Id,
+                                DoctorId = doctor.Id,
+                                AppointmentDate = appointmentDate,
+                                Duration = appointmentDuration,
+                                CreatedAt = DateTime.UtcNow.AddDays(-random.Next(1, 30)),
+                                UpdatedAt = DateTime.UtcNow,
+                                Notes = GenerateRandomNotes(random),
+                                ReasonForVisit = GetRandomReason(random),
+                                AppointmentType = GetRandomAppointmentType(random),
+                                IsConfirmed = appointmentDate < DateTime.UtcNow || (appointmentDate > DateTime.UtcNow && appointmentDate <= DateTime.UtcNow.AddHours(2)),
+                                ClinicAppointmentRelatedTo = null,
+                                IsEnd = appointmentDate < DateTime.UtcNow,
+                            };
+                            appointments.Add(appointment);
+                        }
 
                         if(appointments.Count > 100)
                         {

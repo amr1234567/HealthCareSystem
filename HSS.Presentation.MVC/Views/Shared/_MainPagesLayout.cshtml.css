@@ -41,6 +41,7 @@
     -webkit-box-shadow: 2px 2px 5px gray;
     box-shadow: 2px 2px 5px gray;
     padding: 0.5rem 1rem 0.5rem 40px;
+    cursor: pointer;
 }
 
     .profile-preview .image-circle {

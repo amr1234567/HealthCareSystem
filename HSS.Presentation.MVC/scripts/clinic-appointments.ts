@@ -1,1 +1,0 @@
-﻿const addButton = document.getElementById('add-appointment');

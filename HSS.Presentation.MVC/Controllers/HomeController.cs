@@ -1,6 +1,7 @@
 ﻿using HSS.Domain;
 using HSS.Domain.BaseModels;
 using HSS.Domain.Enums;
+using HSS.Domain.Models;
 using HSS.Presentation.MVC.Models;
 using HSS.Services.Abstractions;
 using Microsoft.AspNetCore.Authorization;
@@ -32,7 +33,7 @@ namespace HSS.Presentation.MVC.Controllers
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             try
             {
@@ -41,12 +42,12 @@ namespace HSS.Presentation.MVC.Controllers
                     _toastNotification.AddErrorToastMessage("الرجاء التأكد من صحة البيانات");
                     return View(model);
                 }
-                await identityServices.LoginWithCookie(model.NationalId, model.Password, true);
+                var result = await identityServices.LoginWithCookie(model.NationalId, model.Password, true);
                 _toastNotification.AddSuccessToastMessage("تم تسجيل الدخول بنجاح");
 
                 //if(string.IsNullOrEmpty(returnUrl))
                     //return LocalRedirect(Url.GetLocalUrl(returnUrl));
-                return CheckRole();
+                return CheckRole(result);
             }
             catch (Exception ex)
             {
@@ -56,15 +57,31 @@ namespace HSS.Presentation.MVC.Controllers
             }
         }
 
-        private IActionResult CheckRole()
+        private IActionResult CheckRole(List<Role>? userRoles = null)
         {
+            var roles = new List<ApplicationRole>();
+            if (userRoles != null)
+            {
+                roles = userRoles.Select(r=>r.RoleName).ToList();
+            }
+            else
+            {
+                roles = User.Claims.Where(c => c.Type == ClaimTypes.Role)
+                    .Select(c => (ApplicationRole)Enum.Parse(typeof(ApplicationRole), c.Value)).ToList();
+            }
+            if (!roles.Any())
+                return RedirectToAction(nameof(Logout));
 
-            if (User.IsInRole(RolesConstants.Receptionist))
+            if (roles.Contains(ApplicationRole.Receptionist))
                 return RedirectToAction("Index", "Reception");
+
+            // Add more role checks as needed
+            // if (roles.Contains(ApplicationRole.Doctor.ToString()))
+            //     return RedirectToAction("Index", "Doctor");
+
             return RedirectToAction(nameof(Logout));
         }
 
-        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await identityServices.LogOutInMvc();

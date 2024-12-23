@@ -1,27 +1,59 @@
-﻿@using HSS.Domain
+﻿@using System.Security.Claims
+@using HSS.Domain
+@using HSS.Domain.Helpers
 @{
     Layout = "_Layout";
 }
 
 <header class="main-page-header">
-    <div class="profile-preview">
+    <div class="profile-preview" id="profilePreview" title="مراجعة الملف الشخصي">
         <div class="image-circle">
-            <img src="" alt="">
+            <img src="" alt="User Image" />
         </div>
         <div class="content">
             @if (User.IsInRole(RolesConstants.Receptionist))
             {
-                <p class="title">موظف</p>
+            <p class="title">موظف</p>
             }
             <span class="slash">/</span>
             <p class="name">@User.Identity.Name</p>
         </div>
     </div>
     <img class="logo" src="/images/logo.png" alt="Alternate Text" />
-
 </header>
+
+<!-- Hidden User Info and Logout -->
+<div class="user-info-dropdown" id="userInfoDropdown">
+    <div class="user-info">
+        <p><strong>الاسم:</strong> @User.Identity.Name</p>
+        <p><strong>الرقم القومي</strong> @User.FindFirstValue(CustomClaimType.NationalId)</p> 
+    </div>
+    <button id="logoutButton" class="logout-btn">Logout</button>
+</div>
+
 <main class="main-container">
     @RenderBody()
 </main>
 
 @await RenderSectionAsync("Scripts", required: false)
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Toggle the user info dropdown when clicking on the profile-preview
+        $("#profilePreview").on('click', function() {
+            $("#userInfoDropdown").toggle(); // Toggle visibility of the user info dropdown
+        });
+        $(document).on('click', function(event) {
+            const $target = $(event.target);
+            if (!$target.closest('#userInfoDropdown').length && !$target.closest('#profilePreview').length) {
+                $("#userInfoDropdown").hide(); // Hide the dropdown
+            }
+        });
+        // Handle the logout button click
+        $("#logoutButton").on('click', function() {
+            // Redirect to the logout URL (or call your logout function)
+            window.location.href = '@Url.Action("Logout","Home")'; // Adjust with your actual logout URL
+        });
+    });
+</script>

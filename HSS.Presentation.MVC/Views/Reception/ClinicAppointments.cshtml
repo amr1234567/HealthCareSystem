@@ -16,7 +16,6 @@
         </div>
     </header>
     <div class="appointments-table-as-grid">
-        <h2>جميع الحجوزات</h2>
         <header>
             <p class="type">نوع الحالة</p>
             <p class="date">التاريخ</p>
@@ -28,11 +27,70 @@
         </main>
     </div>
 
-    <div id="add-appointment-button" title="Add appointment" class="add-appointment-button">
+    <div id="addButton" title="Add appointment" class="add-appointment-button">
         <img src="/icons/medical-icons/plus-icon.svg" />
     </div>
 </div>
 
+<div class="modal-overlay-add" id="addAppointmentModel">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>انشاء حجز جديد</h3>
+            <span class="close-modal">&times;</span>
+        </div>
+        <form id="addAppointmentFrom">
+            <div class="form-group">
+                <label for="patient-National-Id">الرقم القومي</label>
+                <div class="input-with-icon">
+                    <input type="text" id="patient-National-Id" name="patientNationalId" />
+                    <a href="#" class="national-id-search-icon">
+                        <img src="/icons/search-icon.svg" alt="Search" />
+                    </a>
+                </div>
+            </div>
+            <div class="form-group name-input" style="display: none;">
+                <label>اسم المريض</label>
+                <input type="text" id="patientName" readonly class="readonly-field" />
+            </div>
+            <div class="form-group">
+                <label for="appointmentDate">التاريخ</label>
+                <input type="date" id="appointmentDate" name="appointmentDate" required disabled />
+            </div>
+            <div class="form-group" style="display:none;">
+                <input type="number" id="clinicId" name="clinicId" value="@Model.ClinicId" required />
+            </div>
+            <div class="form-group">
+                <label for="appointmentDate">الوقت </label>
+                <select id="appointmentTime" name="appointmentTime" required disabled>
+                    <option value="">اختر التاريخ أولاً</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="appointmentType">نوع الحجز</label>
+                <select class="form-control form-control-sm" name="appointmentType" id="appointmentType" disabled>
+                    <option value="">اختر نوعا للحجز</option> 
+                    @foreach (var type in Model.AppointmentTypes) 
+                     { 
+                         <option value="@type.Value">@type.Text</option>
+                     })
+                 </select>
+            </div>
+            <div class="form-group">
+                <label for="reasonForVisit">سبب الزيارة</label>
+                <textarea class="form-control" id="reasonForVisit" name="reasonForVisit" rows="3" disabled></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="notes">ملاحظات اخري</label>
+                <textarea class="form-control" id="notes" name="notes" rows="3" disabled></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="submit-btn">تأكيد</button>
+                <button type="button" class="cancel-btn">إلغاء</button>
+            </div>
+        </form>
+    </div>
+</div>
 @section Scripts{
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -40,10 +98,8 @@
             const queueButton = document.getElementById("queue-button");
             const appointmentButton = document.getElementById("appointments-button");
             const mainListAppointment = document.getElementById("main-list-appointment");
-            const addButton = document.getElementById("add-appointment-button");
+            const addButton = document.getElementById("addButton");
             const showDetailsButton = document.querySelector(".show-details-icon");
-
-
 
             appointmentButton.addEventListener("click", function () {
                 if (appointmentButton.classList.contains("active-button")) {
@@ -106,7 +162,6 @@
                 buttons.toggleClass('show');
                 appointmentRow.toggleClass('active');
             });
-
             // إغلاق القائمة عند النقر في أي مكان خارجها
             $(document).on('click', function (e) {
                 if (!$(e.target).closest('.buttons').length &&
@@ -118,7 +173,421 @@
             // منع إغلاق القائمة عند النقر داخلها
             $(document).on('click', '.buttons', function (e) {
                 e.stopPropagation();
+                $(document).on('click', '.delay-appointment-btn', function(e) {
+                    e.stopPropagation();
+
+                    const nationalId = $(this).data('national-id');
+                    console.log("clicked " + nationalId);
+                    // تعبئة البيانات في النموذج
+                    $('#patientNationalId').val(nationalId);
+                    // تعيين التاريخ الحالي كحد أدنى للتاريخ الجديد
+                    const today = new Date().toISOString().split('T')[0];
+                    $('#newDate').attr('min', today);
+                    // عرض النموذج
+                    $('#delayAppointmentModal').show();
+                });
+                // إغلاق النموذج المنبثق
+                $('.close-modal, .cancel-btn').click(function() {
+                    $('#delayAppointmentModal').hide();
+                });
+                // إغلاق النموذج عند النقر خارجه
+                $(window).click(function(e) {
+                    if ($(e.target).is('.modal-overlay')) {
+                        $('#delayAppointmentModal').hide();
+                    }
+                });
+                $('#newDate').change(function() {
+                    const selectedDate = $(this).val();
+                    const clinicId = '@Model.ClinicId';
+                    const timeSelect = $('#newTime');
+                    if (selectedDate) {
+                        $.ajax({
+                            url: '@Url.Action("GetAvailableTimeSlots", "Reception")',
+                            type: 'POST',
+                            data: {
+                                date: selectedDate,
+                                clinicId: clinicId
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    timeSelect.empty();
+                                    timeSelect.prop('disabled', false);
+                                    if (response.timeSlots.length === 0) {
+                                        timeSelect.append($('<option>', {
+                                            value: '',
+                                            text: 'لا توجد مواعيد متاحة'
+                                        }));
+                                    } else {
+                                        timeSelect.append($('<option>', {
+                                            value: '',
+                                            text: 'اختر الوقت'
+                                        }));
+                                        response.timeSlots.forEach(function(slot) {
+                                            timeSelect.append($('<option>', {
+                                                value: slot.value,
+                                                text: slot.text
+                                            }));
+                                        });
+                                    }
+                                } else {
+                                    alert(response.message || 'حدث خطأ في تحميل المواعيد المتاحة');
+                                }
+                            },
+                            error: function() {
+                                alert('حدث خطأ في تحميل المواعيد المتاحة');
+                            }
+                        });
+                    } else {
+                        timeSelect.empty();
+                        timeSelect.prop('disabled', true);
+                        timeSelect.append($('<option>', {
+                            value: '',
+                            text: 'اختر التاريخ أولاً'
+                        }));
+                    }
+                });
+                // معالجة تقديم النموذج
+                $('#delayAppointmentForm').submit(function(e) {
+                    e.preventDefault();
+                    const formData = {
+                        patientNationalId: $('#patientNationalId').val(),
+                        newDate: $('#newDate').val(),
+                        newTime: $('#newTime').val()
+                    };
+                    if (!formData.newTime) {
+                        alert('الرجاء اختيار وقت متاح');
+                        return;
+                    }
+                    $.ajax({
+                        url: '@Url.Action("DelayAppointment", "Reception")',
+                        type: 'POST',
+                        data: formData,
+                        success: function(response) {
+                            if (response.success) {
+                                $('#delayAppointmentModal').hide();
+                                window.location.reload();
+                            } else {
+                                alert(response.message || 'حدث خطأ أثناء تأخير الموعد');
+                            }
+                        },
+                        error: function() {
+                            alert('حدث خطأ أثناء تأخير الموعد');
+                        }
+                    });
+                });
+
+                $(".start-appointment").on('click', function () {
+                    const appointmentId = $(this).data("appointment-id");
+                    const appointmentRow = $(this).closest('.appointment-row'); // Reference to the appointment row
+
+                    $.ajax({
+                        url: '@Url.Action("StartAppointment", "Reception")', // Replace with your actual endpoint
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ appointmentId: appointmentId , isQueue: true}),
+                        success: function (response) {
+                            appointmentRow.replaceWith(response)
+                            showSuccessMessage("تم بدء الحجز بنجاح");
+                        },
+                        error: function () {
+                            showErrorMessage("حدث خطأ في الاتصال بالخادم");
+                        }
+                    });
+                });
+
+                $(".remove-appointment-from-queue").on('click', function () {
+                    const appointmentId = $(this).data("appointment-id");
+                    const appointmentRow = $(this).closest('.appointment-row'); // Reference to the appointment row
+
+                    console.log(appointmentId + "From remove ------------------");
+                    const isConfirmed = confirm("هل أنت متأكد أنك تريد إزالة الموعد من قائمة الانتظار؟");
+
+                    if (isConfirmed) {
+                        $.ajax({
+                            url: '@Url.Action("RemoveAppointmentFromQueue", "Reception")', // Replace with your actual endpoint
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({ appointmentId: appointmentId }),
+                            success: function (response) {
+                                if (response.success) {
+                                    // Remove the appointment row from the queue
+                                    appointmentRow.remove();
+                                    showSuccessMessage("تم إزالة الموعد من قائمة الانتظار بنجاح");
+                                } else {
+                                    showErrorMessage(response.message);
+                                }
+                            },
+                            error: function () {
+                                showErrorMessage("حدث خطأ في الاتصال بالخادم");
+                            }
+                        });
+                    }
+                });
+
+                $(".confirm-appointment-btn").on("click", function(){
+                    const appointmentRow = $(this).closest('.appointment-row');
+                    const appointmentId = $(this).data("appointment-id");
+
+                    $.ajax({
+                        url: '@Url.ActionLink("ConfirmAppointment", "Reception")', // Replace with your endpoint
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ appointmentId: appointmentId }),
+                        success: function (response) {
+                            appointmentRow.replaceWith(response);
+                            showSuccessMessage("تم الاضافة بنجاح")
+                        },
+                        error: function (e) {
+                            showErrorMessage(e.message)
+                        }
+                    });
+                });
+                addButton.addEventListener('click', function (e) {
+                    const overlayModel = $("#addAppointmentModel");
+                    overlayModel.show();
+
+                    $(".national-id-search-icon").on('click', function (e) {
+                        e.preventDefault();
+
+                        const iconContainer = $(this);
+                        const inputField = $("#patient-National-Id"); // Get the national ID value
+                        console.log(inputField);
+
+                        if (!inputField) {
+                            alert("Please enter a valid national ID.");
+                            return;
+                        }
+
+                        // Save the original icon
+                        const originalIcon = iconContainer.html();
+
+                        // Replace the icon with a loading spinner
+                        iconContainer.html(`
+                                    <div class="spinner-border" role="status" style="width: 1rem; height: 1rem;">
+                                        <span class="sr-only">.</span>
+                                    </div>
+                                `);
+
+                        // Make an AJAX call
+                        $.ajax({
+                            url: '@Url.ActionLink("CheckNationalIdCorrect", "Reception")', // Replace with your endpoint
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({ nationalId: inputField.val() }),
+                            success: function (response) {
+                                if (response.success) {
+                                    // Replace the spinner with a success icon
+                                    iconContainer.html('<img src="/icons/correct-icon.svg" alt="Valid ID" />');
+
+                                    inputField.prop('disabled', true);
+                                    $("#appointmentTime").prop('disabled', false);
+                                    $("#notes").prop('disabled', false);
+                                    $("#reasonForVisit").prop('disabled', false);
+                                    $("#appointmentType").prop('disabled', false);
+                                    $("#appointmentDate").prop('disabled', false);
+                                    const nameField = $("#patientName");
+                                    nameField.val(response.name)
+                                    $(".name-input").show();
+                                } else {
+                                    // Replace the spinner with an error icon
+                                    iconContainer.html('<img src="/icons/inccorect-icon.svg" alt="Invalid ID" />');
+
+                                    // Show the original search icon after 2 seconds
+                                    setTimeout(() => {
+                                        iconContainer.html(originalIcon);
+                                    }, 2000);
+                                }
+                            },
+                            error: function (e) {
+                                // Replace the spinner with the error icon
+                                iconContainer.html('<img src="/icons/inccorect-icon.svg" alt="Error" />');
+
+                                // Show the original search icon after 2 seconds
+                                setTimeout(() => {
+                                    iconContainer.html(originalIcon);
+                                }, 2000);
+                                showErrorMessage(e.message)
+                            }
+                        });
+
+                        $('#appointmentDate').change(function() {
+                            const selectedDate = $(this).val();
+                            const clinicId = '@Model.ClinicId';
+                            const timeSelect = $('#appointmentTime');
+                            if (selectedDate) {
+                                $.ajax({
+                                    url: '@Url.Action("GetAvailableTimeSlots", "Reception")',
+                                    type: 'POST',
+                                    data: {
+                                        date: selectedDate,
+                                        clinicId: clinicId
+                                    },
+                                    success: function(response) {
+                                        if (response.success) {
+                                            timeSelect.empty();
+                                            timeSelect.prop('disabled', false);
+                                            if (response.timeSlots.length === 0) {
+                                                timeSelect.append($('<option>', {
+                                                    value: '',
+                                                    text: 'لا توجد مواعيد متاحة'
+                                                }));
+                                            } else {
+                                                timeSelect.append($('<option>', {
+                                                    value: '',
+                                                    text: 'اختر الوقت'
+                                                }));
+                                                response.timeSlots.forEach(function(slot) {
+                                                    timeSelect.append($('<option>', {
+                                                        value: slot.value,
+                                                        text: slot.text
+                                                    }));
+                                                });
+                                            }
+                                        } else {
+                                            alert(response.message || 'حدث خطأ في تحميل المواعيد المتاحة');
+                                        }
+                                    },
+                                    error: function() {
+                                        alert('حدث خطأ في تحميل المواعيد المتاحة');
+                                    }
+                                });
+                            } else {
+                                timeSelect.empty();
+                                timeSelect.prop('disabled', true);
+                                timeSelect.append($('<option>', {
+                                    value: '',
+                                    text: 'اختر التاريخ أولاً'
+                                }));
+                            }
+                        });
+                        $("#addAppointmentFrom").on("submit", function (e) {
+                            e.preventDefault(); // Prevent the default form submission
+
+                            // Validate required fields
+                            const nationalId = $("#patient-National-Id").val().trim();
+                            const appointmentDate = $("#appointmentDate").val().trim();
+                            const appointmentTime = $("#appointmentTime").val().trim();
+                            const reasonForVisit = $("#reasonForVisit").val().trim();
+                            const appointmentType = $("#appointmentType").val().trim();
+                            const notes = $("#notes").val().trim();
+
+                            // Basic validation
+                            if (!nationalId) {
+                                alert("National ID is required.");
+                                return;
+                            }
+
+                            if (!appointmentDate) {
+                                alert("Appointment date is required.");
+                                return;
+                            }
+                            if (!appointmentTime) {
+                                alert("Appointment time is required.");
+                                return;
+                            }
+
+                            if (!appointmentType) {
+                                alert("Appointment type is required.");
+                                return;
+                            }
+
+                            // Prepare data for submission
+                            const formData = {
+                                nationalId: nationalId,
+                                appointmentDate: appointmentDate,
+                                appointmentTime: appointmentTime,
+                                reasonForVisit: reasonForVisit,
+                                appointmentType: appointmentType,
+                                notes: notes,
+                                clinicId: '@Model.ClinicId'
+                            };
+
+                            // Submit the data using AJAX
+                            $.ajax({
+                                url: '@Url.Action("AddAppointment", "Reception")', // Replace with your endpoint
+                                method: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify(formData),
+                                success: function (response) {
+                                    if (response.success) {
+                                        resetForm();
+                                        $("#addAppointmentModel").hide();
+                                        showSuccessMessage("تم الحجز بنجاح");
+                                    } else {
+                                        // Show an error message
+                                        showErrorMessage(response.message || "Failed to submit the appointment.");
+                                    }
+                                },
+                                error: function () {
+                                    // Show a generic error message
+                                    showErrorMessage("An error occurred while submitting the appointment. Please try again.");
+                                }
+                            });
+                        });
+
+                    });
+                });
+
+                $(".cancel-appointment-button").on('click', function () {
+                    // Get the appointment ID from the button's data attribute
+                    const appointmentId = $(this).data("appointment-id");
+                    const appointmentRow = $(this).closest('.appointment-row'); // Store the reference to the row
+
+                    // Optionally, you can show a confirmation dialog
+                    const isConfirmed = confirm("هل أنت متأكد أنك تريد إلغاء الموعد؟");
+
+                    if (isConfirmed) {
+                        // Send an AJAX request to cancel the appointment
+                        $.ajax({
+                            url: '@Url.Action("CancelAppointment", "Reception")', // Replace with your endpoint
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({ appointmentId: appointmentId }),
+                            success: function (response) {
+                                if (response.success) {
+                                    // Update the UI (remove or disable the cancel button)
+                                    appointmentRow.remove(); // Remove the row
+                                    showSuccessMessage("تم إلغاء الموعد بنجاح");
+                                } else {
+                                    showErrorMessage("حدث خطأ أثناء إلغاء الموعد");
+                                }
+                            },
+                            error: function (e) {
+                                showErrorMessage("حدث خطأ في الاتصال بالخادم");
+                            }
+                        });
+                    }
+                });
+
+
             });
+            function resetForm() {
+                // Clear the National ID and Name input fields
+                $("#patient-National-Id").val('').prop('disabled', false); // Enable the field if it was disabled
+                $("#patientName").val('').hide(); // Hide the name field
+
+                // Disable other input fields
+                $("#appointmentTime").prop('disabled', true).val('');
+                $("#notes").prop('disabled', true).val('');
+                $("#reasonForVisit").prop('disabled', true).val('');
+                $("#appointmentType").prop('disabled', true).val('');
+                $("#appointmentDate").prop('disabled', true).val('');
+                // Reset the search icon to its original state
+                const originalIcon = `<img src="/icons/search-icon.svg" alt="Search" />`;
+                $(".national-id-search-icon").html(originalIcon);
+                $("#addAppointmentModel").hide();
+            }
+            // Add event listener to the close button
+            $(".close-modal").on('click', function () {
+                resetForm(); // Call the reset function
+            });
+             $(".cancel-btn").on('click', function () {
+                resetForm(); // Call the reset function
+            });
+            $("#addAppointmentModel").on('hidden.bs.modal', function () {
+                resetForm(); // Reset the form when the modal is closed
+            });
+            
         });
     </script>
 }

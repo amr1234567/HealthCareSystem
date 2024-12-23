@@ -3,6 +3,7 @@ using HSS.DataAccess.Helpers;
 using HSS.DataAccess.Repositories;
 using HSS.Domain.IdentityModels;
 using HSS.Domain.Models;
+using HSS.Services.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,13 +11,20 @@ namespace HSS.Presentation.Patient.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TestController(Helper helper, ApplicationDbContext context, AccountServicesHelpers accountServices) : ControllerBase
+    public class TestController(Helper helper, ApplicationDbContext context, AccountServicesHelpers accountServices,IReceptionServices receptionServices) : ControllerBase
     {
-        [HttpGet]
-        public async Task<IActionResult> Test()
+       
+        //[HttpGet]
+        //public async Task<IActionResult> Test()
+        //{
+        //    //await helper.Seed();
+        //    return Ok();
+        //}
+        [HttpGet("/home")]
+        public async Task<IActionResult> TestTime()
         {
-            //await helper.Seed();
-            return Ok();
+            var data = receptionServices.GetAvailableTimeSlots(1, DateTime.Now);
+            return Ok(data);
         }
 
         [HttpPost("seed-receptionist")]
@@ -64,7 +72,7 @@ namespace HSS.Presentation.Patient.Api.Controllers
             var reception = new Reception
             {
                 Id = 1,
-                EndAt = new TimeSpan(17,0,0),
+                EndAt = new TimeSpan(17, 0, 0),
                 StartAt = new TimeSpan(9, 0, 0),
                 HospitalId = hospital.Id,
             };

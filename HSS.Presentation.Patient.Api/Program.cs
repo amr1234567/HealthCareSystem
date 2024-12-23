@@ -1,6 +1,8 @@
 
 using HSS.DataAccess;
 using HSS.Services;
+using HSS.Services.Abstractions;
+using HSS.Services.Services;
 
 namespace HSS.Presentation.Patient.Api
 {
@@ -13,6 +15,8 @@ namespace HSS.Presentation.Patient.Api
             // Add services to the container.
 
             builder.Services.AddControllers();
+       
+            builder.Services.AddScoped<IReceptionServices, ReceptionServices>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddDataAccessServices(builder.Configuration)

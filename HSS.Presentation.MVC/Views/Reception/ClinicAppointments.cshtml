@@ -43,8 +43,6 @@
             const addButton = document.getElementById("add-appointment-button");
             const showDetailsButton = document.querySelector(".show-details-icon");
 
-
-
             appointmentButton.addEventListener("click", function () {
                 if (appointmentButton.classList.contains("active-button")) {
                     return;
@@ -119,6 +117,231 @@
             $(document).on('click', '.buttons', function (e) {
                 e.stopPropagation();
             });
+
+            // Move the modal creation logic inside document.ready and bind to click event
+            
+
+            // Handle date change to fetch available times
+            $('#appointmentDate').on('change', function() {
+                const selectedDate = $(this).val();
+                $.ajax({
+                    url: '@Url.Action("GetAvailableTimeSlots", "Reception")',
+                    type: 'POST',
+                    data: {
+                        clinicId: parseInt('@Model.ClinicId'),
+                        date: selectedDate
+                    },
+                    success: function(timeSlots) {
+                        const timeSelect = $('#appointmentTime');
+                        timeSelect.empty();
+                        timeSelect.append('<option value="">-- اختر الوقت --</option>');
+                        timeSlots.forEach(slot => {
+                            timeSelect.append(`<option value="${slot.value}">${slot.text}</option>`);
+                        });
+                    },
+                    error: function(xhr) {
+                        showErrorMessage(xhr.responseText || "حدث خطأ أثناء تحميل المواعيد المتاحة");
+                    }
+                });
+            })
+
+            // Handle form submission
+            $(document).on('submit', '#newAppointmentForm', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '@Url.Action("CreateAppointment", "Reception")',
+                    type: 'POST',
+                    data: {
+                        clinicId: parseInt('@Model.ClinicId'),
+                        nationalId: $('#nationalId').val(),
+                        appointmentDate: $('#appointmentDate').val(),
+                        appointmentTime: $('#appointmentTime').val()
+                    },
+                    success: function(response) {
+                        $('.modal-overlay').remove();
+                        // Refresh appointments list
+                        $('#main-list-appointment').html(response);
+                    },
+                    error: function(xhr) {
+                        showErrorMessage(xhr.responseText || "حدث خطأ أثناء إنشاء الموعد");
+                    }
+                });
+            });
+
+            // Handle modal close
+            $(document).on('click', '.modal-overlay .cancel', function() {
+                $('.modal-overlay').remove();
+            });
         });
     </script>
+   
+    <script>
+        $(document).ready(function () {
+            // Add the required CSS styles
+            const modalStyles = `
+                <style>
+                    .modal-overlay {
+                        position: fixed !important;
+                        top: 0 !important;
+                        left: 0 !important;
+                        width: 100% !important;
+                        height: 100% !important;
+                        background-color: rgba(0, 0, 0, 0.5) !important;
+                        display: flex !important;
+                        justify-content: center !important;
+                        align-items: center !important;
+                        z-index: 9999 !important;
+                    }
+
+                    .modal-content {
+                        background-color: white !important;
+                        padding: 20px !important;
+                        border-radius: 5px !important;
+                        min-width: 300px !important;
+                        position: relative !important;
+                        z-index: 10000 !important;
+                    }
+
+                    .form-group {
+                        margin-bottom: 15px;
+                    }
+
+                    .form-group label {
+                        display: block;
+                        margin-bottom: 5px;
+                    }
+
+                    .form-group input,
+                    .form-group select {
+                        width: 100%;
+                        padding: 8px;
+                        border: 1px solid #ddd;
+                        border-radius: 4px;
+                    }
+
+                    .form-actions {
+                        margin-top: 20px;
+                        display: flex;
+                        gap: 10px;
+                        justify-content: flex-end;
+                    }
+
+                    .form-actions button {
+                        padding: 8px 16px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                    }
+
+                    .form-actions button[type="submit"] {
+                        background-color: #4CAF50;
+                        color: white;
+                        border: none;
+                    }
+
+                    .form-actions button.cancel {
+                        background-color: #f44336;
+                        color: white;
+                        border: none;
+                    }
+                </style>
+            `;
+            $('head').append(modalStyles);
+
+            // Add appointment button click handler
+            $('#add-appointment-button').on('click', function() {
+                const modalHtml = `
+                    <div class="modal-overlay">
+                        <div class="modal-content">
+                            <h3>إضافة موعد جديد</h3>
+                            <form id="newAppointmentForm">
+                                <div class="form-group">
+                                    <label for="nationalId">الرقم القومي</label>
+                                    <input type="text" id="nationalId" required pattern="[0-9]{14}" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="appointmentDate">التاريخ</label>
+                                    <input type="date" id="appointmentDate" required min="${new Date().toISOString().split('T')[0]}" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="appointmentTime">الوقت</label>
+                                    <select id="appointmentTime" required>
+                                        <option value="">-- اختر الوقت --</option>
+                                    </select>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit">حفظ</button>
+                                    <button type="button" class="cancel">إلغاء</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>`;
+
+                // Remove any existing modal
+                $('.modal-overlay').remove();
+                // Append new modal
+                $('body').append(modalHtml);
+            });
+
+            // Handle date change to fetch available times
+            $(document).on('change', '#appointmentDate', function() {
+                const selectedDate = $(this).val();
+                $.ajax({
+                    url: '@Url.Action("GetAvailableTimeSlots", "Reception")',
+                    type: 'POST',
+                    data: {
+                        clinicId: parseInt('@Model.ClinicId'),
+                        date: selectedDate
+                    },
+                    success: function(timeSlots) {
+                        const timeSelect = $('#appointmentTime');
+                        timeSelect.empty();
+                        timeSelect.append('<option value="">-- اختر الوقت --</option>');
+                        timeSlots.forEach(slot => {
+                            timeSelect.append(`<option value="${slot.value}">${slot.text}</option>`);
+                        });
+                    },
+                    error: function(xhr) {
+                        showErrorMessage(xhr.responseText || "حدث خطأ أثناء تحميل المواعيد المتاحة");
+                    }
+                });
+            });
+
+            // Handle form submission
+            $(document).on('submit', '#newAppointmentForm', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '@Url.Action("CreateAppointment", "Reception")',
+                    type: 'POST',
+                    data: {
+                        clinicId: parseInt('@Model.ClinicId'),
+                        nationalId: $('#nationalId').val(),
+                        appointmentDate: $('#appointmentDate').val(),
+                        appointmentTime: $('#appointmentTime').val()
+                    },
+                    success: function(response) {
+                        $('.modal-overlay').remove();
+                        // Refresh appointments list
+                        $('#main-list-appointment').html(response);
+                    },
+                    error: function(xhr) {
+                        showErrorMessage(xhr.responseText || "حدث خطأ أثناء إنشاء الموعد");
+                    }
+                });
+            });
+
+            // Handle modal close
+            $(document).on('click', '.cancel', function() {
+                $('.modal-overlay').remove();
+            });
+
+            // Close modal when clicking outside
+            $(document).on('click', '.modal-overlay', function(e) {
+                if ($(e.target).hasClass('modal-overlay')) {
+                    $('.modal-overlay').remove();
+                }
+            });
+        });
+    </script>
+
+    
 }

@@ -1,5 +1,6 @@
 ﻿using HSS.Services.Models;
 using HSS.Services.SharedDto;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HSS.Services.Abstractions
 {
@@ -18,5 +19,6 @@ namespace HSS.Services.Abstractions
         Task<bool> DelayAppointment(string NationalId, DateTime dateTimeDelayTo);
         Task<List<AppointmentDto>> ClinicAppointmentsQueue(int clinicId);
         Task<List<AppointmentDto>> AllClinicAppointments(int clinicId);
+        Task<List<SelectListItem>> GetAvailableTimeSlots(int clinicId, DateTime date);
     }
 }

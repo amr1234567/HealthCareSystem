@@ -5,6 +5,8 @@ using HSS.Domain.Models.Aggregates;
 using HSS.Services.Abstractions;
 using HSS.Services.Models;
 using HSS.Services.SharedDto;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
@@ -219,6 +221,7 @@ namespace HSS.Services.Services
                 .Include(x => x.Clinic)
                 .Include(x => x.Doctor)
                 .Include(x => x.Hospital)
+                .OrderBy(x => x.AppointmentDate)
                 .Select(x => new AppointmentDto(x))
                 .ToListAsync();
             return result;
@@ -232,6 +235,52 @@ namespace HSS.Services.Services
             var priority = (to - reserved.TimeOfDay).TotalMinutes;
             double test4 = lowestProirity - priority;
             return test4 / Duration.TotalMinutes;
+        }
+
+        public async Task<List<SelectListItem>> GetAvailableTimeSlots(int clinicId, DateTime date)
+        {
+            // Get clinic working hours and appointment duration
+            var clinic = await _context.Clinics
+                .FirstOrDefaultAsync(c => c.Id == clinicId);
+
+            if (clinic == null)
+                throw new Exception("Clinic not found");
+
+            // Get all appointments for the specified date
+            var existingAppointments = await _context.ClinicAppointment
+                .Where(a => a.ClinicId == clinicId
+                    && a.AppointmentDate.Date == date.Date)
+                .Select(a => new { a.AppointmentDate, a.Duration })
+                .ToListAsync();
+
+            // Generate all possible time slots
+            var availableSlots = new List<SelectListItem>();
+            var baseDate = date.Date; // Use the input date as base
+            var currentDateTime = baseDate.Add(clinic.StartAt);
+            var endDateTime = baseDate.Add(clinic.FinishAt);
+
+            while (currentDateTime.Add(TimeSpan.FromMinutes(clinic.AppointmentDurationInMinutes)) <= endDateTime)
+            {
+                var slotEndTime = currentDateTime.Add(TimeSpan.FromMinutes(clinic.AppointmentDurationInMinutes));
+
+                // Check if the time slot overlaps with any existing appointment
+                var isSlotAvailable = !existingAppointments.Any(a =>
+                    (a.AppointmentDate <= currentDateTime && a.AppointmentDate.Add(a.Duration) > currentDateTime) ||
+                    (a.AppointmentDate < slotEndTime && a.AppointmentDate.Add(a.Duration) >= slotEndTime));
+
+                if (isSlotAvailable)
+                {
+                    availableSlots.Add(new SelectListItem
+                    {
+                        Value = currentDateTime.ToString("HH:mm"),
+                        Text = $"{currentDateTime:hh:mm tt} - {slotEndTime:hh:mm tt}"
+                    });
+                }
+
+                currentDateTime = currentDateTime.Add(TimeSpan.FromMinutes(clinic.AppointmentDurationInMinutes));
+            }
+
+            return availableSlots;
         }
     }
 }

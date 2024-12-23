@@ -5,6 +5,7 @@ using HSS.Domain.Models.Aggregates;
 using HSS.Presentation.MVC.Models;
 using HSS.Services.Abstractions;
 using HSS.Services.SharedDto;
+using HSS.Services.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
@@ -34,6 +35,12 @@ namespace HSS.Presentation.MVC.Controllers
                 _toastNotification.AddErrorToastMessage(ex.Message);
                 return RedirectToAction("UnAuthAccess", "Home");
             }
+        }
+        [HttpGet("/home")]
+        public async Task<IActionResult> TestTime()
+        {
+            var data = _receptionServices.GetAvailableTimeSlots(1,DateTime.Now.AddDays(-1));
+            return Json(data);
         }
 
         public async Task<IActionResult> Clinics(int id)
@@ -210,6 +217,12 @@ namespace HSS.Presentation.MVC.Controllers
         private string GetUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
+        }
+
+        public async Task<IActionResult> GetAvailableTimeSlots(int clinicId,DateTime date)
+        {
+            2var data = await _receptionServices.GetAvailableTimeSlots(clinicId, date);
+            return Json(data);
         }
     }
 

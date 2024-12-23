@@ -11,7 +11,7 @@
     transition:0.1s ease-in-out;
     position: relative;
 }
-appointment-row:not(.active):hover {
+.appointment-row:not(.active):hover {
     z-index: 2; /* قيمة أقل من الصف النشط */
     border-width: 3px;
     transform: scale(1.01) translate(3px,-3px);
@@ -21,10 +21,10 @@ appointment-row:not(.active):hover {
         opacity: 0.4;
     }
     .appointment-row.started {
-        border-color: yellow;
+        border: 3px solid orangered;
     }
     .appointment-row.confirmed {
-        border-color: forestgreen;
+        border: 3px solid forestgreen;
     }
     .appointment-row:hover {
         z-index: 1;
@@ -191,3 +191,111 @@ appointment-row:not(.active):hover {
         .buttons > button > img {
             width: 20px;
         }
+    .buttons > .disable-button{
+        opacity: 0.5;
+        text-decoration: line-through;
+        cursor: auto;
+    }
+        .buttons > .disable-button:hover {
+            border: none !important;
+        }
+
+
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+
+.modal-content {
+    /*    transform: translate(50%,50%);*/
+    margin: 10rem auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    direction: rtl;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.close-modal {
+    cursor: pointer;
+    font-size: 24px;
+    color: #666;
+}
+
+    .close-modal:hover {
+        color: #000;
+    }
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .form-group input, form-group textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.submit-btn, .cancel-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.submit-btn {
+    background-color: #0E88AD;
+    color: white;
+}
+
+.cancel-btn {
+    background-color: #ddd;
+}
+
+.submit-btn:hover {
+    background-color: #0a6d8a;
+}
+
+.cancel-btn:hover {
+    background-color: #ccc;
+}
+
+.readonly-field {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    color: #666;
+}
+
+.hide-model {
+    display: flex !important;
+}

@@ -58,7 +58,7 @@ namespace HSS.Services.Services
             return token;
         }
 
-        public async Task LoginWithCookie(string nationalId, string password, bool isPersistent = false)
+        public async Task<List<Role>> LoginWithCookie(string nationalId, string password, bool isPersistent = false)
         {
             ArgumentException.ThrowIfNullOrEmpty(password, nameof(password));
             ArgumentException.ThrowIfNullOrEmpty(nationalId, nameof(nationalId));
@@ -71,7 +71,7 @@ namespace HSS.Services.Services
             if (result == IdentityCheckPasswordResult.AccountHasNoPassword)
             {
                 ////TODO 
-                return;
+                return [];
             }
 
             var roles = await userRepository.GetUserRoles(user.Id);
@@ -81,6 +81,7 @@ namespace HSS.Services.Services
             var claims = GetUserClaims(user, roles);
 
             await signInManager.SignInAsync(user, isPersistent, claims);
+            return await userRepository.GetUserRoles(user.Id);
         }
 
         public async Task LogOutInMvc()

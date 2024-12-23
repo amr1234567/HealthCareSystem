@@ -20,9 +20,9 @@ namespace HSS.Domain.Models.Aggregates
         public int? DoctorId { get; set; }
         public Doctor? Doctor { get; set; }
 
-        [Required]  // Ensures this field cannot be null
+        [AllowNull]  // Ensures this field cannot be null
         [StringLength(500, ErrorMessage = "Reason for visit cannot exceed 500 characters.")]
-        public string ReasonForVisit { get; set; }
+        public string? ReasonForVisit { get; set; }
 
         [Required,Range(0, int.MaxValue, ErrorMessage = "Lab appointments number done must be a non-negative integer.")]
         public int LabAppointmentsNumberDone { get; set; } = 0;
@@ -55,22 +55,7 @@ namespace HSS.Domain.Models.Aggregates
 
         public bool IsStarted { get; set; } = false;
         public bool IsConfirmed { get; set; } = false;
-        public bool IsEnd
-        {
-            get
-            {
-                var needMore = !FollowUpNeeded &&
-                    !RadiologyAppointmentNeeded &&
-                    !LabAppointmentNeeded;
-                if (needMore)
-                {
-                    return true;
-                }
-                var rangeTime = CreatedAt.Add(FollowUpExpectedPeriod ?? TimeSpan.MinValue).AddDays(4);
-                var timeOut = FollowUpExpectedPeriod != null && DateTime.UtcNow < rangeTime;
-                return timeOut;
-            }
-        }
+        public bool IsEnd { set; get; }
 
         public List<PrescriptionRecord> PrescriptionRecords { get; set; }
     }

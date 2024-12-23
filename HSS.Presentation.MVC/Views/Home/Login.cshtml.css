@@ -6,6 +6,7 @@
     justify-content: center;
     gap: 2rem;
     padding-top: 5rem;
+    direction:rtl;
 }
 
     .login-page .login-form {
@@ -45,7 +46,7 @@
         .login-page .login-form form {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 3rem;
         }
 
     .login-page .image-container {
@@ -59,3 +60,6 @@
             width: 100%;
             border-radius: 1rem;
         }
+.input-control-container{
+    margin-top: 20px;
+}

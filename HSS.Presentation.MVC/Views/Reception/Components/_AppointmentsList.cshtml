@@ -4,33 +4,33 @@
 
 @foreach(var app in Model.Appointments)
 {
-    <div class="appointment-row @(app.IsStarted ? "started" : (app.IsConfirmed ? "confirmed" : (app.IsEnd ? "ended" : "")))">
+    <div class="appointment-row @((app.IsConfirmed & app.IsStarted) ? "started " : (app.IsConfirmed ? "confirmed " : "")) @(app.IsEnd ? "ended " : "")">
         <div class="type">
             <div class="buttons @(Model.IsQueueList ? "hide-buttons" : "") hide-buttons-for-view">
-                <button class="button" title="تأكيد الحضور">
+                <button class="button @(app.IsConfirmed? "disable-button": "confirm-appointment-btn")" title="تأكيد الحضور" data-appointment-id="@app.Id">
                     <span>تأكيد الحضور</span>
                     <img src="/icons/confirm-icon.svg" alt="">
                 </button>
-                <button class="button" title="تأخير موعد">
+                <button class="button @(app.IsStarted? "disable-button": "delay-appointment-btn") " title="تأخير موعد" data-national-id="@app.PatientNationalId">
                     <span>تأخير الموعد</span>
                     <img src="/icons/wait-button.svg" alt="">
                 </button>
                 <div class="seperator"></div>
-                <button class="button" title="الغاء موعد">
+                <button class="button @(app.IsStarted? "disable-button": "cancel-appointment-button") " title="الغاء موعد" data-appointment-id="@app.Id">
                     <span>الغاء الموعد</span>
                     <img src="/icons/cancel-button.svg" alt="">
                 </button>
             </div>
             <div class="buttons @(Model.IsQueueList ? "" : "hide-buttons") hide-buttons-for-view">
-                <button class="button" title="بدأ الحجز">
+                <button class="button  @(app.IsStarted? "disable-button": "start-appointment") " title="بدأ الحجز" data-appointment-id="@app.Id">
                     <span>بدأ الحجز</span>
                     <img src="/icons/start-icon.svg" alt="">
                 </button>
-                <button class="button" title="تأخير الموعد">
+                <button class="button  @(app.IsStarted? "disable-button": "delay-appointment-btn") " title="تأخير موعد" data-national-id="@app.PatientNationalId">
                     <span>تأخير الموعد</span>
                     <img src="/icons/wait-button.svg" alt="">
                 </button>
-                <button class="button" title="الغاء موعد">
+                <button class="button  @(app.IsStarted? "disable-button": "remove-appointment-from-queue") " title="الغاء موعد" data-appointment-id="@app.Id">
                     <span>الغاء الموعد</span>
                     <img src="/icons/cancel-button.svg" alt="">
                 </button>
@@ -58,3 +58,35 @@
         </div>
     </div>
 }
+
+<div class="modal-overlay" id="delayAppointmentModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>تأخير الموعد</h3>
+            <span class="close-modal">&times;</span>
+        </div>
+        <form id="delayAppointmentForm">
+            <input type="hidden" id="appointmentId" name="appointmentId" />
+            <div class="form-group">
+                <label>الرقم القومي</label>
+                <input type="text" id="patientNationalId" readonly class="readonly-field" />
+            </div>
+            <div class="form-group">
+                <label for="newDate">التاريخ الجديد</label>
+                <input type="date" id="newDate" name="newDate" required />
+            </div>
+            <div class="form-group">
+                <label for="newTime">الوقت الجديد</label>
+                <select id="newTime" name="newTime" required disabled>
+                    <option value="">اختر التاريخ أولاً</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="submit-btn">تأكيد</button>
+                <button type="button" class="cancel-btn">إلغاء</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+

@@ -22,4 +22,8 @@
     <ProjectReference Include="..\HSS.Services\HSS.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+
 </Project>

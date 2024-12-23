@@ -1,4 +1,5 @@
-﻿using HSS.Services.Models;
+﻿using HSS.Domain.Models.Aggregates;
+using HSS.Services.Models;
 using HSS.Services.SharedDto;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -14,11 +15,14 @@ namespace HSS.Services.Abstractions
         Task<IEnumerable<SpecializationDto>> GetSpecializationsAsync(int hospitalId);
         Task<IEnumerable<SpecializationDto>> GetSpecializationsByReceptionistIdAsync(int receptionistId);
         Task<bool> CreateAppointment(CreateAppointmentDto dto);
-        Task<bool> ConfirmAppointment(string NationalId);
-        Task<bool> CancelAppointment(string NationalId);
+        Task<AppointmentDto?> ConfirmAppointment(int NationalId);
+        Task<bool> CancelAppointment(int appointmentId);
         Task<bool> DelayAppointment(string NationalId, DateTime dateTimeDelayTo);
         Task<List<AppointmentDto>> ClinicAppointmentsQueue(int clinicId);
         Task<List<AppointmentDto>> AllClinicAppointments(int clinicId);
         Task<List<SelectListItem>> GetAvailableTimeSlots(int clinicId, DateTime date);
+        Task<DoctorDto> GetCurrentlyWorkingDoctorAsync(int clinicId, TimeSpan date);
+        Task<bool> RemoveFromQueue(int appointmentId);
+        Task<AppointmentDto?> StartAppointment(int appointmentId);
     }
 }

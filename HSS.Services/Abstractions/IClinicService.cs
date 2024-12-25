@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HSS.Services.Dtos;
+using HSS.Services.SharedDto;
 
 namespace HSS.Services.Abstractions
 {
@@ -14,5 +15,6 @@ namespace HSS.Services.Abstractions
         Task<bool> CreateClinic(CreateClinicDto dto);
         Task<ClinicDto> GetClinic(int id);
         Task<List<ClinicDto>> HospitalClinics(int id);
+        Task<AppointmentDto> GetAppointmentDetailsAsync(int id);
     }
 }

@@ -7,7 +7,7 @@ using NToastNotify;
 
 namespace HSS.Presentation.MVC.Controllers;
 
-public class ClinicController(IReceptionServices _receptionServices, IToastNotification _toastNotification) : Controller
+public class ClinicController(IReceptionServices _receptionServices, IToastNotification _toastNotification, IClinicService clinicService) : Controller
 {
     // GET
     public async Task<IActionResult> Index()
@@ -32,9 +32,10 @@ public class ClinicController(IReceptionServices _receptionServices, IToastNotif
         }
     }
 
-    public async Task<IActionResult> AppointmentDetails(int clinicId)
+    public async Task<IActionResult> AppointmentDetails(int appointmentId)
     {
-        return View();
+        var appointment = await clinicService.GetAppointmentDetailsAsync(appointmentId);
+        return View(new AppointmentDetailsViewModel(appointment));
     }
     private string GetUserId()
     {

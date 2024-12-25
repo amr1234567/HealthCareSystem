@@ -9,7 +9,8 @@ namespace HSS.Services.Abstractions
 {
     public interface IGetMedicineService
     {
-        Task<GetMedicineDto> GetMedicineByIdAsync(int? id);
+        Task<GetMedicineDto> GetMedicineByIdAsync(int id);
         Task<IEnumerable<GetMedicineDto>> GetAllMedicineAsync();
+        Task<IEnumerable<GetMedicineDto>> GetAllMedicineByQueryAsync(string query = "");
     }
 }

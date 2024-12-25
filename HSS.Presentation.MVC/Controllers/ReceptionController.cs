@@ -220,7 +220,7 @@ namespace HSS.Presentation.MVC.Controllers
 
         public async Task<IActionResult> GetAvailableTimeSlots(int clinicId,DateTime date)
         {
-            2var data = await _receptionServices.GetAvailableTimeSlots(clinicId, date);
+            var data = await _receptionServices.GetAvailableTimeSlots(clinicId, date);
             return Json(data);
         }
     }

@@ -1,5 +1,23 @@
-﻿ @*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model AppointmentDetailsViewModel
 @{
+    ViewBag.Title = $"الطبيب {User.Identity.Name}";
+    Layout = "_MainPagesLayout";
 }
+
+
+<div>
+    <main>
+
+    </main>
+    <footer>
+        <div class="add-prescription-record-button">
+            <img src="/icons/clinic-pages-icons/add-precepation-icon.png" alt="Alternate Text" />
+            <p>إدراج روشتة</p>
+        </div>
+       
+        <div class="add-prescription-record-button">
+            <img src="/icons/clinic-pages-icons/complete-icon.svg" alt="Alternate Text" />
+            <p>إنهاء الحجز</p>
+        </div>
+    </footer>
+</div>

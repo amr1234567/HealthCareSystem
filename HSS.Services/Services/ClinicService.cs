@@ -7,6 +7,7 @@ using HSS.DataAccess.Contexts;
 using HSS.Domain.Models;
 using HSS.Services.Abstractions;
 using HSS.Services.Dtos;
+using HSS.Services.SharedDto;
 using Microsoft.EntityFrameworkCore;
 
 namespace HSS.Services.Services
@@ -41,18 +42,16 @@ namespace HSS.Services.Services
 
         public async Task<bool> DeleteClinic(int id)
         {
-            if(id==null)
-                throw new ArgumentNullException(nameof(id));
             var clinic = await  _context.Clinics.FindAsync(id);
-            clinic.IsDeleted = true;
-            return await _context.SaveChangesAsync()>0;
+            if (clinic == null) 
+                return false;
+            _context.Clinics.Remove(clinic);
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<ClinicDto> GetClinic(int id)
         {
-            if (id == null)
-                throw new ArgumentNullException(nameof(id));
-            var result = await _context.Clinics.Where(x=>x.Id==id).Include(x=>x.Hospital).Select(x => new ClinicDto
+            var result = await _context.Clinics.Where(x => x.Id == id).Include(x => x.Hospital).Select(x => new ClinicDto
             {
                 Id = x.Id,
                 AppointmentDurationInMinutes = x.AppointmentDurationInMinutes,
@@ -97,5 +96,18 @@ namespace HSS.Services.Services
             return true;
         }
 
+        public async Task<AppointmentDto> GetAppointmentDetailsAsync(int id)
+        {
+            var result = await _context
+                .ClinicAppointment
+                .Where(x => x.Id == id)
+                .Include(x => x.Patient)
+                .Include(x => x.Clinic)
+                .Include(x => x.Doctor)
+                .Include(x => x.Hospital)
+                .Select(x => new AppointmentDto(x))
+                .FirstOrDefaultAsync();
+            return result;
+        }
     }
 }

@@ -43,6 +43,7 @@ namespace HSS.Services.SharedDto
             Id = appointment.Id;
             PatientId = appointment.PatientId;
             PatientName = appointment.Patient.Name;
+            PatientNationalId = appointment.Patient.NationalId;
             PatientBirthDate = appointment.Patient.DateOfBirth;
             AppointmentType = appointment.AppointmentType;
             HospitalId = appointment.Clinic.HospitalId;
@@ -61,7 +62,6 @@ namespace HSS.Services.SharedDto
             IsEnd = appointment.IsEnd;
             ClinicStartAt = appointment.Clinic.StartAt;
             ClinicEndAt = appointment.Clinic.FinishAt;
-            PatientNationalId = appointment.Patient.NationalId;
         }
     }
 }

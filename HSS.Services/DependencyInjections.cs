@@ -101,6 +101,7 @@ namespace HSS.Services
             (this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<ITokenServices, TokenServices>();
+            services.AddScoped<IClinicService, ClinicService>();
             services.AddScoped<IReceptionServices, ReceptionServices>();
             services.AddScoped(typeof(IUserIdentityServices<>), typeof(UserIdentityServices<>));
             services.AddAutoMapper(r => { });

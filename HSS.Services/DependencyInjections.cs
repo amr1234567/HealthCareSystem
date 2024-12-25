@@ -60,6 +60,10 @@ namespace HSS.Services
                 await context.SeedPatients();
                 await context.SeedDoctorsAndClinicsAsync();
                 await context.SeedClinicAppointmentsAsync();
+                await context.SeedDiseasesAndRelatedDataAsync();
+                await context.SeedMedicineAsync();
+                await context.SeedLabTestsAsync();
+                await context.SeedRadiologyTestTypesAsync();
             }
 
             return app;
@@ -90,6 +94,10 @@ namespace HSS.Services
                     await context.SeedPatients();
                     await context.SeedDoctorsAndClinicsAsync();
                     await context.SeedClinicAppointmentsAsync();
+                    await context.SeedDiseasesAndRelatedDataAsync();
+                    await context.SeedMedicineAsync();
+                    await context.SeedLabTestsAsync();
+                    await context.SeedRadiologyTestTypesAsync();
                 }
             }
             return app;

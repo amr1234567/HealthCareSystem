@@ -17,8 +17,8 @@
         public Severity Severity { get; set; }
 
         [Required]
-        [DataType(DataType.Time)]
-        public TimeSpan Duration { get; set; }
+        [Range(0,1000)]
+        public double Duration { get; set; }
 
         [Required]
         public SymptomOnsetPattern OnsetPattern { get; set; }

@@ -15,9 +15,40 @@
             <p>إدراج روشتة</p>
         </div>
        
-        <div class="add-prescription-record-button">
+        <div class="complete-appointment-button">
             <img src="/icons/clinic-pages-icons/complete-icon.svg" alt="Alternate Text" />
             <p>إنهاء الحجز</p>
         </div>
     </footer>
 </div>
+
+
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(".complete-appointment-button").on("click", function () {
+                let confirmResult = confirm("هل انت متأكد من انهاء الحجز ؟");
+                if(confirmResult){
+                    $.ajax({
+                        url: '@Url.Action("FinishAppointment", "Clinic")', // Replace with your endpoint
+                        method: 'POST',
+                        data: { appointmentId: '@Model.AppointmentId' }, // Send the query to the server
+                        success: function () {
+                           window.location.href = '@Url.Action("Index","Clinic")';
+                        },
+                        error: function (e) {
+                            showErrorMessage(e.message)
+                        }
+                    });
+                }
+            })
+             $(".add-prescription-record-button").on("click", function () {
+
+                window.location.href = '@Url.Action("MakePrescriptions", "Clinic")';
+                      
+            })
+        })
+    </script>
+}

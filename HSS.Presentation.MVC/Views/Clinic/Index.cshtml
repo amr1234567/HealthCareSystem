@@ -27,7 +27,7 @@
         $(document).ready(function () {
             $(".appointment-row.active").on("click", function () {
                 const appointmentId = $(this).data("appointment-id");
-                window.location.href = `@Url.Action("AppointmentDetails", "Clinic")/${appointmentId}`;
+                window.location.href = `@Url.Action("AppointmentDetails", "Clinic")?appointmentId=${appointmentId}`;
             })
         })
     </script>

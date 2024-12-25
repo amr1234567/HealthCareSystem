@@ -21,6 +21,11 @@
     .appointment-row.confirmed {
         border: 3px solid forestgreen;
     }
+    .appointment-row.ended {
+        border: 3px solid black;
+        opacity: 0.7;
+        text-decoration: line-through;
+    }
 /*    .appointment-row:hover {
         z-index: 1;
         border-width: 3px;

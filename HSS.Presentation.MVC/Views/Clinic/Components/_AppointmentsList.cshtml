@@ -4,7 +4,7 @@
 
 @foreach (var app in Model.Appointments)
 {
-    <div class="appointment-row @(app.IsStarted? "active": app.IsConfirmed ? "confirmed" : "")" data-appointment-id="@app.Id">
+    <div class="appointment-row @(app.IsEnd ? "ended" : app.IsStarted? "active": app.IsConfirmed ? "confirmed" : "")" data-appointment-id="@app.Id">
         <div class="type">
 
             <span class="type">@app.AppointmentType</span>

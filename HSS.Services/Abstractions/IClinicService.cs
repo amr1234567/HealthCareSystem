@@ -20,7 +20,7 @@ namespace HSS.Services.Abstractions
         Task<List<ClinicDto>> HospitalClinics(int id);
         Task<List<AppointmentDto>> ClinicAppointments(int doctorId);
         Task<bool> AppointmentFinished(int appointmentId);
-        Task<AppointmentPatientBaseData> GetAppointmentPatientBaseData(string NationalId);
+        Task<AppointmentPatientBaseData> GetAppointmentPatientBaseData(int appointmentId);
         Task<bool> AddRadiologyAppointment(int appointmentId, int radioId);
         Task<bool> AddTestAppointment(int appointmentId, int testId);
         Task<List<SelectListItem>> Medicines(string? medicine);

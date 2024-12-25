@@ -18,30 +18,22 @@ namespace HSS.Services.Services
     public class ClinicService : IClinicService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IReceptionServices receptionServices;
 
-        public ClinicService(ApplicationDbContext context)
+        public ClinicService(ApplicationDbContext context,IReceptionServices receptionServices)
         {
             _context = context;
+            this.receptionServices = receptionServices;
         }
 
-        public async Task<List<AppointmentDto>> ClinicAppointments(int doctorId)
+        public async Task<List<AppointmentDto>> ClinicAppointments(int clinicId)
         {
-            var doctor = await _context.Doctors
-                .Include(x => x.Clinic)
-                .FirstOrDefaultAsync(x => x.Id == doctorId);
-
-            var appontments = await _context.ClinicAppointment
-                .Where(x => x.AppointmentDate > DateTime.Now)
-                .Where(x => x.ClinicId == doctor.ClinicId && (x.AppointmentDate.TimeOfDay < doctor.StartAt + doctor.WorkingTime && x.AppointmentDate.TimeOfDay >= doctor.StartAt))
-                .Select(x => new AppointmentDto(x))
-                .ToListAsync();
-            return appontments;
+            return await receptionServices.ClinicAppointmentsQueue(clinicId);
         }
 
         public async Task<bool> AppointmentFinished(int appointmentId)
         {
-            await _context.ClinicAppointment.Where(x => x.Id == appointmentId).ExecuteUpdateAsync(x => x.SetProperty(x => x.IsEnd, true));
-            return true;
+            return await _context.ClinicAppointment.Where(x => x.Id == appointmentId).ExecuteUpdateAsync(x => x.SetProperty(x => x.IsEnd, true)) > 0;
         }
 
         public async Task<bool> CreateClinic(CreateClinicDto dto)
@@ -120,9 +112,13 @@ namespace HSS.Services.Services
             return true;
         }
 
-        public async Task<AppointmentPatientBaseData> GetAppointmentPatientBaseData(string NationalId)
+        public async Task<AppointmentPatientBaseData> GetAppointmentPatientBaseData(int appointmentId)
         {
-            var patientData = await _context.Patients.FindAsync(NationalId);
+            var appointment = await _context.ClinicAppointment.Where(a => a.Id == appointmentId)
+                .Include(a => a.Patient).FirstOrDefaultAsync();
+            if (appointment == null)
+                throw new NullReferenceException(nameof(ClinicAppointment));
+            var patientData = appointment.Patient;
             return new AppointmentPatientBaseData
             {
                 age = (int)(DateTime.Now - patientData.DateOfBirth).TotalDays / 365,
@@ -130,7 +126,7 @@ namespace HSS.Services.Services
                 Id = patientData.Id,
                 Location = patientData.Address,
                 Name = patientData.Name,
-                NationalId = NationalId,
+                NationalId = patientData.NationalId,
                 PhoneNumber = patientData.ContactNumber
             };
         }
@@ -167,6 +163,7 @@ namespace HSS.Services.Services
             var medicines = _context.Medicines.AsQueryable();
             if (!string.IsNullOrEmpty(medicine))
             {
+                //medicines.Where(x => x.Name.Contains(medicine, StringComparison.OrdinalIgnoreCase));
                 medicines.Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{medicine.ToLower()}%"));
             }
             var returnmed = medicines.ToList();

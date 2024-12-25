@@ -1,1 +1,38 @@
 ﻿
+
+footer {
+    width: 100%;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    bottom: 0;
+    background-color: #0E88AD;
+    padding: 1rem;
+    direction: rtl;
+}
+
+
+footer > div{
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.7rem;
+    border-radius: 7px;
+    background-color: white;
+}
+
+    footer > div img {
+        transition: 0.1s ease-in-out;
+    }
+
+footer > div:hover img{
+    transform: scale(1.2);
+}
+
+footer > div > p {
+    margin: 0;
+}

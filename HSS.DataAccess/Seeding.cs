@@ -442,6 +442,7 @@ namespace HSS.DataAccess
 
             return types[random.Next(types.Length)];
         }
+        
         public static string ConvertImageToText(string filePath)
         {
             if (!File.Exists(filePath))
@@ -449,6 +450,7 @@ namespace HSS.DataAccess
 
             return File.ReadAllText(filePath);
         }
+        
         private static Dictionary<string, string> GetGovs()
         {
             return new Dictionary<string, string>
@@ -481,6 +483,7 @@ namespace HSS.DataAccess
                 { "جنوب سيناء", "35" }
             };
         }
+       
         public static KeyValuePair<TKey, TValue> GetRandomElement<TKey, TValue>(Dictionary<TKey, TValue> dictionary)
         {
             if (dictionary == null || dictionary.Count == 0)
@@ -517,14 +520,14 @@ namespace HSS.DataAccess
                 new Symptom {
                     Name = "ارتفاع درجة الحرارة",
                     Description = "ارتفاع في درجة حرارة الجسم عن 37 درجة مئوية",
-                    Duration = TimeSpan.FromDays(3),
+                    Duration = 3,
                     IsChronic = false,
                     TreatmentRequired = true
                 },
                 new Symptom {
                     Name = "سعال جاف",
                     Description = "سعال متكرر بدون بلغم",
-                    Duration = TimeSpan.FromDays(7),
+                    Duration = 7,
                     IsChronic = false,
                     TreatmentRequired = true
                 },
@@ -532,21 +535,21 @@ namespace HSS.DataAccess
                     Name = "صداع شديد",
                     Age = AgeGroup.Adult,
                     Description = "ألم حاد في الرأس مع احتمال الغثيان",
-                    Duration = TimeSpan.FromHours(12),
+                    Duration = 12,
                     IsChronic = false,
                     TreatmentRequired = true
                 },
                 new Symptom {
                     Name = "آلام المفاصل",
                     Description = "ألم وتصلب في المفاصل مع صعوبة في الحركة",
-                    Duration = TimeSpan.FromDays(30),
+                    Duration = 30,
                     IsChronic = true,
                     TreatmentRequired = true
                 },
                 new Symptom {
                     Name = "ضيق في التنفس",
                     Description = "صعوبة في التنفس مع الشعور بعدم كفاية الهواء",
-                    Duration = TimeSpan.FromHours(6),
+                    Duration = 6,
                     IsChronic = false,
                     TreatmentRequired = true
                 }
@@ -695,74 +698,129 @@ namespace HSS.DataAccess
                 // ... Add the remaining diseases here
             });
 
-            // Assign relationships
+
             foreach (var disease in diseases)
             {
+                // Assign relationships to diseases
                 disease.Symptoms = symptoms.Take(Random.Shared.Next(2, 4)).ToList();
                 disease.EffectiveSubstances = effectiveSubstances.Take(Random.Shared.Next(1, 3)).ToList();
+
+                // Ensure TreatmentDurationInDays is valid
+                if (int.TryParse(disease.TreatmentDurationInDays, out int days))
+                {
+                    disease.TreatmentDurationInDays = days > 0 && days < 3650
+                        ? days.ToString()
+                        : "7"; // Default to 7 days if out of range
+                }
+                else
+                {
+                    disease.TreatmentDurationInDays = "7"; // Default value
+                }
             }
+
 
             await context.AddRangeAsync(symptoms);
             await context.AddRangeAsync(effectiveSubstances);
             await context.AddRangeAsync(diseases);
             await context.SaveChangesAsync();
         }
-    public static async Task SeedMedicineAsync(this ApplicationDbContext context){
+       
+        public static async Task SeedMedicineAsync(this ApplicationDbContext context){
         if (await context.Set<Disease>().AnyAsync())
                 return;
-        var medicines = new List<Medicine>
-    {
-        new Medicine
+            var medicines = new List<Medicine>
         {
-            Id = 1,
-            Name = "Amoxil",
-            Description = "Broad-spectrum antibiotic used to treat various bacterial infections",
-            Manufacturer = "GlaxoSmithKline",
-            EffectiveSubstanceId = 1,
-            ApprovalDate = new DateTime(1981, 1, 15),
-            StorageConditions = "Store at room temperature between 15-25°C (59-77°F)",
-            PrescriptionRequired = true,
-            Cost = 25.50f,
-        },
-        new Medicine
-        {
-            Id = 2,
-            Name = "Augmentin",
-            Description = "Combined antibiotic medication used for bacterial infections",
-            Manufacturer = "GlaxoSmithKline",
-            EffectiveSubstanceId = 1,
-            ApprovalDate = new DateTime(1984, 6, 20),
-            StorageConditions = "Store below 25°C in a dry place",
-            PrescriptionRequired = true,
-            Cost = 35.75f,
-        },
-        new Medicine
-        {
-            Id = 3,
-            Name = "Panadol",
-            Description = "Pain reliever and fever reducer",
-            Manufacturer = "GSK Consumer Healthcare",
-            EffectiveSubstanceId = 2,
-            ApprovalDate = new DateTime(1956, 3, 10),
-            StorageConditions = "Store below 30°C",
-            PrescriptionRequired = false,
-            Cost = 12.99f,
-        },
-        new Medicine
-        {
-            Id = 4,
-            Name = "Aspirin",
-            Description = "Pain reliever, fever reducer, and anti-inflammatory medication",
-            Manufacturer = "Bayer",
-            EffectiveSubstanceId = 3,
-            ApprovalDate = new DateTime(1899, 2, 1),
-            StorageConditions = "Store at room temperature away from moisture and heat",
-            PrescriptionRequired = false,
-            Cost = 8.50f,
-        }
-       
-    };
-            await context.AddRangeAsync(medicines);
+            new Medicine
+            {
+                Id = 1,
+                Name = "Advil",
+                Description = "مسكن للآلام وخافض للحرارة.",
+                Type = MedicinesType.Tablet,
+                Manufacturer = "Pfizer",
+                ApprovalDate = new DateTime(1974, 1, 1),
+                StorageConditions = "يحفظ بعيدًا عن متناول الأطفال.",
+                PrescriptionRequired = false,
+                Cost = 5.5f
+            },
+            new Medicine
+            {
+                Name = "Panadol",
+                Description = "مسكن للآلام وخافض للحرارة.",
+                Type = MedicinesType.Tablet,
+                Manufacturer = "GSK",
+                ApprovalDate = new DateTime(1955, 1, 1),
+                StorageConditions = "يحفظ في مكان بارد وجاف.",
+                PrescriptionRequired = false,
+                Cost = 3.0f
+            },
+            new Medicine
+            {
+                Name = "Aspirin",
+                Description = "يستخدم لتخفيف الألم وتقليل الحمى.",
+                Type = MedicinesType.Tablet,
+                Manufacturer = "Bayer",
+                ApprovalDate = new DateTime(1899, 1, 1),
+                StorageConditions = "يحفظ في درجة حرارة الغرفة.",
+                PrescriptionRequired = true,
+                Cost = 4.5f
+            },
+            new Medicine
+            {
+                Name = "Zyrtec",
+                Description = "مضاد للحساسية يخفف أعراض العطس والحكة.",
+                Type = MedicinesType.Tablet,
+                Manufacturer = "UCB",
+                ApprovalDate = new DateTime(1995, 1, 1),
+                StorageConditions = "يحفظ في مكان بارد وجاف.",
+                PrescriptionRequired = false,
+                Cost = 6.0f
+            },
+            new Medicine
+            {
+                Name = "Nexium",
+                Description = "دواء لعلاج الحموضة وارتجاع المريء.",
+                Type = MedicinesType.Tablet,
+                Manufacturer = "AstraZeneca",
+                ApprovalDate = new DateTime(2000, 1, 1),
+                StorageConditions = "يحفظ بعيدًا عن الحرارة والرطوبة.",
+                PrescriptionRequired = true,
+                Cost = 8.0f
+            },
+            new Medicine
+            {
+                Name = "Crestor",
+                Description = "دواء لخفض الكوليسترول في الدم.",
+                Type = MedicinesType.Tablet ,
+                Manufacturer = "AstraZeneca",
+                ApprovalDate = new DateTime(2003, 1, 1),
+                StorageConditions = "يحفظ في مكان جاف وبارد.",
+                PrescriptionRequired = true,
+                Cost = 12.0f
+            },
+            new Medicine
+            {
+                Name = "Ventolin",
+                Description = "بخاخ لتخفيف أعراض الربو وضيق التنفس.",
+                Type = MedicinesType.Tablet,
+                Manufacturer = "GSK",
+                ApprovalDate = new DateTime(1980, 1, 1),
+                StorageConditions = "يحفظ في درجة حرارة الغرفة.",
+                PrescriptionRequired = false,
+                Cost = 10.0f
+            },
+            new Medicine
+            {
+                Name = "Tamiflu",
+                Description = "دواء مضاد للفيروسات لعلاج الإنفلونزا.",
+                Type = MedicinesType.Tablet,
+                Manufacturer = "Roche",
+                ApprovalDate = new DateTime(1999, 1, 1),
+                StorageConditions = "يحفظ في الثلاجة عند الحاجة.",
+                PrescriptionRequired = true,
+                Cost = 15.0f
+            }
+        };
+            await context.Medicines.AddRangeAsync(medicines);
             await context.SaveChangesAsync();   
         }
 

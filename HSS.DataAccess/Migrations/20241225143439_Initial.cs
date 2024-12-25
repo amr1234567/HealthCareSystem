@@ -203,7 +203,7 @@ namespace HSS.DataAccess.Migrations
                     Age = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     Severity = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Duration = table.Column<TimeSpan>(type: "time", nullable: false),
+                    Duration = table.Column<double>(type: "float", nullable: false),
                     OnsetPattern = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsChronic = table.Column<bool>(type: "bit", nullable: false),
                     TreatmentRequired = table.Column<bool>(type: "bit", nullable: false),
@@ -396,6 +396,7 @@ namespace HSS.DataAccess.Migrations
                     ClinicAppointmentIdRelatedTo = table.Column<int>(type: "int", nullable: true),
                     IsStarted = table.Column<bool>(type: "bit", nullable: true),
                     IsConfirmed = table.Column<bool>(type: "bit", nullable: true),
+                    IsEnd = table.Column<bool>(type: "bit", nullable: true),
                     LabCenterId = table.Column<int>(type: "int", nullable: true),
                     TestTypeId = table.Column<int>(type: "int", nullable: true),
                     ResultDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -461,7 +462,6 @@ namespace HSS.DataAccess.Migrations
                     DispensedAmount = table.Column<int>(type: "int", nullable: false),
                     ClinicAppointmentId = table.Column<int>(type: "int", nullable: false),
                     TimesOfDispensed = table.Column<int>(type: "int", nullable: false),
-                    PrescriptionRecordId = table.Column<int>(type: "int", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -479,11 +479,6 @@ namespace HSS.DataAccess.Migrations
                         principalTable: "Medicines",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_PrescriptionRecords_PrescriptionRecords_PrescriptionRecordId",
-                        column: x => x.PrescriptionRecordId,
-                        principalTable: "PrescriptionRecords",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -820,11 +815,8 @@ namespace HSS.DataAccess.Migrations
                     Diagnosis = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     DiagnosisDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Treatment = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    TreatmentStartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TreatmentEndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    FollowUpNeeded = table.Column<bool>(type: "bit", nullable: false),
+                    ExpectedTimeForTreatment = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -1078,11 +1070,6 @@ namespace HSS.DataAccess.Migrations
                 name: "IX_PrescriptionRecords_MedicineId",
                 table: "PrescriptionRecords",
                 column: "MedicineId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PrescriptionRecords_PrescriptionRecordId",
-                table: "PrescriptionRecords",
-                column: "PrescriptionRecordId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RadiologyCenters_HospitalId",

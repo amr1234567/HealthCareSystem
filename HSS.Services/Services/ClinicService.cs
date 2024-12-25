@@ -20,7 +20,7 @@ namespace HSS.Services.Services
         private readonly ApplicationDbContext _context;
         private readonly IReceptionServices receptionServices;
 
-        public ClinicService(ApplicationDbContext context,IReceptionServices receptionServices)
+        public ClinicService(ApplicationDbContext context, IReceptionServices receptionServices)
         {
             _context = context;
             this.receptionServices = receptionServices;
@@ -58,8 +58,8 @@ namespace HSS.Services.Services
 
         public async Task<bool> DeleteClinic(int id)
         {
-            var clinic = await  _context.Clinics.FindAsync(id);
-            if (clinic == null) 
+            var clinic = await _context.Clinics.FindAsync(id);
+            if (clinic == null)
                 return false;
             _context.Clinics.Remove(clinic);
             return await _context.SaveChangesAsync() > 0;
@@ -191,7 +191,7 @@ namespace HSS.Services.Services
             {
                 listtypes.Add(new SelectListItem
                 {
-                    Text= item.Name,    
+                    Text = item.Name,
                     Value = item.Id.ToString()
                 });
             }
@@ -215,6 +215,56 @@ namespace HSS.Services.Services
                 });
             }
             return listtypes;
+        }
+
+        public async Task<bool> AddPrescription(int id, List<prescriptionDto> dto)
+        {
+            var appointment = await _context.ClinicAppointment.FindAsync(id);
+            var listofprescription = new List<PrescriptionRecord>();
+            foreach (var item in dto)
+            {
+                var medicine = await _context.Medicines.FindAsync(item.Id);
+                listofprescription.Add(new PrescriptionRecord
+                {
+                    MedicineId = item.Id,
+                    NumberOfUnits = item.NumberOfUnits,
+                    DispensedAmount = item.DispensedAmount,
+                    DispenseStatus = item.DispenseStatus,
+                    TimesOfDispensed = item.TimesOfDispensed,
+                    TimingDescription = item.TimingDescription,
+                    DispensedDate = item.DispensedDate,
+                    MedicineUnitType = item.MedicineUnitType,
+                    MedicineName = medicine.Name,
+                    DosageFrequency = item.DosageFrequency,
+                });
+            }
+            appointment.PrescriptionRecords.AddRange(listofprescription);
+            return await _context.SaveChangesAsync()>0;
+        }
+        public async Task<List<MedicalHistory>> PatientMedicalHistory(string NationalId)
+        {
+            var medicalHistory = await _context.MedicalHistories
+                .Include(x => x.Patient)
+                .Where(x=>x.Patient.NationalId == NationalId)
+                .ToListAsync();
+            return medicalHistory;
+        }
+
+        public async Task<bool> AddPatientMedicalHistory(string NationalId,MedicalHistoryDto dto)
+        {
+            var patient =await _context.Patients.FirstOrDefaultAsync(x=>x.NationalId == NationalId);
+            var medicalHistrory = new MedicalHistory
+            {
+                Patient= patient,
+                CreatedAt = DateTime.Now,
+                Diagnosis=dto.Diagnosis,
+                DiagnosisDate=dto.DiagnosisDate,
+                ExpectedTimeForTreatment=dto.ExpectedTimeForTreatment,
+                Notes=dto.Notes,    
+                Treatment=dto.Treatment,
+            };
+            await _context.MedicalHistories.AddAsync(medicalHistrory);
+            return await _context.SaveChangesAsync()>0;
         }
     }
 }

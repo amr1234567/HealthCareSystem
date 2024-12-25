@@ -8,7 +8,6 @@ using HSS.Services.SharedDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
-using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
 namespace HSS.Presentation.MVC.Controllers
@@ -211,25 +210,5 @@ namespace HSS.Presentation.MVC.Controllers
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
-    }
-
-    public class AppointmentItemViewModel(AppointmentDto appointment, bool isQueue = false)
-    {
-        public bool IsQueueItem { set; get; } = isQueue;
-        public AppointmentDto Appointment { set; get; } = appointment;
-    }
-
-    public class EditAppointmentModel
-    {
-        [Required]
-        public int AppointmentId { get; set; }
-
-        public bool IsQueue { get; set; } = false;
-    }
-
-    public class CheckNationalIdCorrectModel
-    {
-        [Required]
-        public string NationalId { set; get; }
     }
 }

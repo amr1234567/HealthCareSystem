@@ -62,7 +62,7 @@ namespace HSS.Presentation.MVC.Controllers
             var roles = new List<ApplicationRole>();
             if (userRoles != null)
             {
-                roles = userRoles.Select(r=>r.RoleName).ToList();
+                roles = userRoles.Select(r => r.RoleName).ToList();
             }
             else
             {
@@ -74,6 +74,8 @@ namespace HSS.Presentation.MVC.Controllers
 
             if (roles.Contains(ApplicationRole.Receptionist))
                 return RedirectToAction("Index", "Reception");
+            if (roles.Contains(ApplicationRole.Doctor))
+                return RedirectToAction("Index", "Clinic");
 
             // Add more role checks as needed
             // if (roles.Contains(ApplicationRole.Doctor.ToString()))

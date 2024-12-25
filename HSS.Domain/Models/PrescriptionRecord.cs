@@ -37,7 +37,6 @@ namespace HSS.Domain.Models
         [Required, Range(0, int.MaxValue)]
         public int TimesOfDispensed { get; set; } = 0; // ديه انا عايز اقول عدد المرات اللي راح فيها للصيدلية عشان يصرف من الدواء ده لحد ما خلص الكمية اللي الدكتور قال عليها
     
-        public List<PrescriptionRecord> PrescriptionRecords { get; set; }
     }
 
 }

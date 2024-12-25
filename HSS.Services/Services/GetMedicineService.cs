@@ -41,19 +41,36 @@ namespace HSS.Services.Services
             }
         }
 
-        public async Task<GetMedicineDto> GetMedicineByIdAsync(int? id)
+        public async Task<IEnumerable<GetMedicineDto>> GetAllMedicineByQueryAsync(string query = "")
         {
             try
             {
-                if (id is null)
-                    throw new ArgumentNullException(nameof(id));
+                var medicines = await _dbContext.Set<Medicine>().Where(m => m.Name.Contains(query, StringComparison.OrdinalIgnoreCase))
+                    .Select(m => new GetMedicineDto
+                    {
+                        Id = m.Id,
+                        Name = m.Name,
+                        Description = m.Description,
+                        Type = m.Type,
+                        EffectiveSubstances = m.EffectiveSubstances,
+                        SideEffects = m.SideEffects.ToList(),
+                        StorageConditions = m.StorageConditions,
+                        Cost = m.Cost,
+                        ApprovalDate = m.ApprovalDate,
+                    }).ToListAsync();
+                return medicines;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
-                var m = await _dbContext.Set<Medicine>().FindAsync(id);
-
-                if (m == null)
-                    throw new NullReferenceException(nameof(m));
-
-                var medicine = new GetMedicineDto
+        public async Task<GetMedicineDto> GetMedicineByIdAsync(int id)
+        {
+            try
+            {
+                var medicine = await _dbContext.Set<Medicine>().Where(m => m.Id == id).Select(m => new GetMedicineDto
                 {
                     Id = m.Id,
                     Name = m.Name,
@@ -65,7 +82,9 @@ namespace HSS.Services.Services
                     StorageConditions = m.StorageConditions,
                     Cost = m.Cost,
                     ApprovalDate = m.ApprovalDate
-                };
+                }).FirstOrDefaultAsync();
+
+               
                 return medicine;
             }
             catch(Exception ex)

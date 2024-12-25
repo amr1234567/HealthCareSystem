@@ -13,7 +13,7 @@ namespace HSS.DataAccess
     {
         public static IServiceCollection AddDataAccessServices(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("default");
+            var connectionString = configuration.GetConnectionString("defaultAmr");
             services.AddScoped<IUserIdentityRepository, UserIdentityRepository>();
             services.AddScoped<IUserLogRepository, UserLogRepository>();
             services.AddScoped<SoftDeleteInterceptor>();

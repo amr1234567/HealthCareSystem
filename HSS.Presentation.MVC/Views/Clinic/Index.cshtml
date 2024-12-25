@@ -1,0 +1,34 @@
+﻿@model HSS.Presentation.MVC.Models.ClinicAppointmentsModelView
+
+@{
+    ViewBag.Title = $"الطبيب {User.Identity.Name}";
+    Layout = "_MainPagesLayout";
+}
+
+<div class="appointments-page">
+    <h2>الحجوزات الطبية بالعيادة</h2>
+
+    <div class="appointments-table-as-grid">
+        <header>
+            <p class="type">نوع الحالة</p>
+            <p class="date">التاريخ</p>
+            <p class="time">الرقم القومي</p>
+            <p class="patient-info">معلومات المريض</p>
+        </header>
+        <main id="main-list-appointment">
+            @await Html.PartialAsync("~/Views/Clinic/Components/_AppointmentsList.cshtml", Model)
+        </main>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".appointment-row.active").on("click", function () {
+                const appointmentId = $(this).data("appointment-id");
+                window.location.href = `@Url.Action("AppointmentDetails", "Clinic")/${appointmentId}`;
+            })
+        })
+    </script>
+}

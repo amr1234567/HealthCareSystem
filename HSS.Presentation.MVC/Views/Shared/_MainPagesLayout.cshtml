@@ -13,7 +13,11 @@
         <div class="content">
             @if (User.IsInRole(RolesConstants.Receptionist))
             {
-            <p class="title">موظف</p>
+                <p class="title">موظف</p>
+            }
+            @if (User.IsInRole(RolesConstants.Doctor))
+            {
+                <p class="title">الطبيب</p>
             }
             <span class="slash">/</span>
             <p class="name">@User.Identity.Name</p>

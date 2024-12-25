@@ -9,7 +9,6 @@ using HSS.Services.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
-using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
 namespace HSS.Presentation.MVC.Controllers
@@ -221,28 +220,8 @@ namespace HSS.Presentation.MVC.Controllers
 
         public async Task<IActionResult> GetAvailableTimeSlots(int clinicId,DateTime date)
         {
-            2var data = await _receptionServices.GetAvailableTimeSlots(clinicId, date);
+            var data = await _receptionServices.GetAvailableTimeSlots(clinicId, date);
             return Json(data);
         }
-    }
-
-    public class AppointmentItemViewModel(AppointmentDto appointment, bool isQueue = false)
-    {
-        public bool IsQueueItem { set; get; } = isQueue;
-        public AppointmentDto Appointment { set; get; } = appointment;
-    }
-
-    public class EditAppointmentModel
-    {
-        [Required]
-        public int AppointmentId { get; set; }
-
-        public bool IsQueue { get; set; } = false;
-    }
-
-    public class CheckNationalIdCorrectModel
-    {
-        [Required]
-        public string NationalId { set; get; }
     }
 }

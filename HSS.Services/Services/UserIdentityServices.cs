@@ -2,6 +2,7 @@
 using HSS.Domain.BaseModels;
 using HSS.Domain.Enums;
 using HSS.Domain.Helpers;
+using HSS.Domain.IdentityModels;
 using HSS.Domain.Models;
 using HSS.Services.Abstractions;
 using System.Linq;
@@ -33,21 +34,15 @@ namespace HSS.Services.Services
             if (roles.Count == 0)
                 throw new Exception("User has no role");
 
-            var claims = new List<Claim>()
-            {
-                new(CustomClaimType.NationalId, user.NationalId),
-                new(ClaimTypes.Name, user.Name),
-                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new(ClaimTypes.Email, user.Email),
-                new(ClaimTypes.MobilePhone, user.ContactNumber),
-            };
+            var claims = GetUserClaims(user, roles);
 
-            foreach (var role in roles)
-            {
-                claims.Add(new(ClaimTypes.Role, role.RoleName.ToString()));
-            }
 
             ////TODO: Add Claims for each type of user
+
+            if (roles.Any(r => r.RoleName == ApplicationRole.Doctor) && user is Doctor doctor)
+            {
+                claims.Add(new(CustomClaimType.ClinicId, doctor.ClinicId.ToString()));
+            }
 
             var token = await tokenServices.GenerateNewTokenModel(user.Id, claims);
             await userRepository.UpdateByCriteriaWithFunc(x => x.Id == user.Id, u =>
@@ -108,6 +103,11 @@ namespace HSS.Services.Services
                     new(ClaimTypes.Email, user.Email ?? ""),
                     new(ClaimTypes.MobilePhone, user.ContactNumber ?? "")
                 };
+
+            if (roles.Any(r => r.RoleName == ApplicationRole.Doctor) && user is Doctor doctor) 
+            {
+                claims.Add(new(CustomClaimType.ClinicId, doctor.ClinicId.ToString()));
+            }
 
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role.RoleName.ToString())));
             return claims;

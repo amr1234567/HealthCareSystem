@@ -1,0 +1,77 @@
+﻿.appointments-page {
+    position: relative;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1rem;
+    width: 100%;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.page-header > div {
+    display: flex;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.1s ease-in-out;
+    border: 1px solid #0E88AD;
+    padding: 0.5rem 0;
+    font-weight: bold;
+}
+
+    .page-header > div:not(.active-button):hover {
+        transform: skew(10deg) scale(1.01);
+    }
+
+.active-button {
+    border-bottom: none;
+    opacity: 0.7;
+    background-color: #0E88AD;
+    color: white;
+}
+
+.appointments-table-as-grid {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+    text-align: center;
+}
+
+    .appointments-table-as-grid header {
+        display: -ms-grid;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1%;
+        background-color: #0E88AD;
+        color: #ffffff;
+        direction: rtl;
+    }
+
+        .appointments-table-as-grid header > * {
+            padding: 0.5rem;
+        }
+
+    .appointments-table-as-grid main {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        gap: 0.5rem;
+    }

@@ -66,17 +66,15 @@ namespace HSS.Services.Services
 
         public async Task<bool> DeleteClinic(int id)
         {
-            if (id == null)
-                throw new ArgumentNullException(nameof(id));
-            var clinic = await _context.Clinics.FindAsync(id);
-            clinic.IsDeleted = true;
+            var clinic = await  _context.Clinics.FindAsync(id);
+            if (clinic == null) 
+                return false;
+            _context.Clinics.Remove(clinic);
             return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<ClinicDto> GetClinic(int id)
         {
-            if (id == null)
-                throw new ArgumentNullException(nameof(id));
             var result = await _context.Clinics.Where(x => x.Id == id).Include(x => x.Hospital).Select(x => new ClinicDto
             {
                 Id = x.Id,

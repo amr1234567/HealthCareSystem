@@ -3,6 +3,7 @@ using HSS.DataAccess.Helpers;
 using HSS.DataAccess.Interceptors;
 using HSS.DataAccess.Repositories;
 using HSS.Domain.Abstractions;
+using HSS.Services.Services.LabTest;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,7 @@ namespace HSS.DataAccess
             var connectionString = configuration.GetConnectionString("defaultAmr");
             services.AddScoped<IUserIdentityRepository, UserIdentityRepository>();
             services.AddScoped<IUserLogRepository, UserLogRepository>();
+            services.AddScoped<ILabTestService, LabTestService>();
             services.AddScoped<SoftDeleteInterceptor>();
             services.AddScoped<Helper>();
             services.AddSingleton<AccountServicesHelpers>();

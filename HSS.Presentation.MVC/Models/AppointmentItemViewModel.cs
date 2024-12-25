@@ -1,6 +1,6 @@
 ﻿using HSS.Services.SharedDto;
 
-namespace HSS.Presentation.MVC.Controllers;
+namespace HSS.Presentation.MVC.Models;
 
 public class AppointmentItemViewModel(AppointmentDto appointment, bool isQueue = false)
 {

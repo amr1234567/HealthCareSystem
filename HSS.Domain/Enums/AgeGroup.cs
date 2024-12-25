@@ -8,6 +8,7 @@
         Child = 3,           // 4 - 12 years
         Adolescent = 4,      // 13 - 18 years
         Adult = 5,           // 19 - 64 years
-        Senior = 6           // 65+ years
+        Senior = 6,           // 65+ years
+        All = 7
     }
 }

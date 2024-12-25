@@ -1,40 +1,44 @@
 ﻿@using HSS.Presentation.MVC.Controllers
 @model ClinicAppointmentsModelView
- 
+
 
 @foreach(var app in Model.Appointments)
 {
-    <div class="appointment-row @((app.IsConfirmed & app.IsStarted) ? "started " : (app.IsConfirmed ? "confirmed " : "")) @(app.IsEnd ? "ended " : "")">
+    <div class="appointment-row @(app.IsEnd ? "ended" : (app.IsConfirmed & app.IsStarted) ? "started " : (app.IsConfirmed ? "confirmed " : ""))">
         <div class="type">
-            <div class="buttons @(Model.IsQueueList ? "hide-buttons" : "") hide-buttons-for-view">
-                <button class="button @(app.IsConfirmed? "disable-button": "confirm-appointment-btn")" title="تأكيد الحضور" data-appointment-id="@app.Id">
-                    <span>تأكيد الحضور</span>
-                    <img src="/icons/confirm-icon.svg" alt="">
-                </button>
-                <button class="button @(app.IsStarted? "disable-button": "delay-appointment-btn") " title="تأخير موعد" data-national-id="@app.PatientNationalId">
-                    <span>تأخير الموعد</span>
-                    <img src="/icons/wait-button.svg" alt="">
-                </button>
-                <div class="seperator"></div>
-                <button class="button @(app.IsStarted? "disable-button": "cancel-appointment-button") " title="الغاء موعد" data-appointment-id="@app.Id">
-                    <span>الغاء الموعد</span>
-                    <img src="/icons/cancel-button.svg" alt="">
-                </button>
-            </div>
-            <div class="buttons @(Model.IsQueueList ? "" : "hide-buttons") hide-buttons-for-view">
-                <button class="button  @(app.IsStarted? "disable-button": "start-appointment") " title="بدأ الحجز" data-appointment-id="@app.Id">
-                    <span>بدأ الحجز</span>
-                    <img src="/icons/start-icon.svg" alt="">
-                </button>
-                <button class="button  @(app.IsStarted? "disable-button": "delay-appointment-btn") " title="تأخير موعد" data-national-id="@app.PatientNationalId">
-                    <span>تأخير الموعد</span>
-                    <img src="/icons/wait-button.svg" alt="">
-                </button>
-                <button class="button  @(app.IsStarted? "disable-button": "remove-appointment-from-queue") " title="الغاء موعد" data-appointment-id="@app.Id">
-                    <span>الغاء الموعد</span>
-                    <img src="/icons/cancel-button.svg" alt="">
-                </button>
-            </div>
+            @if (!app.IsEnd)
+            {
+                <div class="buttons @(Model.IsQueueList ? "hide-buttons" : "") hide-buttons-for-view">
+                    <button class="button @(app.IsConfirmed? "disable-button": "confirm-appointment-btn")" title="تأكيد الحضور" data-appointment-id="@app.Id">
+                        <span>تأكيد الحضور</span>
+                        <img src="/icons/confirm-icon.svg" alt="">
+                    </button>
+                    <button class="button @(app.IsStarted? "disable-button": "delay-appointment-btn") " title="تأخير موعد" data-national-id="@app.PatientNationalId">
+                        <span>تأخير الموعد</span>
+                        <img src="/icons/wait-button.svg" alt="">
+                    </button>
+                    <div class="seperator"></div>
+                    <button class="button @(app.IsStarted? "disable-button": "cancel-appointment-button") " title="الغاء موعد" data-appointment-id="@app.Id">
+                        <span>الغاء الموعد</span>
+                        <img src="/icons/cancel-button.svg" alt="">
+                    </button>
+                </div>
+                <div class="buttons @(Model.IsQueueList ? "" : "hide-buttons") hide-buttons-for-view">
+                    <button class="button  @(app.IsStarted? "disable-button": "start-appointment") " title="بدأ الحجز" data-appointment-id="@app.Id">
+                        <span>بدأ الحجز</span>
+                        <img src="/icons/start-icon.svg" alt="">
+                    </button>
+                    <button class="button  @(app.IsStarted? "disable-button": "delay-appointment-btn") " title="تأخير موعد" data-national-id="@app.PatientNationalId">
+                        <span>تأخير الموعد</span>
+                        <img src="/icons/wait-button.svg" alt="">
+                    </button>
+                    <button class="button  @(app.IsStarted? "disable-button": "remove-appointment-from-queue") " title="الغاء موعد" data-appointment-id="@app.Id">
+                        <span>الغاء الموعد</span>
+                        <img src="/icons/cancel-button.svg" alt="">
+                    </button>
+                </div>
+
+            }
             <span class="show-details-icon">
                 <img src="/icons/options-icon.svg" alt="">
             </span>

@@ -1,7 +1,8 @@
-﻿@model HSS.Presentation.MVC.Controllers.AppointmentItemViewModel
+﻿@using HSS.Presentation.MVC.Models
+@model AppointmentItemViewModel
 
 
-<div class="appointment-row @((Model.Appointment.IsConfirmed & Model.Appointment.IsStarted) ? "started " : (Model.Appointment.IsConfirmed ? "confirmed " : "")) @(Model.Appointment.IsEnd ? "ended " : "")">
+<div class="appointment-row @(Model.Appointment.IsEnd ? "ended" : (Model.Appointment.IsConfirmed & Model.Appointment.IsStarted) ? "started " : (Model.Appointment.IsConfirmed ? "confirmed " : ""))">
         <div class="type">
             <div class="buttons @(Model.IsQueueItem ? "hide-buttons" : "") hide-buttons-for-view">
                 <button class="button @(Model.Appointment.IsConfirmed? "disable-button": "confirm-appointment-btn")" title="تأكيد الحضور" data-appointment-id="@Model.Appointment.Id">

@@ -13,8 +13,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HSS.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241223074805_EditInAppointmentModel")]
-    partial class EditInAppointmentModel
+    [Migration("20241225144507_Edit")]
+    partial class Edit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -709,8 +709,8 @@ namespace HSS.DataAccess.Migrations
                     b.Property<DateTime>("DiagnosisDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("FollowUpNeeded")
-                        .HasColumnType("bit");
+                    b.Property<DateTime?>("ExpectedTimeForTreatment")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -727,15 +727,6 @@ namespace HSS.DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
-
-                    b.Property<DateTime?>("TreatmentEndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("TreatmentStartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -762,9 +753,6 @@ namespace HSS.DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
-
-                    b.Property<int>("EffectiveSubstanceId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -951,9 +939,6 @@ namespace HSS.DataAccess.Migrations
                     b.Property<int>("NumberOfUnits")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PrescriptionRecordId")
-                        .HasColumnType("int");
-
                     b.Property<int>("TimesOfDispensed")
                         .HasColumnType("int");
 
@@ -966,8 +951,6 @@ namespace HSS.DataAccess.Migrations
                     b.HasIndex("ClinicAppointmentId");
 
                     b.HasIndex("MedicineId");
-
-                    b.HasIndex("PrescriptionRecordId");
 
                     b.ToTable("PrescriptionRecords");
                 });
@@ -1151,8 +1134,8 @@ namespace HSS.DataAccess.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("time");
+                    b.Property<double>("Duration")
+                        .HasColumnType("float");
 
                     b.Property<bool>("IsChronic")
                         .HasColumnType("bit");
@@ -1503,7 +1486,6 @@ namespace HSS.DataAccess.Migrations
                         .HasDefaultValue(0);
 
                     b.Property<string>("ReasonForVisit")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -1871,10 +1853,6 @@ namespace HSS.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("HSS.Domain.Models.PrescriptionRecord", null)
-                        .WithMany("PrescriptionRecords")
-                        .HasForeignKey("PrescriptionRecordId");
-
                     b.Navigation("ClinicAppointment");
 
                     b.Navigation("Medicine");
@@ -2156,11 +2134,6 @@ namespace HSS.DataAccess.Migrations
             modelBuilder.Entity("HSS.Domain.Models.Pharmacy", b =>
                 {
                     b.Navigation("Pharmacists");
-                });
-
-            modelBuilder.Entity("HSS.Domain.Models.PrescriptionRecord", b =>
-                {
-                    b.Navigation("PrescriptionRecords");
                 });
 
             modelBuilder.Entity("HSS.Domain.Models.RadiologyCenter", b =>

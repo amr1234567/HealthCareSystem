@@ -1,0 +1,244 @@
+﻿@model HSS.Presentation.MVC.Controllers.MakePrescriptionsViewModel
+
+@{
+    ViewBag.Title = "Prescription";
+    Layout = "_MainPagesLayout";
+}
+<style>
+    .medicine-container {
+        display: flex;
+        gap: 1rem;
+        padding: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        margin-bottom: 1rem;
+    }
+
+    .inputs-container{
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+    }
+    .input-row {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+        .input-group label {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+    .button-group {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .suggestions {
+        border: 1px solid #ccc;
+        background-color: #fff;
+        position: absolute;
+        z-index: 1000;
+        max-height: 150px;
+        overflow-y: auto;
+        width: 100%;
+    }
+
+    .suggestion-item {
+        padding: 8px;
+        cursor: pointer;
+    }
+
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+
+    .button-group{
+        width:15%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .button-group > *{
+    }
+</style>
+
+<div id="medicine-container-wrapper">
+    <div class="medicine-container">
+        <div class="inputs-container">
+            <div class="input-row">
+                <div class="input-group">
+                    <label for="medicineName">Medicine Name:</label>
+                    <input type="text" id="medicineName" name="medicineName" required>
+                    <div class="suggestions" id="medicineName-suggestions"></div>
+                </div>
+                <div class="input-group">
+                    <label for="itemCount">Item Count:</label>
+                    <input type="number" id="itemCount" name="itemCount" required>
+                </div>
+                <div class="input-group">
+                    <label for="timesToTake">Times to Take:</label>
+                    <input type="number" id="timesToTake" name="timesToTake" required>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" rows="4" required></textarea>
+            </div>
+        </div>
+        <div class="button-group">
+            <button class="add-medicine-container btn btn-primary">Add</button>
+            <button class="delete-medicine-container btn btn-secondary" style="display: none;">Delete</button>
+        </div>
+    </div>
+</div>
+<button id="submit-prescription">Submit Prescription</button>
+
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            function updateDeleteButtons() {
+                var containerCount = $('.medicine-container').length;
+                if (containerCount > 1) {
+                    $('.delete-medicine-container').show();
+                } else {
+                    $('.delete-medicine-container').hide();
+                }
+            }
+
+             updateDeleteButtons();
+            // Add new medicine container
+          $(document).on('click', '.add-medicine-container', function () {
+                var newContainer = $('<div>', { class: 'medicine-container' });
+                var inputsContainer = $('<div>', { class: 'inputs-container' });
+                var inputRow = $('<div>', { class: 'input-row' });
+                var inputGroup1 = $('<div>', { class: 'input-group' }).append(
+                    $('<label>', { for: 'medicineName', text: 'Medicine Name:' }),
+                    $('<input>', { type: 'text', name: 'medicineName', required: true }),
+                    $('<div>', { class: 'suggestions' })
+                );
+                var inputGroup2 = $('<div>', { class: 'input-group' }).append(
+                    $('<label>', { for: 'itemCount', text: 'Item Count:' }),
+                    $('<input>', { type: 'number', name: 'itemCount', required: true })
+                );
+                var inputGroup3 = $('<div>', { class: 'input-group' }).append(
+                    $('<label>', { for: 'timesToTake', text: 'Times to Take:' }),
+                    $('<input>', { type: 'number', name: 'timesToTake', required: true })
+                );
+                inputRow.append(inputGroup1, inputGroup2, inputGroup3);
+                var descriptionGroup = $('<div>', { class: 'input-group' }).append(
+                    $('<label>', { for: 'description', text: 'Description:' }),
+                    $('<textarea>', { name: 'description', rows: 4, required: true })
+                );
+                inputsContainer.append(inputRow, descriptionGroup);
+                var buttonGroup = $('<div>', { class: 'button-group' }).append(
+                    $('<button>', { class: 'add-medicine-container btn btn-primary', text: 'Add' }),
+                    $('<button>', { class: 'delete-medicine-container btn btn-secondary', text: 'Delete' })
+                );
+                newContainer.append(inputsContainer, buttonGroup);
+                $(this).closest('.medicine-container').after(newContainer);
+                updateDeleteButtons();
+            });
+
+             $(document).on('click', '.delete-medicine-container', function () {
+                $(this).closest('.medicine-container').remove();
+                updateDeleteButtons();
+            });
+
+            // Medicine name suggestions
+            $(document).on('keyup', 'input[name="medicineName"]', function () {
+                var input = $(this);
+                var query = input.val().trim();
+                if (query.length >= 1) {
+                    $.ajax({
+                        url: '@Url.Action("GetMedicines", "Clinic")',
+                        type: 'POST',
+                        data: { query: query },
+                        success: function (data) {
+                            if(data.success){
+                                var suggestionsContainer = input.siblings('.suggestions');
+                                suggestionsContainer.empty();
+                                data.medicines.forEach(function (item) {
+                                    suggestionsContainer.append(`<div class="suggestion-item" data-medicine-id="${item.value}">${item.text}</div>`);
+                                });
+                            }else{
+                                showErrorMessage(data.message)
+                            }
+                        },
+                        error: function () {
+                            console.error('Error fetching medicine suggestions.');
+                        }
+                    });
+                }
+            });
+
+            // Select suggestion
+            $(document).on('click', '.suggestion-item', function () {
+                var suggestion = $(this).text();
+                var input = $(this).closest('.input-group').find('input[name="medicineName"]');
+                input.val(suggestion);
+                input.data('medicine-id', $(this).data('medicine-id'));
+                $(this).parent().empty();
+            });
+
+            // Submit prescriptions
+            $('#submit-prescription').click(function () {
+                var prescriptions = [];
+                $('.medicine-container').each(function () {
+                    var medicineId = $(this).find('input[name="medicineName"]').data("medicine-id");
+                    var NumberOfUnits = $(this).find('input[name="itemCount"]').val();
+                    var DosageFrequency = $(this).find('input[name="timesToTake"]').val();
+                    var TimingDescription = $(this).find('textarea[name="description"]').val();
+                    if (medicineId && NumberOfUnits && DosageFrequency) {
+                        prescriptions.push({
+                            medicineId: medicineId,
+                            NumberOfUnits: NumberOfUnits,
+                            DosageFrequency: DosageFrequency,
+                            TimingDescription: TimingDescription
+                        });
+                    }
+                });
+
+                if (prescriptions.length > 0) {
+                    $.ajax({
+                        url: '@Url.Action("SubmitPrescriptions", "Clinic")',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            appointmentId: '@Model.AppointmentId',
+                            Prescriptions : prescriptions
+                        }),
+                        success: function () {
+                            alert('Prescriptions submitted successfully!');
+                        },
+                        error: function () {
+                            alert('An error occurred while submitting prescriptions.');
+                        }
+                    });
+                } else {
+                    alert('Please fill out all required fields.');
+                }
+            });
+        });
+
+    </script>
+}

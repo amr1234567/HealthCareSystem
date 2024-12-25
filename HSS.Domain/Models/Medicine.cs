@@ -20,9 +20,6 @@ namespace HSS.Domain.Models
         public string Manufacturer { get; set; }
 
         [Required]
-        public int EffectiveSubstanceId { get; set; }
-
-        [Required]
         [DataType(DataType.DateTime)]
         public DateTime ApprovalDate { get; set; }
 

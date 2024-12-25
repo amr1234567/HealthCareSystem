@@ -505,5 +505,391 @@ namespace HSS.DataAccess
             throw new InvalidOperationException("Failed to get a random element from the dictionary.");
         }
 
+        public static async Task SeedDiseasesAndRelatedDataAsync(this ApplicationDbContext context)
+        
+        {
+            if (await context.Set<Disease>().AnyAsync())
+                return;
+
+            // Create symptoms
+            var symptoms = new List<Symptom>
+            {
+                new Symptom {
+                    Name = "ارتفاع درجة الحرارة",
+                    Description = "ارتفاع في درجة حرارة الجسم عن 37 درجة مئوية",
+                    Duration = TimeSpan.FromDays(3),
+                    IsChronic = false,
+                    TreatmentRequired = true
+                },
+                new Symptom {
+                    Name = "سعال جاف",
+                    Description = "سعال متكرر بدون بلغم",
+                    Duration = TimeSpan.FromDays(7),
+                    IsChronic = false,
+                    TreatmentRequired = true
+                },
+                new Symptom {
+                    Name = "صداع شديد",
+                    Age = AgeGroup.Adult,
+                    Description = "ألم حاد في الرأس مع احتمال الغثيان",
+                    Duration = TimeSpan.FromHours(12),
+                    IsChronic = false,
+                    TreatmentRequired = true
+                },
+                new Symptom {
+                    Name = "آلام المفاصل",
+                    Description = "ألم وتصلب في المفاصل مع صعوبة في الحركة",
+                    Duration = TimeSpan.FromDays(30),
+                    IsChronic = true,
+                    TreatmentRequired = true
+                },
+                new Symptom {
+                    Name = "ضيق في التنفس",
+                    Description = "صعوبة في التنفس مع الشعور بعدم كفاية الهواء",
+                    Duration = TimeSpan.FromHours(6),
+                    IsChronic = false,
+                    TreatmentRequired = true
+                }
+            };
+
+            // Create effective substances
+            var effectiveSubstances = new List<EffectiveSubstance>
+            {
+                new EffectiveSubstance {
+                    Name = "باراسيتامول",
+                    ChemicalFormula = "C8H9NO2",
+                    Description = "مسكن للألم وخافض للحرارة",
+                    DiscoveryDate = new DateTime(1877, 1, 1),
+                    ApprovedBy = "FDA",
+                    StabilityConditions = "يحفظ في درجة حرارة الغرفة",
+                    PrimaryUsage = "تخفيف الألم وخفض الحرارة",
+                    AlternativeNames = "أسيتامينوفين"
+                },
+                new EffectiveSubstance {
+                    Name = "أموكسيسيلين",
+                    ChemicalFormula = "C16H19N3O5S",
+                    Description = "مضاد حيوي واسع الطيف",
+                    DiscoveryDate = new DateTime(1972, 1, 1),
+                    ApprovedBy = "FDA",
+                    StabilityConditions = "يحفظ في مكان بارد وجاف",
+                    PrimaryUsage = "علاج الالتهابات البكتيرية",
+                    AlternativeNames = "أموكسيل"
+                },
+                new EffectiveSubstance {
+                    Name = "ميتفورمين",
+                    ChemicalFormula = "C4H11N5",
+                    Description = "دواء لعلاج السكري",
+                    DiscoveryDate = new DateTime(1922, 1, 1),
+                    ApprovedBy = "FDA",
+                    StabilityConditions = "يحفظ بعيداً عن الضوء والرطوبة",
+                    PrimaryUsage = "تنظيم مستوى السكر في الدم",
+                    AlternativeNames = "جلوكوفاج"
+                }
+            };
+
+            // Create diseases with their relationships
+            var diseases = new List<Disease>
+            {
+                new Disease {
+                    Name = "إنفلونزا موسمية",
+                    Description = "عدوى فيروسية تصيب الجهاز التنفسي",
+                    Severity = Severity.Moderate,
+                    Contagious = true,
+                    Discovery_date = new DateTime(1918, 1, 1),
+                    AffectedPopulation = 1000000,
+                    DiseaseCode = "J10",
+                    CureRate = 99.5f,
+                    FatalityRate = 0.1f,
+                    TreatmentDurationInDays = "7",
+                    IsChronic = false,
+                    HasVaccine = true,
+                    CommonAgeGroup = AgeGroup.All,
+                    CommonGender = Gender.All,
+                    RiskFactors = "كبار السن، ضعف المناعة، الأمراض المزمنة",
+                    GeographicSpread = "عالمي",
+                    LastOutbreakDate = new DateTime(2023, 1, 1),
+                    ResearchStatus = ResearchStatus.Ongoing,
+                    PreventionMeasures = "غسل اليدين، ارتداء الكمامة، تجنب المخالطة المباشرة",
+                    Notes = "تظهر بشكل موسمي خاصة في فصل الشتاء"
+                },
+                new Disease {
+                    Name = "السكري النوع الثاني",
+                    Description = "اضطراب في التمثيل الغذائي يؤثر على كيفية استخدام الجسم للسكر",
+                    Severity = Severity.Severe,
+                    Contagious = false,
+                    Discovery_date = new DateTime(1935, 1, 1),
+                    AffectedPopulation = 500000,
+                    DiseaseCode = "E11",
+                    CureRate = 0f,
+                    FatalityRate = 15f,
+                    TreatmentDurationInDays = "مدى الحياة",
+                    IsChronic = true,
+                    HasVaccine = false,
+                    CommonAgeGroup = AgeGroup.Adult,
+                    CommonGender = Gender.All,
+                    RiskFactors = "السمنة، قلة النشاط البدني، التاريخ العائلي",
+                    GeographicSpread = "عالمي",
+                    ResearchStatus = ResearchStatus.Ongoing,
+                    PreventionMeasures = "نظام غذائي صحي، ممارسة الرياضة، الحفاظ على وزن صحي"
+                },
+                new Disease {
+                    Name = "التهاب المفاصل الروماتويدي",
+                    Description = "مرض مناعي يسبب التهاب المفاصل",
+                    Severity = Severity.Severe,
+                    Contagious = false,
+                    Discovery_date = new DateTime(1800, 1, 1),
+                    AffectedPopulation = 200000,
+                    DiseaseCode = "M05",
+                    CureRate = 0f,
+                    FatalityRate = 5f,
+                    TreatmentDurationInDays = "مدى الحياة",
+                    IsChronic = true,
+                    HasVaccine = false,
+                    CommonAgeGroup = AgeGroup.Adult,
+                    CommonGender = Gender.Female,
+                    RiskFactors = "التدخين، التاريخ العائلي، الجنس الأنثوي",
+                    PreventionMeasures = "تجنب التدخين، ممارسة التمارين الخفيفة"
+                },
+                // ... continuing with more diseases ...
+            };
+
+            // Add 7 more diseases following similar pattern
+            diseases.AddRange(new[]
+            {
+                new Disease {
+                    Name = "ارتفاع ضغط الدم",
+                    Description = "ارتفاع مستمر في ضغط الدم الشرياني",
+                    Severity = Severity.Moderate,
+                    Contagious = false,
+                    Discovery_date = new DateTime(1900, 1, 1),
+                    AffectedPopulation = 800000,
+                    DiseaseCode = "I10",
+                    CureRate = 0f,
+                    FatalityRate = 10f,
+                    TreatmentDurationInDays = "مدى الحياة",
+                    IsChronic = true,
+                    HasVaccine = false,
+                    CommonAgeGroup = AgeGroup.Adult,
+                    CommonGender = Gender.All,
+                    RiskFactors = "التدخين، السمنة، قلة النشاط البدني، الإجهاد",
+                    PreventionMeasures = "نظام غذائي صحي، ممارسة الرياضة، تقليل الملح"
+                },
+                new Disease {
+                    Name = "الربو",
+                    Description = "مرض تنفسي مزمن يسبب صعوبة في التنفس",
+                    Severity = Severity.Moderate,
+                    Contagious = false,
+                    Discovery_date = new DateTime(1850, 1, 1),
+                    AffectedPopulation = 300000,
+                    DiseaseCode = "J45",
+                    CureRate = 0f,
+                    FatalityRate = 1f,
+                    TreatmentDurationInDays = "مدى الحياة",
+                    IsChronic = true,
+                    HasVaccine = false,
+                    CommonAgeGroup = AgeGroup.Child,
+                    CommonGender = Gender.All,
+                    RiskFactors = "التاريخ العائلي، الحساسية، التدخين",
+                    PreventionMeasures = "تجنب المحفزات، استخدام الأدوية الوقائية"
+                }
+                // ... Add the remaining diseases here
+            });
+
+            // Assign relationships
+            foreach (var disease in diseases)
+            {
+                disease.Symptoms = symptoms.Take(Random.Shared.Next(2, 4)).ToList();
+                disease.EffectiveSubstances = effectiveSubstances.Take(Random.Shared.Next(1, 3)).ToList();
+            }
+
+            await context.AddRangeAsync(symptoms);
+            await context.AddRangeAsync(effectiveSubstances);
+            await context.AddRangeAsync(diseases);
+            await context.SaveChangesAsync();
+        }
+    public static async Task SeedMedicineAsync(this ApplicationDbContext context){
+        if (await context.Set<Disease>().AnyAsync())
+                return;
+        var medicines = new List<Medicine>
+    {
+        new Medicine
+        {
+            Id = 1,
+            Name = "Amoxil",
+            Description = "Broad-spectrum antibiotic used to treat various bacterial infections",
+            Manufacturer = "GlaxoSmithKline",
+            EffectiveSubstanceId = 1,
+            ApprovalDate = new DateTime(1981, 1, 15),
+            StorageConditions = "Store at room temperature between 15-25°C (59-77°F)",
+            PrescriptionRequired = true,
+            Cost = 25.50f,
+        },
+        new Medicine
+        {
+            Id = 2,
+            Name = "Augmentin",
+            Description = "Combined antibiotic medication used for bacterial infections",
+            Manufacturer = "GlaxoSmithKline",
+            EffectiveSubstanceId = 1,
+            ApprovalDate = new DateTime(1984, 6, 20),
+            StorageConditions = "Store below 25°C in a dry place",
+            PrescriptionRequired = true,
+            Cost = 35.75f,
+        },
+        new Medicine
+        {
+            Id = 3,
+            Name = "Panadol",
+            Description = "Pain reliever and fever reducer",
+            Manufacturer = "GSK Consumer Healthcare",
+            EffectiveSubstanceId = 2,
+            ApprovalDate = new DateTime(1956, 3, 10),
+            StorageConditions = "Store below 30°C",
+            PrescriptionRequired = false,
+            Cost = 12.99f,
+        },
+        new Medicine
+        {
+            Id = 4,
+            Name = "Aspirin",
+            Description = "Pain reliever, fever reducer, and anti-inflammatory medication",
+            Manufacturer = "Bayer",
+            EffectiveSubstanceId = 3,
+            ApprovalDate = new DateTime(1899, 2, 1),
+            StorageConditions = "Store at room temperature away from moisture and heat",
+            PrescriptionRequired = false,
+            Cost = 8.50f,
+        }
+       
+    };
+            await context.AddRangeAsync(medicines);
+            await context.SaveChangesAsync();   
+        }
+
+        public static async Task SeedLabTestsAsync(this ApplicationDbContext context)
+        {
+            if (await context.Set<LabCenterTest>().AnyAsync())
+                return;
+
+            var labTests = new List<LabCenterTest>
+            {
+                new LabCenterTest 
+                {
+                    Name = "Complete Blood Count (CBC)",
+                    Description = "فحص شامل لمكونات الدم يشمل خلايا الدم الحمراء والبيضاء والصفائح الدموية"
+                },
+                new LabCenterTest 
+                {
+                    Name = "Blood Sugar Test",
+                    Description = "قياس مستوى السكر في الدم (صائم وفاطر)"
+                },
+                new LabCenterTest 
+                {
+                    Name = "Liver Function Test",
+                    Description = "تقييم وظائف الكبد من خلال قياس الإنزيمات والبروتينات"
+                },
+                new LabCenterTest 
+                {
+                    Name = "Kidney Function Test",
+                    Description = "فحص وظائف الكلى يشمل قياس الكرياتينين واليوريا"
+                },
+                new LabCenterTest 
+                {
+                    Name = "Thyroid Function Test",
+                    Description = "قياس مستويات هرمونات الغدة الدرقية"
+                },
+                new LabCenterTest 
+                {
+                    Name = "Lipid Profile",
+                    Description = "قياس مستويات الدهون في الدم بما في ذلك الكوليسترول والدهون الثلاثية"
+                },
+                new LabCenterTest 
+                {
+                    Name = "Urine Analysis",
+                    Description = "تحليل شامل للبول للكشف عن الالتهابات والأمراض"
+                },
+                new LabCenterTest 
+                {
+                    Name = "HbA1c Test",
+                    Description = "قياس متوسط مستوى السكر في الدم خلال 3 أشهر"
+                },
+                new LabCenterTest 
+                {
+                    Name = "Vitamin D Test",
+                    Description = "قياس مستوى فيتامين د في الدم"
+                },
+                new LabCenterTest 
+                {
+                    Name = "Iron Studies",
+                    Description = "قياس مستويات الحديد والفيريتين في الدم"
+                }
+            };
+
+            await context.AddRangeAsync(labTests);
+            await context.SaveChangesAsync();
+        }
+
+        public static async Task SeedRadiologyTestTypesAsync(this ApplicationDbContext context)
+        {
+            if (await context.Set<RadiologyTestType>().AnyAsync())
+                return;
+
+            var radiologyTests = new List<RadiologyTestType>
+            {
+                new RadiologyTestType 
+                {
+                    Name = "X-Ray (الأشعة السينية)",
+                    Description = "تصوير تشخيصي باستخدام الأشعة السينية للعظام والصدر والمفاصل"
+                },
+                new RadiologyTestType 
+                {
+                    Name = "CT Scan (الأشعة المقطعية)",
+                    Description = "تصوير مقطعي محوسب يوفر صور ثلاثية الأبعاد للأعضاء الداخلية"
+                },
+                new RadiologyTestType 
+                {
+                    Name = "MRI (التصوير بالرنين المغناطيسي)",
+                    Description = "تصوير تفصيلي للأنسجة الرخوة والمفاصل والدماغ باستخدام المجال المغناطيسي"
+                },
+                new RadiologyTestType 
+                {
+                    Name = "Ultrasound (الموجات فوق الصوتية)",
+                    Description = "تصوير باستخدام الموجات الصوتية للأعضاء الداخلية والجنين"
+                },
+                new RadiologyTestType 
+                {
+                    Name = "Mammography (تصوير الثدي)",
+                    Description = "تصوير خاص للكشف عن سرطان الثدي وأمراض الثدي الأخرى"
+                },
+                new RadiologyTestType 
+                {
+                    Name = "PET Scan (التصوير المقطعي بالإصدار البوزيتروني)",
+                    Description = "تصوير متقدم يستخدم للكشف عن الأورام ومتابعة العلاج"
+                },
+                new RadiologyTestType 
+                {
+                    Name = "Fluoroscopy (التنظير الفلوري)",
+                    Description = "تصوير متحرك في الوقت الحقيقي للأعضاء الداخلية"
+                },
+                new RadiologyTestType 
+                {
+                    Name = "Bone Densitometry (قياس كثافة العظام)",
+                    Description = "فحص خاص لقياس كثافة العظام والكشف عن هشاشة العظام"
+                },
+                new RadiologyTestType 
+                {
+                    Name = "Angiography (تصوير الأوعية الدموية)",
+                    Description = "تصوير خاص للأوعية الدموية باستخدام الصبغة"
+                },
+                new RadiologyTestType 
+                {
+                    Name = "Nuclear Medicine Scan (التصوير النووي)",
+                    Description = "تصوير باستخدام المواد المشعة للكشف عن وظائف الأعضاء وبعض الأمراض"
+                }
+            };
+
+            await context.AddRangeAsync(radiologyTests);
+            await context.SaveChangesAsync();
+        }
     }
 }

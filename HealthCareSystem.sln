@@ -14,15 +14,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		ProjectDocs\structure.yaml = ProjectDocs\structure.yaml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HSS.Domain", "HSS.Domain\HSS.Domain.csproj", "{5B4B0709-5683-40E6-8BA6-D7F779A4FDE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HSS.Domain", "HSS.Domain\HSS.Domain.csproj", "{5B4B0709-5683-40E6-8BA6-D7F779A4FDE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HSS.DataAccess", "HSS.DataAccess\HSS.DataAccess.csproj", "{6567935B-41ED-48E1-923D-FEAEF7F9481C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HSS.DataAccess", "HSS.DataAccess\HSS.DataAccess.csproj", "{6567935B-41ED-48E1-923D-FEAEF7F9481C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HSS.Services", "HSS.Services\HSS.Services.csproj", "{55BB368E-C532-4559-B57B-24D30BA90A45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HSS.Services", "HSS.Services\HSS.Services.csproj", "{55BB368E-C532-4559-B57B-24D30BA90A45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HSS.Presentation.Patient.Api", "HSS.Presentation.Patient.Api\HSS.Presentation.Patient.Api.csproj", "{869AB66B-6298-4829-A6D2-C3CC1823B44B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HSS.Presentation.Patient.Api", "HSS.Presentation.Patient.Api\HSS.Presentation.Patient.Api.csproj", "{869AB66B-6298-4829-A6D2-C3CC1823B44B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HSS.Presentation.MVC", "HSS.Presentation.MVC\HSS.Presentation.MVC.csproj", "{E4C547F9-6C29-45EF-8A1F-459DA9640AB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HSS.Presentation.MVC", "HSS.Presentation.MVC\HSS.Presentation.MVC.csproj", "{E4C547F9-6C29-45EF-8A1F-459DA9640AB6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

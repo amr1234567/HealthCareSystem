@@ -1,0 +1,60 @@
+﻿@using HSS.Domain.Models
+@model IEnumerable<LabCenterTest>
+
+@{
+    ViewData["Title"] = "Tests";
+}
+<style>
+    #fixedButton {
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        background-color: #5cb85c;
+        color: white;
+        padding: 15px 20px;
+        font-weight: bold;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+        z-index: 1000;
+    }
+
+        #fixedButton:hover {
+            background-color: green;
+        }
+
+        #fixedButton:active {
+            transform: scale(0.95);
+        }
+</style>
+
+
+<h2 class="text-center">Tests</h2>
+
+<div class="container mt-5">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Test Type: @item.TestType</h5>
+                        <a class="btn btn-primary mt-2" href="@Url.Action("TestDetails", "LabTest", new { id = item.Id })">
+                            View Details
+                        </a>
+                        <a class="btn btn-warning mt-2" href="@Url.Action("EditTest", "LabTest", new { id = item.Id })">
+                            Edit
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+
+<a id="fixedButton" href="@Url.Action("AddTest", "LabTest")">Add Test</a>
